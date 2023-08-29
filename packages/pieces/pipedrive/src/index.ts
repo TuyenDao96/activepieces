@@ -16,7 +16,7 @@ export const pipedriveAuth = PieceAuth.OAuth2({
 })
 
 export const pipedrive = createPiece({
-	displayName: "Pipedrive",
+	displayName: "Ichiba Pipedrive",
 	    minimumSupportedRelease: '0.5.0',
     logoUrl: 'https://cdn.activepieces.com/pieces/pipedrive.png',
     auth: pipedriveAuth,

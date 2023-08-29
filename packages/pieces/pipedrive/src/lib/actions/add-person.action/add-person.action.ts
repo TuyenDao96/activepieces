@@ -101,6 +101,33 @@ export const addPerson = createAction({
                     ]
                 }
             }),
+            source: Property.StaticDropdown<string>({
+                displayName: "Source",
+                description: "Source",
+                required: false,
+                options: {
+                    disabled: false,
+                    options: [
+                        {
+                            label: "Contact Form",
+                            value: "Contact Form"
+                        },
+                        {
+                            label: "Org",
+                            value: "Org"
+                        },
+                        {
+                            label: "Linkedin",
+                            value: "Linkedin"
+                        }
+                    ]
+                }
+            }),
+            country: Property.ShortText({
+                displayName: 'Country',
+                description: undefined,
+                required: false,
+            }),
         },
         async run(context) {
             const configsWithoutAuthentication = { 
@@ -109,7 +136,9 @@ export const addPerson = createAction({
                 org_id: context.propsValue.org_id,
                 phone: context.propsValue.phone,
                 email: context.propsValue.email,
-                marketing_status: context.propsValue.marketing_status
+                marketing_status: context.propsValue.marketing_status,
+                df17db22d940960b43ba3f30b4d39e0f2e2bdff0: context.propsValue.source,
+                c6e88ba97483902c66ed48f68441a39a8b3305b3: context.propsValue.country
             };
 
             const request: HttpRequest = {
