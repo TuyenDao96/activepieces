@@ -1,0 +1,94 @@
+{
+  "id": "NvlhkfzSwHSeG2zClmSNY",
+  "name": "Sync Person Pipedrive To Customer.IO",
+  "description": "",
+  "tags": [],
+  "pieces": [
+    "@activepieces/piece-http"
+  ],
+  "pinnedOrder": null,
+  "blogUrl": "",
+  "template": {
+    "displayName": "Sync Person Pipedrive To Customer.IO",
+    "trigger": {
+      "name": "trigger",
+      "valid": true,
+      "displayName": "webhook trigger updated person",
+      "nextAction": {
+        "name": "step_1",
+        "type": "CODE",
+        "valid": true,
+        "settings": {
+          "input": {
+            "person": "{{trigger['body']['current']}}"
+          },
+          "inputUiInfo": {},
+          "artifact": "UEsDBAoAAAAAAJh2MldV2ov9LAEAACwBAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIGNvbnN0IHBob25lcyA9IGlucHV0cy5wZXJzb24ucGhvbmUubWFwKHggPT4geC52YWx1ZSkuam9pbignfHwnKTsKICAgIGxldCBwZXJzb24gPSB7CiAgICAgICAgZW1haWw6IGlucHV0cy5wZXJzb24uZW1haWxbMF0udmFsdWUsCiAgICAgICAgcGhvbmU6IHBob25lcywKICAgICAgICBjb3VudHJ5OiBpbnB1dHMucGVyc29uLmM2ZTg4YmE5NzQ4MzkwMmM2NmVkNDhmNjg0NDFhMzlhOGIzMzA1YjMKICAgIH07CgogICAgcmV0dXJuIFtwZXJzb25dOwp9OwpQSwMECgAAAAAAmHYyVxpS0QgcAAAAHAAAAAwAAABwYWNrYWdlLmpzb257CiAgImRlcGVuZGVuY2llcyI6IHsKICB9Cn0KUEsBAhQACgAAAAAAmHYyV1Xai/0sAQAALAEAAAgAAAAAAAAAAAAAAAAAAAAAAGluZGV4LnRzUEsBAhQACgAAAAAAmHYyVxpS0QgcAAAAHAAAAAwAAAAAAAAAAAAAAAAAUgEAAHBhY2thZ2UuanNvblBLBQYAAAAAAgACAHAAAACYAQAAAAA="
+        },
+        "nextAction": {
+          "name": "step_3",
+          "type": "CODE",
+          "valid": true,
+          "settings": {
+            "input": {
+              "data": "{{step_1}}",
+              "personId": "{{trigger['body']['current']['id']}}"
+            },
+            "inputUiInfo": {},
+            "artifact": "UEsDBAoAAAAAAJh2MlcFktnkqgMAAKoDAAAIAAAAaW5kZXgudHNpbXBvcnQgRm9ybURhdGEgZnJvbSAnZm9ybS1kYXRhJzsKaW1wb3J0IHsgUmVhZGFibGUgfSBmcm9tICdzdHJlYW0nOwppbXBvcnQgYXhpb3MgZnJvbSAnYXhpb3MnOwoKZXhwb3J0IGNvbnN0IGNvZGUgPSBhc3luYyAoaW5wdXRzKSA9PiB7CiAgICBsZXQgY3N2Q29udGVudCA9ICcnOwogICAgbGV0IGNzdkhlYWRlciA9IE9iamVjdC5rZXlzKGlucHV0cy5kYXRhWzBdKS5qb2luKCcsJyk7CiAgICBsZXQgY3N2VmFsdWVzID0gaW5wdXRzLmRhdGEubWFwKG8gPT4gT2JqZWN0LnZhbHVlcyhvKS5qb2luKCcsJykpLmpvaW4oJ1xuJyk7CgogICAgY3N2Q29udGVudCArPSBjc3ZIZWFkZXIgKyAnXG4nICsgY3N2VmFsdWVzOwogICAgCiAgICBsZXQgZmlsZU5hbWUgPSBgcGVyc29uLSR7aW5wdXRzLnBlcnNvbklkfS5jc3ZgOwogICAgY29uc3QgZGF0YVN0cmVhbSA9IFJlYWRhYmxlLmZyb20oY3N2Q29udGVudCk7CgogICAgbGV0IGJvZHkgPSBuZXcgRm9ybURhdGEoKTsKICAgIGJvZHkuYXBwZW5kKCdjc3ZGaWxlJywgZGF0YVN0cmVhbSwgeyBmaWxlbmFtZTogZmlsZU5hbWUgfSk7CgogICAgbGV0IHJlc3BvbnNlID0gYXdhaXQgYXhpb3MucG9zdCgiaHR0cHM6Ly90ZXN0LWFwaS5pY2hpYmEubmV0L3N0b3JhZ2UvZmlsZXMiLCBib2R5LAogICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgIGhlYWRlcnM6IHsKICAgICAgICAgICAgICAgICAgICAieC1hcHAtaWQiOiAiY3JtIiwKICAgICAgICAgICAgICAgICAgICAieC1wYXRoIjogInBlcnNvbiIsCiAgICAgICAgICAgICAgICAgICAgIngtcm9sZSI6ICJwdWJsaWMiLAogICAgICAgICAgICAgICAgICAgICdDb250ZW50LVR5cGUnOiAnbXVsdGlwYXJ0L2Zvcm0tZGF0YScKICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICB9KTsKICAgIAogICAgcmV0dXJuIHJlc3BvbnNlLmRhdGE7Cn07ClBLAwQKAAAAAACYdjJX7A0ismcAAABnAAAADAAAAHBhY2thZ2UuanNvbnsKICAiZGVwZW5kZW5jaWVzIjogewogICAgIkB0eXBlcy9ub2RlIjogIjIwLjYuMSIsCiAgICAiZm9ybS1kYXRhIjogIjQuMC4wIiwKICAgICJheGlvcyI6ICIxLjUuMCIKICB9Cn1QSwECFAAKAAAAAACYdjJXBZLZ5KoDAACqAwAACAAAAAAAAAAAAAAAAAAAAAAAaW5kZXgudHNQSwECFAAKAAAAAACYdjJX7A0ismcAAABnAAAADAAAAAAAAAAAAAAAAADQAwAAcGFja2FnZS5qc29uUEsFBgAAAAACAAIAcAAAAGEEAAAAAA=="
+          },
+          "nextAction": {
+            "name": "step_2",
+            "type": "BRANCH",
+            "valid": true,
+            "settings": {
+              "conditions": [
+                [
+                  {
+                    "operator": "EXISTS",
+                    "firstValue": "{{step_3['name']}}"
+                  }
+                ]
+              ],
+              "inputUiInfo": {}
+            },
+            "displayName": "uploaded successful",
+            "onSuccessAction": {
+              "name": "step_4",
+              "type": "PIECE",
+              "valid": true,
+              "settings": {
+                "input": {
+                  "url": "https://api.customer.io/v1/imports",
+                  "body": {
+                    "body": "{\r\n    \"import\": {\r\n        \"name\": \"{{step_3['name']}}\",\r\n        \"type\": \"people\",\r\n        \"identifier\": \"email\",\r\n        \"description\": \"sync people from pipedrive to customer-io\",\r\n        \"data_file_url\": \"{{step_3['uri']}}\",\r\n        \"people_to_process\": \"all\"\r\n    }\r\n}"
+                  },
+                  "method": "POST",
+                  "headers": {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer 93c1a2a7282e8354651d28cc9d2c7b1f"
+                  },
+                  "failsafe": false,
+                  "queryParams": {}
+                },
+                "pieceName": "@activepieces/piece-http",
+                "actionName": "send_request",
+                "inputUiInfo": {},
+                "pieceVersion": "~0.3.5"
+              },
+              "displayName": "Send HTTP request"
+            }
+          },
+          "displayName": "upload file to storage"
+        },
+        "displayName": "parse person information"
+      },
+      "type": "WEBHOOK",
+      "settings": {
+        "inputUiInfo": {}
+      }
+    },
+    "valid": true
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "id": "piGlIr81jZF9xZcLBHh17",
+  "name": "Creation Ticket Jira After Deal Won",
+  "description": "",
+  "tags": [],
+  "pieces": [
+    "@activepieces/piece-http"
+  ],
+  "pinnedOrder": null,
+  "blogUrl": "",
+  "template": {
+    "displayName": "Creation Ticket Jira After Deal Won",
+    "trigger": {
+      "name": "trigger",
+      "valid": true,
+      "displayName": "webhook trigger deal won",
+      "nextAction": {
+        "name": "step_1",
+        "type": "BRANCH",
+        "valid": true,
+        "settings": {
+          "conditions": [
+            [
+              {
+                "operator": "TEXT_CONTAINS",
+                "firstValue": "{{trigger['body']['current']['status']}}",
+                "secondValue": "won",
+                "caseSensitive": false
+              },
+              {
+                "operator": "EXISTS",
+                "firstValue": "{{trigger['body']['current']['2de75e031fcbf690575f6c4ff3e0ec5bbe7579ff']}}"
+              }
+            ]
+          ],
+          "inputUiInfo": {}
+        },
+        "displayName": "is won deal",
+        "onSuccessAction": {
+          "name": "step_2",
+          "type": "CODE",
+          "valid": true,
+          "settings": {
+            "input": {
+              "title": "{{trigger['body']['current']['title']}}"
+            },
+            "inputUiInfo": {},
+            "artifact": "UEsDBAoAAAAAAHUPLVcGy3otWwAAAFsAAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIHJldHVybiBgJHtpbnB1dHMudGl0bGV9IEltcGxlbWVudCBSZXF1ZXN0YDsKfTsKUEsDBAoAAAAAAHUPLVcaUtEIHAAAABwAAAAMAAAAcGFja2FnZS5qc29uewogICJkZXBlbmRlbmNpZXMiOiB7CiAgfQp9ClBLAQIUAAoAAAAAAHUPLVcGy3otWwAAAFsAAAAIAAAAAAAAAAAAAAAAAAAAAABpbmRleC50c1BLAQIUAAoAAAAAAHUPLVcaUtEIHAAAABwAAAAMAAAAAAAAAAAAAAAAAIEAAABwYWNrYWdlLmpzb25QSwUGAAAAAAIAAgBwAAAAxwAAAAAA"
+          },
+          "nextAction": {
+            "name": "step_3",
+            "type": "PIECE",
+            "valid": true,
+            "settings": {
+              "input": {
+                "url": "https://ichiba.atlassian.net/rest/api/3/issue",
+                "body": {
+                  "fields": {
+                    "labels": [
+                      "Pipedrive-Implement-Request"
+                    ],
+                    "project": {
+                      "key": "CS"
+                    },
+                    "summary": "{{step_2}}",
+                    "issuetype": {
+                      "id": 10074
+                    },
+                    "description": {
+                      "type": "doc",
+                      "content": [],
+                      "version": 1
+                    }
+                  }
+                },
+                "method": "POST",
+                "headers": {
+                  "Content-Type": "application/json",
+                  "Authorization": "Basic c29ucHRAaWNoaWJhLnZuOkFUQVRUM3hGZkdGME92YkQzWmVOSV9KWHdPc09xU0hrZXk1QkdWX2x3V0lnS1dlOFNMUkhOYmNlQVRkaFNaX19YNEwwTW1rdFZUNndNbTFmd0MwSDctQnlwTTJSWHNTQUFIanhwUzdNX2FLQlU0dnBrSUxXaWpkTzRUMXZMLUpvYWlQY3IySUY4aV9mcTBGbDFMVVo2VC0wNG9YdHFrV3VubzdFTGlfRjVjXzVOU1Zwdlhtb0MxTT0yOTY3MjMzQw=="
+                },
+                "timeout": "30",
+                "failsafe": false,
+                "queryParams": {}
+              },
+              "pieceName": "@activepieces/piece-http",
+              "actionName": "send_request",
+              "inputUiInfo": {},
+              "pieceVersion": "0.3.2"
+            },
+            "displayName": "post jira ticket"
+          },
+          "displayName": "set title ticket"
+        }
+      },
+      "type": "WEBHOOK",
+      "settings": {
+        "inputUiInfo": {}
+      }
+    },
+    "valid": true
+  }
+}

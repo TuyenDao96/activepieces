@@ -1,0 +1,178 @@
+{
+  "id": "ItoHavRn1gaKhIzko3OiU",
+  "name": "Workspace owner active new application",
+  "description": "",
+  "tags": [],
+  "pieces": [
+    "@activepieces/piece-postgres",
+    "@activepieces/piece-http"
+  ],
+  "pinnedOrder": null,
+  "blogUrl": "",
+  "template": {
+    "displayName": "Workspace owner active new application",
+    "trigger": {
+      "name": "trigger",
+      "valid": true,
+      "displayName": "Webhook Trigger",
+      "nextAction": {
+        "name": "step_1",
+        "type": "CODE",
+        "valid": true,
+        "settings": {
+          "input": {
+            "body": "{{trigger['body']}}"
+          },
+          "inputUiInfo": {},
+          "artifact": "UEsDBAoAAAAAAECbLFfL6P4yTwAAAE8AAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIHJldHVybiBKU09OLnBhcnNlKGlucHV0cy5ib2R5KTsKfTsKUEsDBAoAAAAAAECbLFcaUtEIHAAAABwAAAAMAAAAcGFja2FnZS5qc29uewogICJkZXBlbmRlbmNpZXMiOiB7CiAgfQp9ClBLAQIUAAoAAAAAAECbLFfL6P4yTwAAAE8AAAAIAAAAAAAAAAAAAAAAAAAAAABpbmRleC50c1BLAQIUAAoAAAAAAECbLFcaUtEIHAAAABwAAAAMAAAAAAAAAAAAAAAAAHUAAABwYWNrYWdlLmpzb25QSwUGAAAAAAIAAgBwAAAAuwAAAAAA"
+        },
+        "nextAction": {
+          "name": "step_2",
+          "type": "PIECE",
+          "valid": true,
+          "settings": {
+            "input": {
+              "auth": "{{connections['ic-postgres']}}",
+              "query": "SELECT\n    a.app\nFROM user_management.subscriptions s\nINNER JOIN user_management.plans p on s.plan_id = p.id AND s.sharding_id = p.sharding_id\nINNER JOIN (\n        SELECT\n            id, sharding_id,\n            CASE    WHEN code = 'ship4p' THEN 283\n                    WHEN code = 'oms' THEN 284\n                    WHEN code = 'customer' THEN 285\n                    WHEN code = 'cbf' THEN 286\n                    WHEN code = 'pos' THEN 306\n                    WHEN code = 'social' THEN 307\n                    WHEN code = 'pim' THEN 308\n                    WHEN code = 'cdxp' THEN 309\n                    WHEN code = 'wms' THEN 310\n                    WHEN code = 'digital' THEN 311\n            END AS app\n        FROM user_management.applications\n    ) a on p.application_id = a.id AND p.sharding_id = a.sharding_id\nWHERE s.id = '{{step_1['id']}}' AND s.sharding_id = '{{step_1['sharding_id']}}'\nLIMIT 1;",
+              "query_timeout": "30000",
+              "application_name": "activepieces - workspace owner active application",
+              "connection_timeout_ms": "30000"
+            },
+            "pieceName": "@activepieces/piece-postgres",
+            "actionName": "run-query",
+            "inputUiInfo": {},
+            "pieceVersion": "~0.1.0"
+          },
+          "nextAction": {
+            "name": "step_3",
+            "type": "PIECE",
+            "valid": true,
+            "settings": {
+              "input": {
+                "url": "https://api.pipedrive.com/v1/leads/search",
+                "method": "GET",
+                "headers": {
+                  "Accept": "application/json"
+                },
+                "timeout": "30",
+                "failsafe": false,
+                "queryParams": {
+                  "term": "{{step_1['workspace_id']}}",
+                  "limit": "10",
+                  "start": "0",
+                  "fields": "custom_fields",
+                  "api_token": "9bca12a3180d496067d542057a8c88d907c18c04",
+                  "exact_match": "true"
+                }
+              },
+              "pieceName": "@activepieces/piece-http",
+              "actionName": "send_request",
+              "inputUiInfo": {},
+              "pieceVersion": "~0.3.2"
+            },
+            "nextAction": {
+              "name": "step_5",
+              "type": "CODE",
+              "valid": true,
+              "settings": {
+                "input": {
+                  "body": "{{step_3['body']['data']['items']}}"
+                },
+                "inputUiInfo": {},
+                "artifact": "UEsDBAoAAAAAAEibLFd2mb5DTwAAAE8AAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIHJldHVybiBpbnB1dHMuYm9keS5sZW5ndGggfHwgMDsKfTsKUEsDBAoAAAAAAEibLFcaUtEIHAAAABwAAAAMAAAAcGFja2FnZS5qc29uewogICJkZXBlbmRlbmNpZXMiOiB7CiAgfQp9ClBLAQIUAAoAAAAAAEibLFd2mb5DTwAAAE8AAAAIAAAAAAAAAAAAAAAAAAAAAABpbmRleC50c1BLAQIUAAoAAAAAAEibLFcaUtEIHAAAABwAAAAMAAAAAAAAAAAAAAAAAHUAAABwYWNrYWdlLmpzb25QSwUGAAAAAAIAAgBwAAAAuwAAAAAA"
+              },
+              "nextAction": {
+                "name": "step_4",
+                "type": "BRANCH",
+                "valid": true,
+                "settings": {
+                  "conditions": [
+                    [
+                      {
+                        "operator": "NUMBER_IS_GREATER_THAN",
+                        "firstValue": "{{step_5}}",
+                        "secondValue": "0"
+                      }
+                    ]
+                  ],
+                  "inputUiInfo": {}
+                },
+                "displayName": "is exists lead",
+                "onSuccessAction": {
+                  "name": "step_6",
+                  "type": "PIECE",
+                  "valid": true,
+                  "settings": {
+                    "input": {
+                      "url": "https://api.pipedrive.com/v1/leads/{{step_3['body']['data']['items'][0]['item']['id']}}",
+                      "method": "GET",
+                      "headers": {
+                        "Accept": "application/json"
+                      },
+                      "timeout": "30",
+                      "failsafe": false,
+                      "queryParams": {
+                        "api_token": "9bca12a3180d496067d542057a8c88d907c18c04"
+                      }
+                    },
+                    "pieceName": "@activepieces/piece-http",
+                    "actionName": "send_request",
+                    "inputUiInfo": {},
+                    "pieceVersion": "~0.3.2"
+                  },
+                  "nextAction": {
+                    "name": "step_7",
+                    "type": "CODE",
+                    "valid": true,
+                    "settings": {
+                      "input": {
+                        "body": "{{step_6['body']['data']}}",
+                        "new_app": "{{step_2[0]['app']}}"
+                      },
+                      "inputUiInfo": {},
+                      "artifact": "UEsDBAoAAAAAAPN2MleELYfQgQIAAIECAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIGxldCBhcHBzID0gaW5wdXRzLmJvZHkuZTA5YjE5YzAyNGViOTcxMWZiYzg0YWY1Y2E5NGU5M2UzMDQyOGFmODsKICAgIGxldCBub19hcHBzID0gaW5wdXRzLmJvZHlbIjI4MDJhZGI0ZDMxY2QwNWFlNGZjMTEyOTc5ZmI5NjVmMDZmY2RjZDIiXSB8fCAwOwogICAgCiAgICBpZiAoYXBwcyA9PSBudWxsKSB7CiAgICAgICAgcmV0dXJuIHsKICAgICAgICAgICAgImUwOWIxOWMwMjRlYjk3MTFmYmM4NGFmNWNhOTRlOTNlMzA0MjhhZjgiOiBpbnB1dHMubmV3X2FwcC50b1N0cmluZygpLAogICAgICAgICAgICAiMjgwMmFkYjRkMzFjZDA1YWU0ZmMxMTI5NzlmYjk2NWYwNmZjZGNkMiI6IDEKICAgICAgICB9CiAgICB9CgogICAgaWYgKCFhcHBzLmluY2x1ZGVzKGlucHV0cy5uZXdfYXBwKSkgewogICAgICAgIGFwcHMgKz0gYCwke2lucHV0cy5uZXdfYXBwfWA7CiAgICAgICAgbm9fYXBwcyArKzsKICAgIH0KCiAgICByZXR1cm4gewogICAgICAgICJlMDliMTljMDI0ZWI5NzExZmJjODRhZjVjYTk0ZTkzZTMwNDI4YWY4IjogYXBwcywKICAgICAgICAiMjgwMmFkYjRkMzFjZDA1YWU0ZmMxMTI5NzlmYjk2NWYwNmZjZGNkMiI6IG5vX2FwcHMKICAgIH07Cn07ClBLAwQKAAAAAADzdjJXGlLRCBwAAAAcAAAADAAAAHBhY2thZ2UuanNvbnsKICAiZGVwZW5kZW5jaWVzIjogewogIH0KfQpQSwECFAAKAAAAAADzdjJXhC2H0IECAACBAgAACAAAAAAAAAAAAAAAAAAAAAAAaW5kZXgudHNQSwECFAAKAAAAAADzdjJXGlLRCBwAAAAcAAAADAAAAAAAAAAAAAAAAACnAgAAcGFja2FnZS5qc29uUEsFBgAAAAACAAIAcAAAAO0CAAAAAA=="
+                    },
+                    "nextAction": {
+                      "name": "step_8",
+                      "type": "PIECE",
+                      "valid": true,
+                      "settings": {
+                        "input": {
+                          "url": "https://api.pipedrive.com/v1/leads/{{step_3['body']['data']['items'][0]['item']['id']}}?api_token=9bca12a3180d496067d542057a8c88d907c18c04",
+                          "body": "{{step_7}}",
+                          "method": "PATCH",
+                          "headers": {
+                            "Accept": "application/json",
+                            "Content-Type": "application/json"
+                          },
+                          "failsafe": false,
+                          "queryParams": {}
+                        },
+                        "pieceName": "@activepieces/piece-http",
+                        "actionName": "send_request",
+                        "inputUiInfo": {},
+                        "pieceVersion": "~0.3.2"
+                      },
+                      "displayName": "add application to lead"
+                    },
+                    "displayName": "creation payload for add app to lead"
+                  },
+                  "displayName": "get lead detail"
+                }
+              },
+              "displayName": "count lead searched"
+            },
+            "displayName": "search lead detail by workspace id"
+          },
+          "displayName": "get active app"
+        },
+        "displayName": "parse data webhook"
+      },
+      "type": "WEBHOOK",
+      "settings": {
+        "inputUiInfo": {}
+      }
+    },
+    "valid": true
+  }
+}

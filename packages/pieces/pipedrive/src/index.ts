@@ -1,5 +1,6 @@
 import { PieceAuth, createPiece } from '@activepieces/pieces-framework';
 import { addPerson } from './lib/actions/add-person.action/add-person.action'
+import { updatePerson } from './lib/actions/update-person.action'
 import { newPerson } from './lib/trigger/new-person'
 import { newDeal } from './lib/trigger/new-deal'
 import { newActivity } from './lib/trigger/new-activity'
@@ -20,7 +21,7 @@ export const pipedrive = createPiece({
 	    minimumSupportedRelease: '0.5.0',
     logoUrl: 'https://cdn.activepieces.com/pieces/pipedrive.png',
     auth: pipedriveAuth,
-	actions: [addPerson],
+	actions: [addPerson, updatePerson],
 	authors: ['ashrafsamhouri'],
 	triggers: [newPerson, newDeal, newActivity, updatedPerson, updatedDeal],
 });

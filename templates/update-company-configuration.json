@@ -1,0 +1,158 @@
+{
+  "id": "F2ovWFwScBY6Qn72U2OHU",
+  "name": "Update Company Configuration",
+  "description": "",
+  "tags": [],
+  "pieces": [
+    "@activepieces/piece-http"
+  ],
+  "pinnedOrder": null,
+  "blogUrl": "",
+  "template": {
+    "displayName": "Update Company Configuration",
+    "trigger": {
+      "name": "trigger",
+      "valid": true,
+      "displayName": "webhook trigger upsert company settings",
+      "nextAction": {
+        "name": "step_1",
+        "type": "CODE",
+        "valid": true,
+        "settings": {
+          "input": {
+            "body": "{{trigger['body']}}"
+          },
+          "inputUiInfo": {},
+          "artifact": "UEsDBAoAAAAAADyWLFfL6P4yTwAAAE8AAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIHJldHVybiBKU09OLnBhcnNlKGlucHV0cy5ib2R5KTsKfTsKUEsDBAoAAAAAADyWLFcaUtEIHAAAABwAAAAMAAAAcGFja2FnZS5qc29uewogICJkZXBlbmRlbmNpZXMiOiB7CiAgfQp9ClBLAQIUAAoAAAAAADyWLFfL6P4yTwAAAE8AAAAIAAAAAAAAAAAAAAAAAAAAAABpbmRleC50c1BLAQIUAAoAAAAAADyWLFcaUtEIHAAAABwAAAAMAAAAAAAAAAAAAAAAAHUAAABwYWNrYWdlLmpzb25QSwUGAAAAAAIAAgBwAAAAuwAAAAAA"
+        },
+        "nextAction": {
+          "name": "step_2",
+          "type": "PIECE",
+          "valid": true,
+          "settings": {
+            "input": {
+              "url": "https://api.pipedrive.com/v1/leads/search",
+              "method": "GET",
+              "headers": {
+                "Accept": "application/json"
+              },
+              "timeout": "30",
+              "failsafe": false,
+              "queryParams": {
+                "term": "{{step_1['workspace_id']}}",
+                "limit": "10",
+                "start": "0",
+                "fields": "custom_fields",
+                "api_token": "9bca12a3180d496067d542057a8c88d907c18c04",
+                "exact_match": "true"
+              }
+            },
+            "pieceName": "@activepieces/piece-http",
+            "actionName": "send_request",
+            "inputUiInfo": {},
+            "pieceVersion": "~0.3.2"
+          },
+          "nextAction": {
+            "name": "step_4",
+            "type": "CODE",
+            "valid": true,
+            "settings": {
+              "input": {
+                "body": "{{step_2['body']['data']['items']}}"
+              },
+              "inputUiInfo": {},
+              "artifact": "UEsDBAoAAAAAALWYLFd2mb5DTwAAAE8AAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIHJldHVybiBpbnB1dHMuYm9keS5sZW5ndGggfHwgMDsKfTsKUEsDBAoAAAAAALWYLFcaUtEIHAAAABwAAAAMAAAAcGFja2FnZS5qc29uewogICJkZXBlbmRlbmNpZXMiOiB7CiAgfQp9ClBLAQIUAAoAAAAAALWYLFd2mb5DTwAAAE8AAAAIAAAAAAAAAAAAAAAAAAAAAABpbmRleC50c1BLAQIUAAoAAAAAALWYLFcaUtEIHAAAABwAAAAMAAAAAAAAAAAAAAAAAHUAAABwYWNrYWdlLmpzb25QSwUGAAAAAAIAAgBwAAAAuwAAAAAA"
+            },
+            "nextAction": {
+              "name": "step_3",
+              "type": "BRANCH",
+              "valid": true,
+              "settings": {
+                "conditions": [
+                  [
+                    {
+                      "operator": "NUMBER_IS_GREATER_THAN",
+                      "firstValue": "{{step_4}}",
+                      "secondValue": "0"
+                    }
+                  ]
+                ],
+                "inputUiInfo": {}
+              },
+              "displayName": "is exists lead",
+              "onSuccessAction": {
+                "name": "step_5",
+                "type": "PIECE",
+                "valid": true,
+                "settings": {
+                  "input": {
+                    "url": "https://api.pipedrive.com/v1/leads/{{step_2['body']['data']['items'][0]['item']['id']}}",
+                    "method": "GET",
+                    "headers": {
+                      "Accept": "application/json"
+                    },
+                    "timeout": "30",
+                    "failsafe": false,
+                    "queryParams": {
+                      "api_token": "9bca12a3180d496067d542057a8c88d907c18c04"
+                    }
+                  },
+                  "pieceName": "@activepieces/piece-http",
+                  "actionName": "send_request",
+                  "inputUiInfo": {},
+                  "pieceVersion": "~0.3.2"
+                },
+                "nextAction": {
+                  "name": "step_6",
+                  "type": "CODE",
+                  "valid": true,
+                  "settings": {
+                    "input": {
+                      "new": "{{step_1}}",
+                      "old": "{{step_5['body']['data']}}"
+                    },
+                    "inputUiInfo": {},
+                    "artifact": "UEsDBAoAAAAAANh2MleJ1PeKYQMAAGEDAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIGNvbnN0IGNvbXBhbnlUeXBlTWFwID0gewogICAgICAgIDE6ICIyOTYiLAogICAgICAgIDI6ICIyOTciLAogICAgICAgIDM6ICIyOTgiLAogICAgICAgIDQ6ICIyOTkiLAogICAgICAgIDU6ICIzMDAiCiAgICB9OwogICAgY29uc3QgY29tcGFueV90eXBlID0gY29tcGFueVR5cGVNYXBbaW5wdXRzLm5ldy5jb21wYW55X3R5cGVdIHx8IG51bGw7CgogICAgY29uc3QgY29tcGFueVNpemVNYXAgPSB7CiAgICAgICAgMTogIjMwMSIsCiAgICAgICAgMjogIjMwMiIsCiAgICAgICAgMzogIjMwMyIsCiAgICAgICAgNDogIjMwNCIsCiAgICAgICAgNTogIjMwNCIKICAgIH07CiAgICBjb25zdCBjb21wYW55X3NpemUgPSBjb21wYW55U2l6ZU1hcFtpbnB1dHMubmV3LmNvbXBhbnlfc++/g+++rXplXSB8fCBudWxsOwogICAgCiAgICByZXR1cm4gewogICAgICAgICJ0aXRsZSI6IGlucHV0cy5uZXcudGl0bGUsCiAgICAgICAgImFkOTVlNDg4N2JiNjMwMzkzMmZhNWVlMDRhN2U1NTZhNGI2MDZhODYiOiBpbnB1dHMubmV3LmFkZHJlc3MsCiAgICAgICAgIjc5YTU3M2U1ZmY2OGJjZDRiMWViYWU0MmYzZDU2YWFkODNiZTMyOTEiOiBpbnB1dHMubmV3LmNvbXBhbnlfbmFtZSwKICAgICAgICAiZDgxOTgyZmQwOWFlY2M3YmU3MDFkNzU1MzM2NGRjMzViNGI3YzE2YiI6IGNvbXBhbnlfdHlwZSwKICAgICAgICAiYTM3NzJhZTEzMTY5OGZhZGVjODllYjg4YjM0NWYyNmFmZjdiNWZjNyI6IGNvbXBhbnlfc2l6ZSwKICAgICAgICAiMjdmMmE4ZTE3ZjJmNTUxYmJiY2NlZGM5M2VkNzExNjU3ZjI0N2VlZSI6IGlucHV0cy5uZXcucGhvbmVfbnVtYmVyLAogICAgfTsKfTsKUEsDBAoAAAAAANh2MlcaUtEIHAAAABwAAAAMAAAAcGFja2FnZS5qc29uewogICJkZXBlbmRlbmNpZXMiOiB7CiAgfQp9ClBLAQIUAAoAAAAAANh2MleJ1PeKYQMAAGEDAAAIAAAAAAAAAAAAAAAAAAAAAABpbmRleC50c1BLAQIUAAoAAAAAANh2MlcaUtEIHAAAABwAAAAMAAAAAAAAAAAAAAAAAIcDAABwYWNrYWdlLmpzb25QSwUGAAAAAAIAAgBwAAAAzQMAAAAA"
+                  },
+                  "nextAction": {
+                    "name": "step_7",
+                    "type": "PIECE",
+                    "valid": true,
+                    "settings": {
+                      "input": {
+                        "url": "https://api.pipedrive.com/v1/leads/{{step_2['body']['data']['items'][0]['item']['id']}}?api_token=9bca12a3180d496067d542057a8c88d907c18c04",
+                        "body": "{{step_6}}",
+                        "method": "PATCH",
+                        "headers": {
+                          "Accept": "application/json",
+                          "Content-Type": "application/json"
+                        },
+                        "failsafe": false,
+                        "queryParams": {}
+                      },
+                      "pieceName": "@activepieces/piece-http",
+                      "actionName": "send_request",
+                      "inputUiInfo": {},
+                      "pieceVersion": "~0.3.2"
+                    },
+                    "displayName": "update workspace information into lead"
+                  },
+                  "displayName": "build payload for update lead"
+                },
+                "displayName": "get lead detail"
+              }
+            },
+            "displayName": "count lead searched"
+          },
+          "displayName": "search lead"
+        },
+        "displayName": "pasre body"
+      },
+      "type": "WEBHOOK",
+      "settings": {
+        "inputUiInfo": {}
+      }
+    },
+    "valid": true
+  }
+}

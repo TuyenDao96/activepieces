@@ -1,0 +1,267 @@
+{
+  "id": "zqjIBGIo3BmTQ9s6eHbla",
+  "name": "Creation Person",
+  "description": "",
+  "tags": [],
+  "pieces": [
+    "@activepieces/piece-http",
+    "@activepieces/piece-postgres",
+    "@tuyendaovan6789/piece-pipedrive"
+  ],
+  "pinnedOrder": null,
+  "blogUrl": "",
+  "template": {
+    "displayName": "Creation Person",
+    "trigger": {
+      "name": "trigger",
+      "valid": true,
+      "displayName": "webhook trigger upsert user_profiles",
+      "nextAction": {
+        "name": "step_1",
+        "type": "CODE",
+        "valid": true,
+        "settings": {
+          "input": {
+            "body": "{{trigger['body']}}"
+          },
+          "inputUiInfo": {},
+          "artifact": "UEsDBAoAAAAAAKV4MlfL6P4yTwAAAE8AAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIHJldHVybiBKU09OLnBhcnNlKGlucHV0cy5ib2R5KTsKfTsKUEsDBAoAAAAAAKV4MlcaUtEIHAAAABwAAAAMAAAAcGFja2FnZS5qc29uewogICJkZXBlbmRlbmNpZXMiOiB7CiAgfQp9ClBLAQIUAAoAAAAAAKV4MlfL6P4yTwAAAE8AAAAIAAAAAAAAAAAAAAAAAAAAAABpbmRleC50c1BLAQIUAAoAAAAAAKV4MlcaUtEIHAAAABwAAAAMAAAAAAAAAAAAAAAAAHUAAABwYWNrYWdlLmpzb25QSwUGAAAAAAIAAgBwAAAAuwAAAAAA"
+        },
+        "nextAction": {
+          "name": "step_13",
+          "type": "BRANCH",
+          "valid": true,
+          "settings": {
+            "conditions": [
+              [
+                {
+                  "operator": "TEXT_DOES_NOT_CONTAIN",
+                  "firstValue": "{{step_1['__op']}}",
+                  "secondValue": "d",
+                  "caseSensitive": false
+                }
+              ]
+            ],
+            "inputUiInfo": {}
+          },
+          "displayName": "is not delete action",
+          "onSuccessAction": {
+            "name": "step_2",
+            "type": "PIECE",
+            "valid": true,
+            "settings": {
+              "input": {
+                "url": "https://api.pipedrive.com/v1/persons/search",
+                "method": "GET",
+                "headers": {
+                  "Accept": "application/json"
+                },
+                "timeout": "30",
+                "failsafe": false,
+                "queryParams": {
+                  "term": "{{step_1['email']}}",
+                  "limit": "10",
+                  "start": "0",
+                  "fields": "email",
+                  "api_token": "9bca12a3180d496067d542057a8c88d907c18c04",
+                  "exact_match": "true"
+                }
+              },
+              "pieceName": "@activepieces/piece-http",
+              "actionName": "send_request",
+              "inputUiInfo": {},
+              "pieceVersion": "~0.3.5"
+            },
+            "nextAction": {
+              "name": "step_3",
+              "type": "CODE",
+              "valid": true,
+              "settings": {
+                "input": {
+                  "items": "{{step_2['body']['data']['items']}}"
+                },
+                "inputUiInfo": {},
+                "artifact": "UEsDBAoAAAAAAFB4MleQpNihSgAAAEoAAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIHJldHVybiBpbnB1dHMuaXRlbXMubGVuZ3RoOwp9O1BLAwQKAAAAAABQeDJXGlLRCBwAAAAcAAAADAAAAHBhY2thZ2UuanNvbnsKICAiZGVwZW5kZW5jaWVzIjogewogIH0KfQpQSwECFAAKAAAAAABQeDJXkKTYoUoAAABKAAAACAAAAAAAAAAAAAAAAAAAAAAAaW5kZXgudHNQSwECFAAKAAAAAABQeDJXGlLRCBwAAAAcAAAADAAAAAAAAAAAAAAAAABwAAAAcGFja2FnZS5qc29uUEsFBgAAAAACAAIAcAAAALYAAAAAAA=="
+              },
+              "nextAction": {
+                "name": "step_4",
+                "type": "BRANCH",
+                "valid": true,
+                "settings": {
+                  "conditions": [
+                    [
+                      {
+                        "operator": "NUMBER_IS_GREATER_THAN",
+                        "firstValue": "{{step_3}}",
+                        "secondValue": "0"
+                      }
+                    ]
+                  ],
+                  "inputUiInfo": {}
+                },
+                "displayName": "is exists person",
+                "onFailureAction": {
+                  "name": "step_10",
+                  "type": "PIECE",
+                  "valid": true,
+                  "settings": {
+                    "input": {
+                      "auth": "{{connections['ic-postgres']}}",
+                      "query": "SELECT\n    name\nFROM user_management.countries\nwhere code = '{{step_1['country_code']}}' AND sharding_id = '00000000-9999-9999-9999-999999999999'\nLIMIT 1;",
+                      "query_timeout": "30000",
+                      "application_name": "activepieces - creation person",
+                      "connection_timeout_ms": "30000"
+                    },
+                    "pieceName": "@activepieces/piece-postgres",
+                    "actionName": "run-query",
+                    "inputUiInfo": {},
+                    "pieceVersion": "~0.1.0"
+                  },
+                  "nextAction": {
+                    "name": "step_12",
+                    "type": "CODE",
+                    "valid": true,
+                    "settings": {
+                      "input": {
+                        "person": "{{step_1}}",
+                        "country_name": "{{step_10[0]['name']}}"
+                      },
+                      "inputUiInfo": {},
+                      "artifact": "UEsDBAoAAAAAAK54Mlf7XA6/GAUAABgFAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIGxldCBlbWFpbCA9IFt7dmFsdWU6IGlucHV0cy5wZXJzb24uZW1haWx9XTsKICAgIGxldCBwaG9uZSA9IFt7dmFsdWU6IGlucHV0cy5wZXJzb24ucGhvbmVfbnVtYmVyfV07CiAgICBsZXQgZmlyc3RfbmFtZSA9IGlucHV0cy5wZXJzb24uZnVsbF9uYW1lLnNwbGl0KCcgJykuc2xpY2UoMCwgLTEpLmpvaW4oJyAnKTsKICAgIGxldCBsYXN0X25hbWUgPSBpbnB1dHMucGVyc29uLmZ1bGxfbmFtZS5zcGxpdCgnICcpLnNsaWNlKC0xKS5qb2luKCcgJyk7CiAgICBsZXQgYWNjb3VudF90eXBlID0gaW5wdXRzLnBlcnNvbi5hY2NvdW50X3R5cGUgPT0gMSA/ICIyNzIiIDogaW5wdXRzLnBlcnNvbi5hY2NvdW50X3R5cGUgPT0gMiA/ICIyNzEiIDogbnVsbDsKICAgIGxldCBnZW5kZXIgPSBpbnB1dHMucGVyc29uLmdlbmRlciA9PSAxID8gIjI3NCIgOiBpbnB1dHMucGVyc29uLmdlbmRlciA9PSAyID8gIjI3MyIgOiBpbnB1dHMucGVyc29uLmdlbmRlciA9PSAzID8gIjI3NSIgOiBudWxsOwogICAgbGV0IGJpcnRoX2RheSA9IGlucHV0cy5wZXJzb24uYmlydGhfZGF5ICE9IG51bGwgPyBuZXcgRGF0ZShpbnB1dHMucGVyc29uLmJpcnRoX2RheSkgOiBudWxsOwoKICAgIHJldHVybiB7CiAgICAgICAgIm5hbWUiOiBpbnB1dHMucGVyc29uLmZ1bGxfbmFtZSwKICAgICAgICAiZmlyc3RfbmFtZSI6IGZpcnN0X25hbWUsCiAgICAgICAgImxhc3RfbmFtZSI6IGxhc3RfbmFtZSwKICAgICAgICAiZW1haWwiOiBlbWFpbCwKICAgICAgICAicGhvbmUiOiBwaG9uZSwKICAgICAgICAiZmFhY2JjNzRhZmYyNWNhNmU4NTIxZDMwOTVlNTUwYzJlMzIzY2I3NyI6IGJpcnRoX2RheSwKICAgICAgICAiNGU1OGI2MjM5ZDM4ZmJiYzUyNjBkNWY1NTU4N2E4YTRkNDg2YzRiNCI6IGdlbmRlciwKICAgICAgICAiM2ZhMDJlODI4NjdjNTIxODEwZWMwODQyN2I3MzgxMTY0YzZjMmVhNiI6IGlucHV0cy5wZXJzb24uZmFjZWJvb2tfbGluaywKICAgICAgICAiNWViYWVhYzU5YWEzMDQyZGE5MzY0Y2M3ODljYTc3NWVmZTUyNDFlMyI6IGlucHV0cy5wZXJzb24uemFsb19saW5rLAogICAgICAgICJjNmU4OGJhOTc0ODM5MDJjNjZlZDQ4ZjY4NDQxYTM5YThiMzMwNWIzX2NvdW50cnkiOiBpbnB1dHMuY291bnRyeV9uYW1lLAogICAgICAgICJiOWFmODRkZjVlOGU0MGFlMjE1ODdiOGYxZmExN2MyMmJhZjQ0MWIwIjogYWNjb3VudF90eXBlLAogICAgICAgICJkZjE3ZGIyMmQ5NDA5NjBiNDNiYTNmMzBiNGQzOWUwZjJlMmJkZmYwIjogIk9yZyIKICAgIH07Cn07ClBLAwQKAAAAAACueDJXGlLRCBwAAAAcAAAADAAAAHBhY2thZ2UuanNvbnsKICAiZGVwZW5kZW5jaWVzIjogewogIH0KfQpQSwECFAAKAAAAAACueDJX+1wOvxgFAAAYBQAACAAAAAAAAAAAAAAAAAAAAAAAaW5kZXgudHNQSwECFAAKAAAAAACueDJXGlLRCBwAAAAcAAAADAAAAAAAAAAAAAAAAAA+BQAAcGFja2FnZS5qc29uUEsFBgAAAAACAAIAcAAAAIQFAAAAAA=="
+                    },
+                    "nextAction": {
+                      "name": "step_5",
+                      "type": "PIECE",
+                      "valid": true,
+                      "settings": {
+                        "input": {
+                          "auth": "{{connections['ichiba-pipedrive']}}",
+                          "name": "{{step_12['name']}}",
+                          "email": "{{step_12['email']}}",
+                          "phone": "{{step_12['phone']}}",
+                          "source": "Org",
+                          "country": "{{step_12['c6e88ba97483902c66ed48f68441a39a8b3305b3_country']}}"
+                        },
+                        "pieceName": "@tuyendaovan6789/piece-pipedrive",
+                        "actionName": "add_person",
+                        "inputUiInfo": {},
+                        "pieceVersion": "~0.3.6"
+                      },
+                      "displayName": "Add Person"
+                    },
+                    "displayName": "build payload for add new person"
+                  },
+                  "displayName": "get country name"
+                },
+                "onSuccessAction": {
+                  "name": "step_8",
+                  "type": "CODE",
+                  "valid": true,
+                  "settings": {
+                    "input": {
+                      "item": "{{step_2['body']['data']['items'][0]['item']}}"
+                    },
+                    "inputUiInfo": {},
+                    "artifact": "UEsDBAoAAAAAAK14Mlf8b9QBowAAAKMAAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIHJldHVybiBgaHR0cHM6Ly9hcGkucGlwZWRyaXZlLmNvbS92MS9wZXJzb25zLyR7aW5wdXRzLml0ZW0uaWR9P2FwaV90b2tlbj05YmNhMTJhMzE4MGQ0OTYwNjdkNTQyMDU3YThjODhkOTA3YzE4YzA0YDsKfTsKUEsDBAoAAAAAAK14MlcaUtEIHAAAABwAAAAMAAAAcGFja2FnZS5qc29uewogICJkZXBlbmRlbmNpZXMiOiB7CiAgfQp9ClBLAQIUAAoAAAAAAK14Mlf8b9QBowAAAKMAAAAIAAAAAAAAAAAAAAAAAAAAAABpbmRleC50c1BLAQIUAAoAAAAAAK14MlcaUtEIHAAAABwAAAAMAAAAAAAAAAAAAAAAAMkAAABwYWNrYWdlLmpzb25QSwUGAAAAAAIAAgBwAAAADwEAAAAA"
+                  },
+                  "nextAction": {
+                    "name": "step_9",
+                    "type": "PIECE",
+                    "valid": true,
+                    "settings": {
+                      "input": {
+                        "url": "{{step_8}}",
+                        "method": "GET",
+                        "headers": {
+                          "Accept": "application/json",
+                          "Content-Type": "application/json"
+                        },
+                        "timeout": "30",
+                        "failsafe": false,
+                        "queryParams": {}
+                      },
+                      "pieceName": "@activepieces/piece-http",
+                      "actionName": "send_request",
+                      "inputUiInfo": {},
+                      "pieceVersion": "~0.3.5"
+                    },
+                    "nextAction": {
+                      "name": "step_11",
+                      "type": "PIECE",
+                      "valid": true,
+                      "settings": {
+                        "input": {
+                          "auth": "{{connections['ic-postgres']}}",
+                          "query": "SELECT\n    name\nFROM user_management.countries\nwhere code = '{{step_1['country_code']}}' AND sharding_id = '00000000-9999-9999-9999-999999999999'\nLIMIT 1;",
+                          "query_timeout": "30000",
+                          "application_name": "activepieces - creation person",
+                          "connection_timeout_ms": "30000"
+                        },
+                        "pieceName": "@activepieces/piece-postgres",
+                        "actionName": "run-query",
+                        "inputUiInfo": {},
+                        "pieceVersion": "~0.1.0"
+                      },
+                      "nextAction": {
+                        "name": "step_6",
+                        "type": "CODE",
+                        "valid": true,
+                        "settings": {
+                          "input": {
+                            "new": "{{step_1}}",
+                            "old": "{{step_9['body']['data']}}",
+                            "country_name": "{{step_11[0]['name']}}"
+                          },
+                          "inputUiInfo": {},
+                          "artifact": "UEsDBAoAAAAAAK94Mld6cRDOZgYAAGYGAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIGxldCBwaG9uZSA9IFtdOwogICAgbGV0IHBob25lcyA9IGlucHV0cy5vbGQucGhvbmVzOwogICAgbGV0IGZpcnN0X25hbWUgPSBudWxsOwogICAgbGV0IGxhc3RfbmFtZSA9IG51bGw7CiAgICBsZXQgYWNjb3VudF90eXBlID0gaW5wdXRzLm5ldy5hY2NvdW50X3R5cGUgPT0gMSA/ICIyNzIiIDogaW5wdXRzLm5ldy5hY2NvdW50X3R5cGUgPT0gMiA/ICIyNzEiIDogbnVsbDsKICAgIGxldCBnZW5kZXIgPSBpbnB1dHMubmV3LmdlbmRlciA9PSAxID8gIjI3NCIgOiBpbnB1dHMubmV3LmdlbmRlciA9PSAyID8gIjI3MyIgOiBpbnB1dHMubmV3LmdlbmRlciA9PSAzID8gIjI3NSIgOiBudWxsOwoKICAgIGlmIChpbnB1dHMubmV3LmZ1bGxfbmFtZSAhPSBudWxsKSB7CiAgICAgICAgZmlyc3RfbmFtZSA9IGlucHV0cy5uZXcuZnVsbF9uYW1lLnNwbGl0KCcgJykuc2xpY2UoMCwgLTEpLmpvaW4oJyAnKTsKICAgICAgICBsYXN0X25hbWUgPSBpbnB1dHMubmV3LmZ1bGxfbmFtZS5zcGxpdCgnICcpLnNsaWNlKC0xKS5qb2luKCcgJyk7CiAgICB9CgogICAgaWYgKHBob25lcyAhPSBudWxsICYmIHBob25lcy5sZW5ndGggPiAwKSB7CiAgICAgICAgcGhvbmUgPSBwaG9uZXMubWFwKCh4KSA9PiB7CiAgICAgICAgICAgIGxldCBpdGVtUGhvbmUgPSB7CiAgICAgICAgICAgICAgICB2YWx1ZTogeAogICAgICAgICAgICB9OwogICAgICAgICAgICByZXR1cm4gaXRlbVBob25lOwogICAgICAgIH0pOwogICAgICAgIGlmIChpbnB1dHMubmV3LnBob25lICE9IG51bGwgJiYgIXBob25lcy5pbmNsdWRlcyhpbnB1dHMubmV3LnBob25lKSkgewogICAgICAgICAgICBwaG9uZS5wdXNoKHt2YWx1ZTogaW5wdXRzLm5ldy5waG9uZX0pOwogICAgICAgIH0KICAgIH0KCiAgICAvLyBjb25zdCB1cmwgPSBgaHR0cHM6Ly9hcGkucGlwZWRyaXZlLmNvbS92MS9wZXJzb25zLyR7aW5wdXRzLm9sZC5pZH0/YXBpX3Rva2VuPTliY2ExMmEzMTgwZDQ5NjA2N2Q1NDIwNTdhOGM4OGQ5MDdjMThjMDRgOwoKICAgIHJldHVybiB7CiAgICAgICAgImI5YWY4NGRmNWU4ZTQwYWUyMTU4N2I4ZjFmYTE3YzIyYmFmNDQxYjAiOiBhY2NvdW50X3R5cGUsCiAgICAgICAgIm5hbWUiOiBpbnB1dHMubmV3LmZ1bGxfbmFtZSwKICAgICAgICAiZmlyc3RfbmFtZSI6IGZpcnN0X25hbWUsCiAgICAgICAgImxhc3RfbmFtZSI6IGxhc3RfbmFtZSwKICAgICAgICAicGhvbmUiOiBwaG9uZSwKICAgICAgICAiZmFhY2JjNzRhZmYyNWNhNmU4NTIxZDMwOTVlNTUwYzJlMzIzY2I3NyI6IG5ldyBEYXRlKGlucHV0cy5uZXcuYmlydGhfZGF5KSwKICAgICAgICAiNGU1OGI2MjM5ZDM4ZmJiYzUyNjBkNWY1NTU4N2E4YTRkNDg2YzRiNCI6IGdlbmRlciwKICAgICAgICAiM2ZhMDJlODI4NjdjNTIxODEwZWMwODQyN2I3MzgxMTY0YzZjMmVhNiI6IGlucHV0cy5uZXcuZmFjZWJvb2tfbGluaywKICAgICAgICAiNWViYWVhYzU5YWEzMDQyZGE5MzY0Y2M3ODljYTc3NWVmZTUyNDFlMyI6IGlucHV0cy5uZXcuemFsb19saW5rLAogICAgICAgICJjNmU4OGJhOTc0ODM5MDJjNjZlZDQ4ZjY4NDQxYTM5YThiMzMwNWIzX2NvdW50cnkiOiBpbnB1dHMuY291bnRyeV9uYW1lCiAgICB9Owp9OwpQSwMECgAAAAAAr3gyVxpS0QgcAAAAHAAAAAwAAABwYWNrYWdlLmpzb257CiAgImRlcGVuZGVuY2llcyI6IHsKICB9Cn0KUEsBAhQACgAAAAAAr3gyV3pxEM5mBgAAZgYAAAgAAAAAAAAAAAAAAAAAAAAAAGluZGV4LnRzUEsBAhQACgAAAAAAr3gyVxpS0QgcAAAAHAAAAAwAAAAAAAAAAAAAAAAAjAYAAHBhY2thZ2UuanNvblBLBQYAAAAAAgACAHAAAADSBgAAAAA="
+                        },
+                        "nextAction": {
+                          "name": "step_7",
+                          "type": "PIECE",
+                          "valid": true,
+                          "settings": {
+                            "input": {
+                              "url": "https://api.pipedrive.com/v1/persons/{{step_9['body']['data']['id']}}?api_token=9bca12a3180d496067d542057a8c88d907c18c04",
+                              "body": {
+                                "body": "{\r\n  \"name\": \"{{step_6['name']}}\",\r\n  \"phone\": \"{{step_6['phone']}}\",\r\n  \"last_name\": \"{{step_6['last_name']}}\",\r\n  \"first_name\": \"{{step_6['first_name']}}\",\r\n  \"3fa02e82867c521810ec08427b7381164c6c2ea6\": \"{{step_6['facebook_link']}}\",\r\n  \"4e58b6239d38fbbc5260d5f55587a8a4d486c4b4\": \"{{step_6['gender']}}\",\r\n  \"5ebaeac59aa3042da9364cc789ca775efe5241e3\": \"{{step_6['zalo_link']}}\",\r\n  \"b9af84df5e8e40ae21587b8f1fa17c22baf441b0\": \"{{step_6['account_type']}}\",\r\n  \"faacbc74aff25ca6e8521d3095e550c2e323cb77\": \"{{step_6['birth_day']}}\",\r\n  \"c6e88ba97483902c66ed48f68441a39a8b3305b3_country\": \"{{step_6['country_name']}}\"\r\n}"
+                              },
+                              "method": "PUT",
+                              "headers": {
+                                "Accept": "application/json",
+                                "Content-Type": "application/json"
+                              },
+                              "timeout": "30",
+                              "failsafe": false,
+                              "queryParams": {}
+                            },
+                            "pieceName": "@activepieces/piece-http",
+                            "actionName": "send_request",
+                            "inputUiInfo": {},
+                            "pieceVersion": "~0.3.5"
+                          },
+                          "displayName": "update person"
+                        },
+                        "displayName": "build payload for update person"
+                      },
+                      "displayName": "get country name"
+                    },
+                    "displayName": "get person detail"
+                  },
+                  "displayName": "generate url get detail person"
+                }
+              },
+              "displayName": "count person searched"
+            },
+            "displayName": "search person by email"
+          }
+        },
+        "displayName": "parse value"
+      },
+      "type": "WEBHOOK",
+      "settings": {
+        "inputUiInfo": {}
+      }
+    },
+    "valid": true
+  }
+}

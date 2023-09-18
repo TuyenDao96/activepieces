@@ -1,0 +1,295 @@
+{
+  "id": "98GbaiiNgKKPoONXHWc8u",
+  "name": "Creation Lead",
+  "description": "",
+  "tags": [],
+  "pieces": [
+    "@activepieces/piece-postgres",
+    "@activepieces/piece-http",
+    "@tuyendaovan6789/piece-pipedrive"
+  ],
+  "pinnedOrder": null,
+  "blogUrl": "",
+  "template": {
+    "displayName": "Creation Lead",
+    "trigger": {
+      "name": "trigger",
+      "valid": true,
+      "displayName": "webhook trigger - created workspace",
+      "nextAction": {
+        "name": "step_1",
+        "type": "CODE",
+        "valid": true,
+        "settings": {
+          "input": {
+            "body": "{{trigger['body']}}"
+          },
+          "inputUiInfo": {},
+          "artifact": "UEsDBAoAAAAAAL1wMlfL6P4yTwAAAE8AAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIHJldHVybiBKU09OLnBhcnNlKGlucHV0cy5ib2R5KTsKfTsKUEsDBAoAAAAAAL1wMlcaUtEIHAAAABwAAAAMAAAAcGFja2FnZS5qc29uewogICJkZXBlbmRlbmNpZXMiOiB7CiAgfQp9ClBLAQIUAAoAAAAAAL1wMlfL6P4yTwAAAE8AAAAIAAAAAAAAAAAAAAAAAAAAAABpbmRleC50c1BLAQIUAAoAAAAAAL1wMlcaUtEIHAAAABwAAAAMAAAAAAAAAAAAAAAAAHUAAABwYWNrYWdlLmpzb25QSwUGAAAAAAIAAgBwAAAAuwAAAAAA"
+        },
+        "nextAction": {
+          "name": "step_2",
+          "type": "PIECE",
+          "valid": true,
+          "settings": {
+            "input": {
+              "auth": "{{connections['ic-postgres']}}",
+              "query": "SELECT\n    wu.workspace_id, us.email, ws.name as title, cs.name as country_name, com.name as company_name, com.address as company_address, com.company_size, com.company_type, (com.prefix_phone_number || ' ' || com.phone_number) as phone_number, p.code as workspace_owner\nFROM user_management.workspace_users wu\nINNER JOIN user_management.user_profiles us on wu.user_id = us.id AND wu.sharding_id = us.sharding_id\nINNER JOIN user_management.workspaces ws on wu.workspace_id = ws.id AND wu.sharding_id = ws.sharding_id\nINNER JOIN user_management.workspace_group_permissions p on wu.workspace_group_permission_id = p.id AND wu.sharding_id = p.sharding_id\nINNER JOIN user_management.countries cs on ws.country_code = cs.code AND ws.sharding_id = cs.sharding_id\nINNER JOIN (\n    SELECT\n        id, sharding_id, workspace_id, name, address, prefix_phone_number, phone_number\n        , CASE    WHEN company_type = 1 THEN 296\n                    WHEN company_type = 2 THEN 297\n                    WHEN company_type = 3 THEN 298\n                    WHEN company_type = 4 THEN 299\n                    WHEN company_type = 5 THEN 300\n                    ELSE null\n            END AS company_type\n        , CASE    WHEN company_síze = 1 THEN 301\n                    WHEN company_síze = 2 THEN 302\n                    WHEN company_síze = 3 THEN 303\n                    WHEN company_síze = 4 THEN 304\n                    WHEN company_síze = 5 THEN 305\n                    ELSE null\n            END AS company_size\n    FROM user_management.company_settings\n) com on ws.id = com.workspace_id AND ws.sharding_id = com.sharding_id\nWHERE wu.id = '{{step_1['id']}}' AND wu.sharding_id = '{{step_1['sharding_id']}}'\nLIMIT 1;",
+              "query_timeout": "30000",
+              "application_name": "activepieces-creation lead",
+              "connection_timeout_ms": "30000"
+            },
+            "pieceName": "@activepieces/piece-postgres",
+            "actionName": "run-query",
+            "inputUiInfo": {},
+            "pieceVersion": "~0.1.0"
+          },
+          "nextAction": {
+            "name": "step_3",
+            "type": "PIECE",
+            "valid": true,
+            "settings": {
+              "input": {
+                "auth": "{{connections['ic-postgres']}}",
+                "query": "SELECT\n    a.app, a.code\nFROM user_management.workspace_users wu\nINNER JOIN user_management.subscriptions s on wu.workspace_id = s.workspace_id AND wu.sharding_id = s.sharding_id\nINNER JOIN user_management.plans p on s.plan_id = p.id AND s.sharding_id = p.sharding_id\nINNER JOIN (\n        SELECT\n            id, sharding_id, code,\n            CASE    WHEN code = 'ship4p' THEN 283\n                    WHEN code = 'oms' THEN 284\n                    WHEN code = 'customer' THEN 285\n                    WHEN code = 'cbf' THEN 286\n                    WHEN code = 'pos' THEN 306\n                    WHEN code = 'social' THEN 307\n                    WHEN code = 'pim' THEN 308\n                    WHEN code = 'cdxp' THEN 309\n                    WHEN code = 'wms' THEN 310\n                    WHEN code = 'digital' THEN 311\n            END AS app\n        FROM user_management.applications\n    ) a on p.application_id = a.id AND p.sharding_id = a.sharding_id\nWHERE wu.id = '{{step_1['id']}}' AND wu.sharding_id = '{{step_1['sharding_id']}}' AND s.status = true;",
+                "query_timeout": "30000",
+                "application_name": "activepieces-creation lead",
+                "connection_timeout_ms": "30000"
+              },
+              "pieceName": "@activepieces/piece-postgres",
+              "actionName": "run-query",
+              "inputUiInfo": {},
+              "pieceVersion": "~0.1.0"
+            },
+            "nextAction": {
+              "name": "step_4",
+              "type": "PIECE",
+              "valid": true,
+              "settings": {
+                "input": {
+                  "url": "https://api.pipedrive.com/v1/persons/search",
+                  "method": "GET",
+                  "headers": {
+                    "Accept": "application/json"
+                  },
+                  "timeout": "30",
+                  "failsafe": false,
+                  "queryParams": {
+                    "term": "{{step_2[0]['email']}}",
+                    "limit": "10",
+                    "start": "0",
+                    "fields": "email",
+                    "api_token": "9bca12a3180d496067d542057a8c88d907c18c04",
+                    "exact_match": "true"
+                  }
+                },
+                "pieceName": "@activepieces/piece-http",
+                "actionName": "send_request",
+                "inputUiInfo": {},
+                "pieceVersion": "~0.3.2"
+              },
+              "nextAction": {
+                "name": "step_5",
+                "type": "CODE",
+                "valid": true,
+                "settings": {
+                  "input": {
+                    "items": "{{step_4['body']['data']['items']}}"
+                  },
+                  "inputUiInfo": {},
+                  "artifact": "UEsDBAoAAAAAAC+MLFdzTXnCSwAAAEsAAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIHJldHVybiBpbnB1dHMuaXRlbXMubGVuZ3RoOwp9OwpQSwMECgAAAAAAL4wsVxpS0QgcAAAAHAAAAAwAAABwYWNrYWdlLmpzb257CiAgImRlcGVuZGVuY2llcyI6IHsKICB9Cn0KUEsBAhQACgAAAAAAL4wsV3NNecJLAAAASwAAAAgAAAAAAAAAAAAAAAAAAAAAAGluZGV4LnRzUEsBAhQACgAAAAAAL4wsVxpS0QgcAAAAHAAAAAwAAAAAAAAAAAAAAAAAcQAAAHBhY2thZ2UuanNvblBLBQYAAAAAAgACAHAAAAC3AAAAAAA="
+                },
+                "nextAction": {
+                  "name": "step_6",
+                  "type": "BRANCH",
+                  "valid": true,
+                  "settings": {
+                    "conditions": [
+                      [
+                        {
+                          "operator": "NUMBER_IS_GREATER_THAN",
+                          "firstValue": "{{step_5}}",
+                          "secondValue": "0"
+                        }
+                      ]
+                    ],
+                    "inputUiInfo": {}
+                  },
+                  "displayName": "is exists person",
+                  "onFailureAction": {
+                    "name": "step_10",
+                    "type": "PIECE",
+                    "valid": true,
+                    "settings": {
+                      "input": {
+                        "auth": "{{connections['ic-postgres']}}",
+                        "query": "SELECT\n    up.full_name, up.email, up.phone_number, cs.name as country_name\nFROM user_management.user_profiles up\nINNER JOIN user_management.countries cs on up.country_code = cs.code AND up.sharding_id = cs.sharding_id\nWHERE up.id = '{{step_1['user_id']}}' AND up.sharding_id = '{{step_1['sharding_id']}}'\nLIMIT 1;",
+                        "query_timeout": "30000",
+                        "application_name": "activepieces - creation lead",
+                        "connection_timeout_ms": "30000"
+                      },
+                      "pieceName": "@activepieces/piece-postgres",
+                      "actionName": "run-query",
+                      "inputUiInfo": {},
+                      "pieceVersion": "~0.1.0"
+                    },
+                    "nextAction": {
+                      "name": "step_9",
+                      "type": "PIECE",
+                      "valid": true,
+                      "settings": {
+                        "input": {
+                          "auth": "{{connections['ichiba-pipedrive']}}",
+                          "name": "{{step_10[0]['full_name']}}",
+                          "email": "{{step_10[0]['email']}}",
+                          "phone": "{{step_10[0]['phone_number']}}",
+                          "source": "Org",
+                          "country": "{{step_10[0]['country_name']}}"
+                        },
+                        "pieceName": "@tuyendaovan6789/piece-pipedrive",
+                        "actionName": "add_person",
+                        "inputUiInfo": {},
+                        "pieceVersion": "~0.3.6"
+                      },
+                      "displayName": "add person"
+                    },
+                    "displayName": "get user detail"
+                  },
+                  "onSuccessAction": {
+                    "name": "step_13",
+                    "type": "PIECE",
+                    "valid": true,
+                    "settings": {
+                      "input": {
+                        "auth": "{{connections['ic-postgres']}}",
+                        "query": "SELECT\n    ws.created_by\nFROM user_management.workspace_users wu\nINNER JOIN user_management.workspaces ws on wu.workspace_id = ws.id AND wu.sharding_id = ws.sharding_id\nWHERE wu.id = '{{step_1['id']}}' AND wu.sharding_id = '{{step_1['sharding_id']}}'\nLIMIT 1;",
+                        "query_timeout": "30000",
+                        "application_name": "activepieces - creation lead",
+                        "connection_timeout_ms": "30000"
+                      },
+                      "pieceName": "@activepieces/piece-postgres",
+                      "actionName": "run-query",
+                      "inputUiInfo": {},
+                      "pieceVersion": "~0.1.0"
+                    },
+                    "nextAction": {
+                      "name": "step_14",
+                      "type": "BRANCH",
+                      "valid": true,
+                      "settings": {
+                        "conditions": [
+                          [
+                            {
+                              "operator": "TEXT_CONTAINS",
+                              "firstValue": "{{step_13[0]['created_by']}}",
+                              "secondValue": "{{step_1['user_id']}}",
+                              "caseSensitive": false
+                            }
+                          ]
+                        ],
+                        "inputUiInfo": {}
+                      },
+                      "displayName": "is creator workspace",
+                      "onSuccessAction": {
+                        "name": "step_7",
+                        "type": "CODE",
+                        "valid": true,
+                        "settings": {
+                          "input": {
+                            "apps": "{{step_3}}",
+                            "person_id": "{{step_4['body']['data']['items'][0]['item']['id']}}",
+                            "workspace_information": "{{step_2[0]}}"
+                          },
+                          "inputUiInfo": {},
+                          "artifact": "UEsDBAoAAAAAACh3Mlet5h74nQQAAJ0EAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIGxldCBwcm9kdWN0X2ludGVyZXN0ID0gIiI7CiAgICBsZXQgbm9fYXBwbGljYXRpb24gPSAwOwogICAgaWYgKGlucHV0cy5hcHBzICE9IG51bGwgJiYgaW5wdXRzLmFwcHMubGVuZ3RoID4gMCkgewogICAgICAgIG5vX2FwcGxpY2F0aW9uID0gaW5wdXRzLmFwcHMubGVuZ3RoOwogICAgICAgIHByb2R1Y3RfaW50ZXJlc3QgPSBpbnB1dHMuYXBwcy5tYXAoeCA9PiB4LmFwcCkuam9pbigpOwogICAgfQoKCgogICAgcmV0dXJuIHsKICAgICAgICBwYXlsb2FkOiB7CiAgICAgICAgInRpdGxlIjogaW5wdXRzLndvcmtzcGFjZV9pbmZvcm1hdGlvbi50aXRsZSwKICAgICAgICAibGFiZWxfaWRzIjogWyJhMjJmZjExNS05ODBiLTRmNmItOGYwYS1mZDZjYTdlNzVmMWQiXSwKICAgICAgICAicGVyc29uX2lkIjogaW5wdXRzLnBlcnNvbl9pZCwKICAgICAgICAiMDVhNTYwMWE0MDRlZWM3NTkwYzU5N2EyNTMyZjgzOGY4YWE0ZTc0MiI6IGlucHV0cy53b3Jrc3BhY2VfaW5mb3JtYXRpb24ud29ya3NwYWNlX2lkLAogICAgICAgICJhZDk1ZTQ4ODdiYjYzMDM5MzJmYTVlZTA0YTdlNTU2YTRiNjA2YTg2IjogaW5wdXRzLndvcmtzcGFjZV9pbmZvcm1hdGlvbi5jb21wYW55X2FkZHJlc3MsCiAgICAgICAgIjc5YTU3M2U1ZmY2OGJjZDRiMWViYWU0MmYzZDU2YWFkODNiZTMyOTEiOiBpbnB1dHMud29ya3NwYWNlX2luZm9ybWF0aW9uLmNvbXBhbnlfbmFtZSwKICAgICAgICAiZDgxOTgyZmQwOWFlY2M3YmU3MDFkNzU1MzM2NGRjMzViNGI3YzE2YiI6IGlucHV0cy53b3Jrc3BhY2VfaW5mb3JtYXRpb24uY29tcGFueV90eXBlLAogICAgICAgICJhMzc3MmFlMTMxNjk4ZmFkZWM4OWViODhiMzQ1ZjI2YWZmN2I1ZmM3IjogaW5wdXRzLndvcmtzcGFjZV9pbmZvcm1hdGlvbi5jb21wYW55X3NpemUsCiAgICAgICAgIjI3ZjJhOGUxN2YyZjU1MWJiYmNjZWRjOTNlZDcxMTY1N2YyNDdlZWUiOiBpbnB1dHMud29ya3NwYWNlX2luZm9ybWF0aW9uLnBob25lX251bWJlciwKICAgICAgICAiMjgwMmFkYjRkMzFjZDA1YWU0ZmMxMTI5NzlmYjk2NWYwNmZjZGNkMiI6IG5vX2FwcGxpY2F0aW9uLAogICAgICAgICJlMDliMTljMDI0ZWI5NzExZmJjODRhZjVjYTk0ZTkzZTMwNDI4YWY4IjogcHJvZHVjdF9pbnRlcmVzdAogICAgfX07Cn07ClBLAwQKAAAAAAAodzJXGlLRCBwAAAAcAAAADAAAAHBhY2thZ2UuanNvbnsKICAiZGVwZW5kZW5jaWVzIjogewogIH0KfQpQSwECFAAKAAAAAAAodzJXreYe+J0EAACdBAAACAAAAAAAAAAAAAAAAAAAAAAAaW5kZXgudHNQSwECFAAKAAAAAAAodzJXGlLRCBwAAAAcAAAADAAAAAAAAAAAAAAAAADDBAAAcGFja2FnZS5qc29uUEsFBgAAAAACAAIAcAAAAAkFAAAAAA=="
+                        },
+                        "nextAction": {
+                          "name": "step_8",
+                          "type": "PIECE",
+                          "valid": true,
+                          "settings": {
+                            "input": {
+                              "url": "https://api.pipedrive.com/v1/leads?api_token=9bca12a3180d496067d542057a8c88d907c18c04",
+                              "body": "{{step_7['payload']}}",
+                              "method": "POST",
+                              "headers": {
+                                "Accept": "application/json",
+                                "Content-Type": "application/json"
+                              },
+                              "timeout": "30",
+                              "failsafe": false,
+                              "queryParams": {}
+                            },
+                            "pieceName": "@activepieces/piece-http",
+                            "actionName": "send_request",
+                            "inputUiInfo": {},
+                            "pieceVersion": "~0.3.2"
+                          },
+                          "nextAction": {
+                            "name": "step_12",
+                            "type": "BRANCH",
+                            "valid": true,
+                            "settings": {
+                              "conditions": [
+                                [
+                                  {
+                                    "operator": "BOOLEAN_IS_TRUE",
+                                    "firstValue": "{{step_8['body']['success']}}"
+                                  }
+                                ]
+                              ],
+                              "inputUiInfo": {}
+                            },
+                            "displayName": "is added lead successful",
+                            "onSuccessAction": {
+                              "name": "step_11",
+                              "type": "PIECE",
+                              "valid": true,
+                              "settings": {
+                                "input": {
+                                  "url": "https://api.pipedrive.com/v1/persons/{{step_4['body']['data']['items'][0]['item']['id']}}?api_token=9bca12a3180d496067d542057a8c88d907c18c04",
+                                  "body": {
+                                    "label": "5"
+                                  },
+                                  "method": "PUT",
+                                  "headers": {
+                                    "Accept": "application/json",
+                                    "Content-Type": "application/json"
+                                  },
+                                  "failsafe": false,
+                                  "queryParams": {}
+                                },
+                                "pieceName": "@activepieces/piece-http",
+                                "actionName": "send_request",
+                                "inputUiInfo": {},
+                                "pieceVersion": "~0.3.2"
+                              },
+                              "displayName": "add label person"
+                            }
+                          },
+                          "displayName": "add lead"
+                        },
+                        "displayName": "build payload"
+                      }
+                    },
+                    "displayName": "get creator workspace"
+                  }
+                },
+                "displayName": "count person searched"
+              },
+              "displayName": "search person by email"
+            },
+            "displayName": "get apps"
+          },
+          "displayName": "get workspace information"
+        },
+        "displayName": "parse json value"
+      },
+      "type": "WEBHOOK",
+      "settings": {
+        "inputUiInfo": {}
+      }
+    },
+    "valid": true
+  }
+}

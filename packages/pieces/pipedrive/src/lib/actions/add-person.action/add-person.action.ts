@@ -127,7 +127,7 @@ export const addPerson = createAction({
                 displayName: 'Country',
                 description: undefined,
                 required: false,
-            }),
+            })
         },
         async run(context) {
             const configsWithoutAuthentication = { 
@@ -137,8 +137,8 @@ export const addPerson = createAction({
                 phone: context.propsValue.phone,
                 email: context.propsValue.email,
                 marketing_status: context.propsValue.marketing_status,
-                df17db22d940960b43ba3f30b4d39e0f2e2bdff0: context.propsValue.source,
-                c6e88ba97483902c66ed48f68441a39a8b3305b3: context.propsValue.country
+                "df17db22d940960b43ba3f30b4d39e0f2e2bdff0": context.propsValue.source,
+                "c6e88ba97483902c66ed48f68441a39a8b3305b3": context.propsValue.country
             };
 
             const request: HttpRequest = {

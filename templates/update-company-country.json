@@ -1,0 +1,163 @@
+{
+  "id": "DQ4cp66kDbtjifoLEblcZ",
+  "name": "Update Company Country",
+  "description": "",
+  "tags": [],
+  "pieces": [
+    "@activepieces/piece-http",
+    "@activepieces/piece-postgres"
+  ],
+  "pinnedOrder": null,
+  "blogUrl": "",
+  "template": {
+    "displayName": "Update Company Country",
+    "trigger": {
+      "name": "trigger",
+      "valid": true,
+      "displayName": "webhook trigger upsert workspace country",
+      "nextAction": {
+        "name": "step_1",
+        "type": "CODE",
+        "valid": true,
+        "settings": {
+          "input": {
+            "body": "{{trigger['body']}}"
+          },
+          "inputUiInfo": {},
+          "artifact": "UEsDBAoAAAAAAEOWLFfL6P4yTwAAAE8AAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIHJldHVybiBKU09OLnBhcnNlKGlucHV0cy5ib2R5KTsKfTsKUEsDBAoAAAAAAEOWLFcaUtEIHAAAABwAAAAMAAAAcGFja2FnZS5qc29uewogICJkZXBlbmRlbmNpZXMiOiB7CiAgfQp9ClBLAQIUAAoAAAAAAEOWLFfL6P4yTwAAAE8AAAAIAAAAAAAAAAAAAAAAAAAAAABpbmRleC50c1BLAQIUAAoAAAAAAEOWLFcaUtEIHAAAABwAAAAMAAAAAAAAAAAAAAAAAHUAAABwYWNrYWdlLmpzb25QSwUGAAAAAAIAAgBwAAAAuwAAAAAA"
+        },
+        "nextAction": {
+          "name": "step_2",
+          "type": "PIECE",
+          "valid": true,
+          "settings": {
+            "input": {
+              "url": "https://api.pipedrive.com/v1/leads/search",
+              "method": "GET",
+              "headers": {
+                "Accept": "application/json"
+              },
+              "failsafe": false,
+              "queryParams": {
+                "term": "{{step_1['id']}}",
+                "limit": "10",
+                "start": "0",
+                "fields": "custom_fields",
+                "api_token": "9bca12a3180d496067d542057a8c88d907c18c04",
+                "exact_match": "true"
+              }
+            },
+            "pieceName": "@activepieces/piece-http",
+            "actionName": "send_request",
+            "inputUiInfo": {},
+            "pieceVersion": "~0.3.2"
+          },
+          "nextAction": {
+            "name": "step_3",
+            "type": "CODE",
+            "valid": true,
+            "settings": {
+              "input": {
+                "body": "{{step_2['body']['data']['items']}}"
+              },
+              "inputUiInfo": {},
+              "artifact": "UEsDBAoAAAAAALmYLFd2mb5DTwAAAE8AAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIHJldHVybiBpbnB1dHMuYm9keS5sZW5ndGggfHwgMDsKfTsKUEsDBAoAAAAAALmYLFcaUtEIHAAAABwAAAAMAAAAcGFja2FnZS5qc29uewogICJkZXBlbmRlbmNpZXMiOiB7CiAgfQp9ClBLAQIUAAoAAAAAALmYLFd2mb5DTwAAAE8AAAAIAAAAAAAAAAAAAAAAAAAAAABpbmRleC50c1BLAQIUAAoAAAAAALmYLFcaUtEIHAAAABwAAAAMAAAAAAAAAAAAAAAAAHUAAABwYWNrYWdlLmpzb25QSwUGAAAAAAIAAgBwAAAAuwAAAAAA"
+            },
+            "nextAction": {
+              "name": "step_4",
+              "type": "BRANCH",
+              "valid": true,
+              "settings": {
+                "conditions": [
+                  [
+                    {
+                      "operator": "NUMBER_IS_GREATER_THAN",
+                      "firstValue": "{{step_3}}",
+                      "secondValue": "0"
+                    }
+                  ]
+                ],
+                "inputUiInfo": {}
+              },
+              "displayName": "is exists lead",
+              "onSuccessAction": {
+                "name": "step_5",
+                "type": "PIECE",
+                "valid": true,
+                "settings": {
+                  "input": {
+                    "url": "https://api.pipedrive.com/v1/leads/{{step_2['body']['data']['items'][0]['item']['id']}}",
+                    "method": "GET",
+                    "headers": {
+                      "Accept": "application/json"
+                    },
+                    "timeout": "30",
+                    "failsafe": false,
+                    "queryParams": {
+                      "api_token": "9bca12a3180d496067d542057a8c88d907c18c04"
+                    }
+                  },
+                  "pieceName": "@activepieces/piece-http",
+                  "actionName": "send_request",
+                  "inputUiInfo": {},
+                  "pieceVersion": "~0.3.2"
+                },
+                "nextAction": {
+                  "name": "step_7",
+                  "type": "PIECE",
+                  "valid": true,
+                  "settings": {
+                    "input": {
+                      "auth": "{{connections['ic-postgres']}}",
+                      "query": "SELECT\n    name\nFROM user_management.countries\nwhere code = '{{step_1['country_code']}}' AND sharding_id = '00000000-9999-9999-9999-999999999999';",
+                      "query_timeout": "30000",
+                      "application_name": "activepieces - update company country into lead",
+                      "connection_timeout_ms": "30000"
+                    },
+                    "pieceName": "@activepieces/piece-postgres",
+                    "actionName": "run-query",
+                    "inputUiInfo": {},
+                    "pieceVersion": "~0.1.0"
+                  },
+                  "nextAction": {
+                    "name": "step_6",
+                    "type": "PIECE",
+                    "valid": true,
+                    "settings": {
+                      "input": {
+                        "url": "https://api.pipedrive.com/v1/leads/{{step_2['body']['data']['items'][0]['item']['id']}}?api_token=9bca12a3180d496067d542057a8c88d907c18c04",
+                        "body": {},
+                        "method": "PATCH",
+                        "headers": {
+                          "Accept": "application/json",
+                          "Content-Type": "application/json"
+                        },
+                        "failsafe": false,
+                        "queryParams": {}
+                      },
+                      "pieceName": "@activepieces/piece-http",
+                      "actionName": "send_request",
+                      "inputUiInfo": {},
+                      "pieceVersion": "~0.3.2"
+                    },
+                    "displayName": "update company country into lead"
+                  },
+                  "displayName": "get country name"
+                },
+                "displayName": "get lead detail"
+              }
+            },
+            "displayName": "count lead searched"
+          },
+          "displayName": "search lead"
+        },
+        "displayName": "parse body"
+      },
+      "type": "WEBHOOK",
+      "settings": {
+        "inputUiInfo": {}
+      }
+    },
+    "valid": true
+  }
+}
