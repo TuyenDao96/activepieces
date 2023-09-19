@@ -67,6 +67,43 @@ export const updatePerson = createAction({
                 displayName: 'Country',
                 description: undefined,
                 required: false,
+            }),
+            label: Property.StaticDropdown({
+                displayName: 'Label',
+                description: undefined,
+                required: false,
+                options: {
+                    options: [
+                        {
+                            label: 'Customer',
+                            value: 5
+                        },
+                        {
+                            label: 'Hot lead',
+                            value: 6
+                        },
+                        {
+                            label: 'Warm lead',
+                            value: 7
+                        },
+                        {
+                            label: 'Cold lead',
+                            value: 8
+                        },
+                        {
+                            label: 'Nutrition',
+                            value: 264
+                        },
+                        {
+                            label: 'sign up',
+                            value: 265
+                        },
+                        {
+                            label: 'Delete From Org',
+                            value: 314
+                        }
+                    ]
+                }
             })
         },
         async run(context) {
@@ -76,6 +113,7 @@ export const updatePerson = createAction({
                 last_name: context.propsValue.last_name,
                 org_id: context.propsValue.org_id,
                 phone: context.propsValue.phone,
+                label: context.propsValue.label,
                 "faacbc74aff25ca6e8521d3095e550c2e323cb77": context.propsValue.birth_day,
                 "b9af84df5e8e40ae21587b8f1fa17c22baf441b0": context.propsValue.account_type,
                 "4e58b6239d38fbbc5260d5f55587a8a4d486c4b4": context.propsValue.gender,

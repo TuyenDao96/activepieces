@@ -94,6 +94,39 @@ export const updateLead = createAction({
                 description: undefined,
                 required: false,
             }),
+            lead_contact_status: Property.StaticDropdown({
+                displayName: 'Lead Contact Status',
+                description: 'Select your status',
+                required: false,
+                options: {
+                    options: [
+                        {
+                            label: 'Contact not initiated',
+                            value: 266
+                        },
+                        {
+                            label: 'Answered',
+                            value: 267
+                        },
+                        {
+                            label: 'Not Answered / not available',
+                            value: 268
+                        },
+                        {
+                            label: 'Wrong phone number',
+                            value: 269
+                        },
+                        {
+                            label: 'Nurturing',
+                            value: 270
+                        },
+                        {
+                            label: 'Dead',
+                            value: 312
+                        }
+                    ]
+                }
+            })
         },
         async run(context) {
             const configsWithoutAuthentication = { 
@@ -108,7 +141,8 @@ export const updateLead = createAction({
                 "a3772ae131698fadec89eb88b345f26aff7b5fc7": context.propsValue.company_size,
                 "27f2a8e17f2f551bbbccedc93ed711657f247eee": context.propsValue.company_phone_number,
                 "2802adb4d31cd05ae4fc112979fb965f06fcdcd2": context.propsValue.no_application,
-                "e09b19c024eb9711fbc84af5ca94e93e30428af8": context.propsValue.product_interest
+                "e09b19c024eb9711fbc84af5ca94e93e30428af8": context.propsValue.product_interest,
+                "cc2f527bccb5d9bd5ac1ba2a0c08682328fb5b2c": context.propsValue.lead_contact_status
             };
             const payload = removeEmptyAndBlankProperties(configsWithoutAuthentication);
 
