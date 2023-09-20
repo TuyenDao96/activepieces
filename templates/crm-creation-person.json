@@ -1,0 +1,362 @@
+{
+  "id": "SQUEQcna2CYrGkrUEA0DJ",
+  "name": "creation person",
+  "description": "",
+  "tags": [],
+  "pieces": [
+    "@tuyendaovan6789/piece-pipedrive",
+    "@activepieces/piece-postgres"
+  ],
+  "pinnedOrder": null,
+  "blogUrl": "",
+  "template": {
+    "displayName": "creation person",
+    "trigger": {
+      "name": "trigger",
+      "valid": true,
+      "displayName": "webhook trigger cdc user_profiles",
+      "nextAction": {
+        "name": "step_1",
+        "type": "CODE",
+        "valid": true,
+        "settings": {
+          "input": {
+            "body": "{{trigger['body']}}"
+          },
+          "inputUiInfo": {},
+          "artifact": "UEsDBAoAAAAAAI+INFfL6P4yTwAAAE8AAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIHJldHVybiBKU09OLnBhcnNlKGlucHV0cy5ib2R5KTsKfTsKUEsDBAoAAAAAAI+INFcaUtEIHAAAABwAAAAMAAAAcGFja2FnZS5qc29uewogICJkZXBlbmRlbmNpZXMiOiB7CiAgfQp9ClBLAQIUAAoAAAAAAI+INFfL6P4yTwAAAE8AAAAIAAAAAAAAAAAAAAAAAAAAAABpbmRleC50c1BLAQIUAAoAAAAAAI+INFcaUtEIHAAAABwAAAAMAAAAAAAAAAAAAAAAAHUAAABwYWNrYWdlLmpzb25QSwUGAAAAAAIAAgBwAAAAuwAAAAAA"
+        },
+        "nextAction": {
+          "name": "step_2",
+          "type": "BRANCH",
+          "valid": true,
+          "settings": {
+            "conditions": [
+              [
+                {
+                  "operator": "BOOLEAN_IS_FALSE",
+                  "firstValue": "{{step_1['is_deleted']}}"
+                }
+              ]
+            ],
+            "inputUiInfo": {}
+          },
+          "displayName": "is not delete action",
+          "onFailureAction": {
+            "name": "step_16",
+            "type": "PIECE",
+            "valid": true,
+            "settings": {
+              "input": {
+                "auth": "{{connections['ichiba-pipedrive']}}",
+                "term": "{{step_1['email']}}",
+                "limit": "10",
+                "fields": "email",
+                "exact_match": true
+              },
+              "pieceName": "@tuyendaovan6789/piece-pipedrive",
+              "actionName": "search_person",
+              "inputUiInfo": {},
+              "pieceVersion": "~0.3.20"
+            },
+            "nextAction": {
+              "name": "step_18",
+              "type": "CODE",
+              "valid": true,
+              "settings": {
+                "input": {
+                  "items": "{{step_16['items']}}"
+                },
+                "inputUiInfo": {},
+                "artifact": "UEsDBAoAAAAAAPSONFcGs6XaUAAAAFAAAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIHJldHVybiBpbnB1dHMuaXRlbXMubGVuZ3RoIHx8IDA7Cn07ClBLAwQKAAAAAAD0jjRXGlLRCBwAAAAcAAAADAAAAHBhY2thZ2UuanNvbnsKICAiZGVwZW5kZW5jaWVzIjogewogIH0KfQpQSwECFAAKAAAAAAD0jjRXBrOl2lAAAABQAAAACAAAAAAAAAAAAAAAAAAAAAAAaW5kZXgudHNQSwECFAAKAAAAAAD0jjRXGlLRCBwAAAAcAAAADAAAAAAAAAAAAAAAAAB2AAAAcGFja2FnZS5qc29uUEsFBgAAAAACAAIAcAAAALwAAAAAAA=="
+              },
+              "nextAction": {
+                "name": "step_17",
+                "type": "BRANCH",
+                "valid": true,
+                "settings": {
+                  "conditions": [
+                    [
+                      {
+                        "operator": "NUMBER_IS_GREATER_THAN",
+                        "firstValue": "{{step_18}}",
+                        "secondValue": "0"
+                      }
+                    ]
+                  ],
+                  "inputUiInfo": {}
+                },
+                "displayName": "is exists person",
+                "onSuccessAction": {
+                  "name": "step_19",
+                  "type": "PIECE",
+                  "valid": true,
+                  "settings": {
+                    "input": {
+                      "id": "{{step_16['items'][0]['item']['id']}}",
+                      "auth": "{{connections['ichiba-pipedrive']}}",
+                      "label": 314
+                    },
+                    "pieceName": "@tuyendaovan6789/piece-pipedrive",
+                    "actionName": "update_person",
+                    "inputUiInfo": {},
+                    "pieceVersion": "~0.3.20"
+                  },
+                  "displayName": "update label delete of this person"
+                }
+              },
+              "displayName": "count person searched"
+            },
+            "displayName": "search persons by email"
+          },
+          "onSuccessAction": {
+            "name": "step_3",
+            "type": "PIECE",
+            "valid": true,
+            "settings": {
+              "input": {
+                "auth": "{{connections['ichiba-pipedrive']}}",
+                "term": "{{step_1['email']}}",
+                "limit": "10",
+                "fields": "email",
+                "exact_match": true
+              },
+              "pieceName": "@tuyendaovan6789/piece-pipedrive",
+              "actionName": "search_person",
+              "inputUiInfo": {},
+              "pieceVersion": "~0.3.16"
+            },
+            "nextAction": {
+              "name": "step_4",
+              "type": "CODE",
+              "valid": true,
+              "settings": {
+                "input": {
+                  "items": "{{step_3['items']}}"
+                },
+                "inputUiInfo": {},
+                "artifact": "UEsDBAoAAAAAAIqJNFcGs6XaUAAAAFAAAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIHJldHVybiBpbnB1dHMuaXRlbXMubGVuZ3RoIHx8IDA7Cn07ClBLAwQKAAAAAACKiTRXGlLRCBwAAAAcAAAADAAAAHBhY2thZ2UuanNvbnsKICAiZGVwZW5kZW5jaWVzIjogewogIH0KfQpQSwECFAAKAAAAAACKiTRXBrOl2lAAAABQAAAACAAAAAAAAAAAAAAAAAAAAAAAaW5kZXgudHNQSwECFAAKAAAAAACKiTRXGlLRCBwAAAAcAAAADAAAAAAAAAAAAAAAAAB2AAAAcGFja2FnZS5qc29uUEsFBgAAAAACAAIAcAAAALwAAAAAAA=="
+              },
+              "nextAction": {
+                "name": "step_5",
+                "type": "BRANCH",
+                "valid": true,
+                "settings": {
+                  "conditions": [
+                    [
+                      {
+                        "operator": "NUMBER_IS_GREATER_THAN",
+                        "firstValue": "{{step_4}}",
+                        "secondValue": "0"
+                      }
+                    ]
+                  ],
+                  "inputUiInfo": {}
+                },
+                "displayName": "is exists person",
+                "onFailureAction": {
+                  "name": "step_6",
+                  "type": "PIECE",
+                  "valid": true,
+                  "settings": {
+                    "input": {
+                      "auth": "{{connections['ic-postgres']}}",
+                      "query": "SELECT\n    name\nFROM user_management.countries\nwhere code = '{{step_1['country_code']}}' AND sharding_id = '{{step_1['sharding_id']}}'\nLIMIT 1;",
+                      "query_timeout": "30000",
+                      "application_name": "activepieces",
+                      "connection_timeout_ms": "30000"
+                    },
+                    "pieceName": "@activepieces/piece-postgres",
+                    "actionName": "run-query",
+                    "inputUiInfo": {},
+                    "pieceVersion": "~0.1.0"
+                  },
+                  "nextAction": {
+                    "name": "step_7",
+                    "type": "PIECE",
+                    "valid": true,
+                    "settings": {
+                      "input": {
+                        "auth": "{{connections['ic-postgres']}}",
+                        "query": "SELECT\n    google, facebook, zalo\nFROM crosstab(\n    'SELECT\n        user_id, login_provider, provider_display_name\n    FROM identity.user_logins\n    WHERE user_id = ''{{step_1['id']}}'''\n) AS final_result(id text, google text, facebook text, zalo text);",
+                        "query_timeout": "30000",
+                        "application_name": "activepieces",
+                        "connection_timeout_ms": "30000"
+                      },
+                      "pieceName": "@activepieces/piece-postgres",
+                      "actionName": "run-query",
+                      "inputUiInfo": {},
+                      "pieceVersion": "~0.1.0"
+                    },
+                    "nextAction": {
+                      "name": "step_9",
+                      "type": "PIECE",
+                      "valid": true,
+                      "settings": {
+                        "input": {
+                          "auth": "{{connections['ichiba-pipedrive']}}",
+                          "name": "{{step_1['full_name']}}",
+                          "email": "{{step_1['email']}}",
+                          "phone": "{{step_1['phone_number']}}",
+                          "source": "Org",
+                          "country": "{{step_6[0]['name']}}",
+                          "account_type": 271,
+                          "zalo_account": "{{step_7[0]['zalo']}}",
+                          "google_account": "{{step_7[0]['google']}}",
+                          "facebook_account": "{{step_7[0]['facebook']}}"
+                        },
+                        "pieceName": "@tuyendaovan6789/piece-pipedrive",
+                        "actionName": "add_person",
+                        "inputUiInfo": {},
+                        "pieceVersion": "~0.3.16"
+                      },
+                      "displayName": "add person"
+                    },
+                    "displayName": "get social login"
+                  },
+                  "displayName": "get country name"
+                },
+                "onSuccessAction": {
+                  "name": "step_8",
+                  "type": "PIECE",
+                  "valid": true,
+                  "settings": {
+                    "input": {
+                      "id": "{{step_3['items'][0]['item']['id']}}",
+                      "auth": "{{connections['ichiba-pipedrive']}}"
+                    },
+                    "pieceName": "@tuyendaovan6789/piece-pipedrive",
+                    "actionName": "get_detail_person",
+                    "inputUiInfo": {},
+                    "pieceVersion": "~0.3.16"
+                  },
+                  "nextAction": {
+                    "name": "step_10",
+                    "type": "PIECE",
+                    "valid": true,
+                    "settings": {
+                      "input": {
+                        "auth": "{{connections['ic-postgres']}}",
+                        "query": "SELECT\n    name\nFROM user_management.countries\nwhere code = '{{step_1['country_code']}}' AND sharding_id = '{{step_1['sharding_id']}}'\nLIMIT 1;",
+                        "query_timeout": "30000",
+                        "application_name": "activepieces",
+                        "connection_timeout_ms": "30000"
+                      },
+                      "pieceName": "@activepieces/piece-postgres",
+                      "actionName": "run-query",
+                      "inputUiInfo": {},
+                      "pieceVersion": "~0.1.0"
+                    },
+                    "nextAction": {
+                      "name": "step_11",
+                      "type": "CODE",
+                      "valid": true,
+                      "settings": {
+                        "input": {
+                          "new": "{{step_1}}",
+                          "old": "{{step_8}}"
+                        },
+                        "inputUiInfo": {},
+                        "artifact": "UEsDBAoAAAAAAPqKNFftfHVzmQQAAJkEAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIGxldCBwaG9uZSA9IGlucHV0cy5vbGQucGhvbmUgfHwgW107CiAgICBsZXQgZmlyc3RfbmFtZSA9IG51bGw7CiAgICBsZXQgbGFzdF9uYW1lID0gbnVsbDsKICAgIGxldCBhY2NvdW50X3R5cGUgPSBpbnB1dHMubmV3LmFjY291bnRfdHlwZSA9PSAxID8gIjI3MiIgOiBpbnB1dHMubmV3LmFjY291bnRfdHlwZSA9PSAyID8gIjI3MSIgOiBudWxsOwogICAgbGV0IGdlbmRlciA9IGlucHV0cy5uZXcuZ2VuZGVyID09IDEgPyAiMjczIiA6IGlucHV0cy5uZXcuZ2VuZGVyID09IDIgPyAiMjc0IiA6IGlucHV0cy5uZXcuZ2VuZGVyID09IDMgPyAiMjc1IiA6IG51bGw7CgogICAgaWYgKGlucHV0cy5uZXcuZnVsbF9uYW1lICE9IG51bGwpIHsKICAgICAgICBmaXJzdF9uYW1lID0gaW5wdXRzLm5ldy5mdWxsX25hbWUuc3BsaXQoJyAnKS5zbGljZSgwLCAtMSkuam9pbignICcpOwogICAgICAgIGxhc3RfbmFtZSA9IGlucHV0cy5uZXcuZnVsbF9uYW1lLnNwbGl0KCcgJykuc2xpY2UoLTEpLmpvaW4oJyAnKTsKICAgIH0KCiAgICBpZiAocGhvbmUubGVuZ3RoID4gMCkgewogICAgICAgIHBob25lID0gcGhvbmUuZmlsdGVyKHggPT4geC52YWx1ZSAhPT0gbnVsbCAmJiB4LnZhbHVlICE9PSAiIik7CiAgICB9CgogICAgaWYgKGlucHV0cy5uZXcucGhvbmVfbnVtYmVyICE9IG51bGwgJiYgIXBob25lLm1hcCh4ID0+IHgudmFsdWUpLmluY2x1ZGVzKGlucHV0cy5uZXcucGhvbmVfbnVtYmVyKSkgewogICAgICAgIHBob25lLnB1c2goe3ZhbHVlOiBpbnB1dHMubmV3LnBob25lX251bWJlcn0pOwogICAgfQoKICAgIHJldHVybiB7CiAgICAgICAgIm5hbWUiOiBpbnB1dHMubmV3LmZ1bGxfbmFtZSwKICAgICAgICAiZmlyc3RfbmFtZSI6IGZpcnN0X25hbWUsCiAgICAgICAgImxhc3RfbmFtZSI6IGxhc3RfbmFtZSwKICAgICAgICAicGhvbmUiOiBwaG9uZSwKICAgICAgICAiYWNjb3VudF90eXBlIjogYWNjb3VudF90eXBlLAogICAgICAgICJiaXJ0aF9kYXkiOiBpbnB1dHMubmV3LmJpcnRoX2RheSAhPSBudWxsID8gaW5wdXRzLm5ldy5iaXJ0aF9kYXkgOiBpbnB1dHMub2xkWyJmYWFjYmM3NGFmZjI1Y2E2ZTg1MjFkMzA5NWU1NTBjMmUzMjNjYjc3Il0sCiAgICAgICAgImdlbmRlciI6IGdlbmRlcgogICAgfTsKfTsKUEsDBAoAAAAAAPqKNFcaUtEIHAAAABwAAAAMAAAAcGFja2FnZS5qc29uewogICJkZXBlbmRlbmNpZXMiOiB7CiAgfQp9ClBLAQIUAAoAAAAAAPqKNFftfHVzmQQAAJkEAAAIAAAAAAAAAAAAAAAAAAAAAABpbmRleC50c1BLAQIUAAoAAAAAAPqKNFcaUtEIHAAAABwAAAAMAAAAAAAAAAAAAAAAAL8EAABwYWNrYWdlLmpzb25QSwUGAAAAAAIAAgBwAAAABQUAAAAA"
+                      },
+                      "nextAction": {
+                        "name": "step_12",
+                        "type": "PIECE",
+                        "valid": true,
+                        "settings": {
+                          "input": {
+                            "id": "{{step_8['id']}}",
+                            "auth": "{{connections['ichiba-pipedrive']}}",
+                            "name": "{{step_11['name']}}",
+                            "phone": "{{step_11['phone']}}",
+                            "gender": "{{step_11['gender']}}",
+                            "country": "{{step_10[0]['name']}}",
+                            "birth_day": "{{step_11['birth_day']}}",
+                            "last_name": "{{step_11['last_name']}}",
+                            "first_name": "{{step_11['first_name']}}",
+                            "account_type": "{{step_11['account_type']}}"
+                          },
+                          "pieceName": "@tuyendaovan6789/piece-pipedrive",
+                          "actionName": "update_person",
+                          "inputUiInfo": {},
+                          "pieceVersion": "~0.3.16"
+                        },
+                        "nextAction": {
+                          "name": "step_13",
+                          "type": "BRANCH",
+                          "valid": true,
+                          "settings": {
+                            "conditions": [
+                              [
+                                {
+                                  "operator": "EXISTS",
+                                  "firstValue": "{{step_1['account_type']}}"
+                                },
+                                {
+                                  "operator": "NUMBER_IS_LESS_THAN",
+                                  "firstValue": "{{step_1['account_type']}}",
+                                  "secondValue": "2"
+                                }
+                              ]
+                            ],
+                            "inputUiInfo": {}
+                          },
+                          "displayName": "account type is business",
+                          "onSuccessAction": {
+                            "name": "step_14",
+                            "type": "PIECE",
+                            "valid": true,
+                            "settings": {
+                              "input": {
+                                "auth": "{{connections['ichiba-pipedrive']}}",
+                                "name": "{{step_1['company']}}"
+                              },
+                              "pieceName": "@tuyendaovan6789/piece-pipedrive",
+                              "actionName": "add_organization",
+                              "inputUiInfo": {},
+                              "pieceVersion": "~0.3.17"
+                            },
+                            "nextAction": {
+                              "name": "step_15",
+                              "type": "PIECE",
+                              "valid": true,
+                              "settings": {
+                                "input": {
+                                  "id": "{{step_8['id']}}",
+                                  "auth": "{{connections['ichiba-pipedrive']}}",
+                                  "org_id": "{{step_14['id']}}"
+                                },
+                                "pieceName": "@tuyendaovan6789/piece-pipedrive",
+                                "actionName": "update_person",
+                                "inputUiInfo": {},
+                                "pieceVersion": "~0.3.17"
+                              },
+                              "displayName": "update organization of this person"
+                            },
+                            "displayName": "add an organization"
+                          }
+                        },
+                        "displayName": "update person"
+                      },
+                      "displayName": "build payload for update this person"
+                    },
+                    "displayName": "get country name"
+                  },
+                  "displayName": "get details this person"
+                }
+              },
+              "displayName": "count person searched"
+            },
+            "displayName": "search persons by email"
+          }
+        },
+        "displayName": "parse webhook body"
+      },
+      "type": "WEBHOOK",
+      "settings": {
+        "inputUiInfo": {}
+      }
+    },
+    "valid": true
+  }
+}

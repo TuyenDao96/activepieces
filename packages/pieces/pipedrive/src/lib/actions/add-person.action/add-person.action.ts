@@ -127,7 +127,41 @@ export const addPerson = createAction({
                 displayName: 'Country',
                 description: undefined,
                 required: false,
-            })
+            }),
+            account_type: Property.StaticDropdown({
+                displayName: "Account Type",
+                description: undefined,
+                required: false,
+                defaultValue: 271,
+                options: {
+                    disabled: false,
+                    options: [
+                        {
+                            label: "Individual",
+                            value: 271
+                        },
+                        {
+                            label: "Business",
+                            value: 272
+                        }
+                    ]
+                }
+            }),
+            facebook_account: Property.ShortText({
+                displayName: 'Facebook Account',
+                description: undefined,
+                required: false,
+            }),
+            zalo_account: Property.ShortText({
+                displayName: 'Zalo Account',
+                description: undefined,
+                required: false,
+            }),
+            google_account: Property.ShortText({
+                displayName: 'Google Account',
+                description: undefined,
+                required: false,
+            }),
         },
         async run(context) {
             const configsWithoutAuthentication = { 
@@ -138,7 +172,11 @@ export const addPerson = createAction({
                 email: context.propsValue.email,
                 marketing_status: context.propsValue.marketing_status,
                 "df17db22d940960b43ba3f30b4d39e0f2e2bdff0": context.propsValue.source,
-                "c6e88ba97483902c66ed48f68441a39a8b3305b3": context.propsValue.country
+                "c6e88ba97483902c66ed48f68441a39a8b3305b3": context.propsValue.country,
+                "b9af84df5e8e40ae21587b8f1fa17c22baf441b0": context.propsValue.account_type,
+                "3fa02e82867c521810ec08427b7381164c6c2ea6": context.propsValue.facebook_account,
+                "5ebaeac59aa3042da9364cc789ca775efe5241e3": context.propsValue.zalo_account,
+                "e5c52ce296170ed25f8ea6af10638d63e31f6651": context.propsValue.google_account
             };
 
             const request: HttpRequest = {

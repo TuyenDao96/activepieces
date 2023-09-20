@@ -53,13 +53,18 @@ export const updatePerson = createAction({
                 description: undefined,
                 required: false,
             }),
-            facebook_link: Property.ShortText({
-                displayName: 'Facebook Link',
+            facebook_account: Property.ShortText({
+                displayName: 'Facebook Account',
                 description: undefined,
                 required: false,
             }),
-            zalo_link: Property.ShortText({
-                displayName: 'Zalo Link',
+            zalo_account: Property.ShortText({
+                displayName: 'Zalo Account',
+                description: undefined,
+                required: false,
+            }),
+            google_account: Property.ShortText({
+                displayName: 'Google Account',
                 description: undefined,
                 required: false,
             }),
@@ -114,12 +119,13 @@ export const updatePerson = createAction({
                 org_id: context.propsValue.org_id,
                 phone: context.propsValue.phone,
                 label: context.propsValue.label,
-                "faacbc74aff25ca6e8521d3095e550c2e323cb77": context.propsValue.birth_day,
+                "faacbc74aff25ca6e8521d3095e550c2e323cb77": context.propsValue.birth_day != null ? new Date(context.propsValue.birth_day) : null,
                 "b9af84df5e8e40ae21587b8f1fa17c22baf441b0": context.propsValue.account_type,
                 "4e58b6239d38fbbc5260d5f55587a8a4d486c4b4": context.propsValue.gender,
-                "3fa02e82867c521810ec08427b7381164c6c2ea6": context.propsValue.facebook_link,
-                "5ebaeac59aa3042da9364cc789ca775efe5241e3": context.propsValue.zalo_link,
-                "c6e88ba97483902c66ed48f68441a39a8b3305b3": context.propsValue.country
+                "3fa02e82867c521810ec08427b7381164c6c2ea6": context.propsValue.facebook_account,
+                "5ebaeac59aa3042da9364cc789ca775efe5241e3": context.propsValue.zalo_account,
+                "c6e88ba97483902c66ed48f68441a39a8b3305b3": context.propsValue.country,
+                "e5c52ce296170ed25f8ea6af10638d63e31f6651": context.propsValue.google_account
             };
             const payload = removeEmptyAndBlankProperties(configsWithoutAuthentication);
 

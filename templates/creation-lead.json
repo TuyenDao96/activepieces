@@ -1,5 +1,5 @@
 {
-  "id": "KEYrIBBpPZJ68IrN3t878",
+  "id": "YfoDYZpdsWywolKj2fOWJ",
   "name": "Creation Lead",
   "description": "",
   "tags": [],
@@ -265,6 +265,76 @@
                           "inputUiInfo": {}
                         },
                         "displayName": "is creator workspace",
+                        "onFailureAction": {
+                          "name": "step_12",
+                          "type": "PIECE",
+                          "valid": true,
+                          "settings": {
+                            "input": {
+                              "auth": "{{connections['ichiba-pipedrive']}}",
+                              "term": "{{step_2[0]['workspace_id']}}",
+                              "limit": "10",
+                              "fields": "custom_fields",
+                              "exact_match": true
+                            },
+                            "pieceName": "@tuyendaovan6789/piece-pipedrive",
+                            "actionName": "search_lead",
+                            "inputUiInfo": {},
+                            "pieceVersion": "~0.3.15"
+                          },
+                          "nextAction": {
+                            "name": "step_21",
+                            "type": "BRANCH",
+                            "valid": true,
+                            "settings": {
+                              "conditions": [
+                                [
+                                  {
+                                    "operator": "NUMBER_IS_LESS_THAN",
+                                    "firstValue": "{{step_12['items']}}",
+                                    "secondValue": "1"
+                                  }
+                                ]
+                              ],
+                              "inputUiInfo": {}
+                            },
+                            "displayName": "is not exists lead",
+                            "onFailureAction": {
+                              "name": "step_22",
+                              "type": "PIECE",
+                              "valid": true,
+                              "settings": {
+                                "input": {
+                                  "id": "{{step_12['items'][0]['item']['person']['id']}}",
+                                  "auth": "{{connections['ichiba-pipedrive']}}"
+                                },
+                                "pieceName": "@tuyendaovan6789/piece-pipedrive",
+                                "actionName": "get_detail_person",
+                                "inputUiInfo": {},
+                                "pieceVersion": "~0.3.15"
+                              },
+                              "nextAction": {
+                                "name": "step_23",
+                                "type": "PIECE",
+                                "valid": true,
+                                "settings": {
+                                  "input": {
+                                    "id": "{{step_20['items'][0]['item']['id']}}",
+                                    "auth": "{{connections['ichiba-pipedrive']}}",
+                                    "org_id": "{{step_22['org_id']['value']}}"
+                                  },
+                                  "pieceName": "@tuyendaovan6789/piece-pipedrive",
+                                  "actionName": "update_person",
+                                  "inputUiInfo": {},
+                                  "pieceVersion": "~0.3.15"
+                                },
+                                "displayName": "update organization of this person"
+                              },
+                              "displayName": "get person is owner of this lead"
+                            }
+                          },
+                          "displayName": "Search Leads"
+                        },
                         "onSuccessAction": {
                           "name": "step_7",
                           "type": "CODE",
