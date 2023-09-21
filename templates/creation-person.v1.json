@@ -1,5 +1,5 @@
 {
-  "id": "EmzKp4ih6pBuTZRm5L9jb",
+  "id": "VStErgc5XjQhWKIsmnyXs",
   "name": "creation person",
   "description": "",
   "tags": [],
@@ -178,7 +178,7 @@
                     "settings": {
                       "input": {
                         "auth": "{{connections['ic-postgres']}}",
-                        "query": "SELECT\n    google, facebook, zalo\nFROM crosstab(\n    'SELECT\n        user_id, login_provider, provider_display_name\n    FROM identity.user_logins\n    WHERE user_id = ''{{step_1['id']}}'''\n) AS final_result(id text, google text, facebook text, zalo text);",
+                        "query": "SELECT\n    facebook, google, zalo\nFROM crosstab(\n    'SELECT\n        ''{{step_1['id']}}'' as user_id ,a.social_media, ul.provider_display_name\n    FROM (SELECT unnest(ARRAY[''Facebook'', ''Google'', ''Zalo'']) AS social_media) a\n    LEFT JOIN identity.user_logins ul ON a.social_media = ul.login_provider AND ul.user_id = ''{{step_1['id']}}''\n    ORDER BY 1,2'\n) AS final_result(id text, facebook text, google text, zalo text);",
                         "query_timeout": "30000",
                         "application_name": "activepieces",
                         "connection_timeout_ms": "30000"
