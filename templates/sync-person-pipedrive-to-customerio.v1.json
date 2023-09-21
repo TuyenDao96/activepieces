@@ -1,6 +1,6 @@
 {
-  "id": "NvlhkfzSwHSeG2zClmSNY",
-  "name": "Sync Person Pipedrive To Customer.IO",
+  "id": "v6TThbstuEeHQoLWfMlUd",
+  "name": "sync person pipedrive to customer.io",
   "description": "",
   "tags": [],
   "pieces": [
@@ -9,7 +9,7 @@
   "pinnedOrder": null,
   "blogUrl": "",
   "template": {
-    "displayName": "Sync Person Pipedrive To Customer.IO",
+    "displayName": "sync person pipedrive to customer.io",
     "trigger": {
       "name": "trigger",
       "valid": true,
@@ -75,7 +75,7 @@
                 "pieceName": "@activepieces/piece-http",
                 "actionName": "send_request",
                 "inputUiInfo": {},
-                "pieceVersion": "~0.3.5"
+                "pieceVersion": "0.3.5"
               },
               "displayName": "Send HTTP request"
             }

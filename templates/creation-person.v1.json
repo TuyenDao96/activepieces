@@ -1,5 +1,5 @@
 {
-  "id": "SQUEQcna2CYrGkrUEA0DJ",
+  "id": "EmzKp4ih6pBuTZRm5L9jb",
   "name": "creation person",
   "description": "",
   "tags": [],
@@ -57,7 +57,7 @@
               "pieceName": "@tuyendaovan6789/piece-pipedrive",
               "actionName": "search_person",
               "inputUiInfo": {},
-              "pieceVersion": "~0.3.20"
+              "pieceVersion": "0.3.20"
             },
             "nextAction": {
               "name": "step_18",
@@ -100,7 +100,7 @@
                     "pieceName": "@tuyendaovan6789/piece-pipedrive",
                     "actionName": "update_person",
                     "inputUiInfo": {},
-                    "pieceVersion": "~0.3.20"
+                    "pieceVersion": "0.3.20"
                   },
                   "displayName": "update label delete of this person"
                 }
@@ -124,7 +124,7 @@
               "pieceName": "@tuyendaovan6789/piece-pipedrive",
               "actionName": "search_person",
               "inputUiInfo": {},
-              "pieceVersion": "~0.3.16"
+              "pieceVersion": "0.3.20"
             },
             "nextAction": {
               "name": "step_4",
@@ -169,7 +169,7 @@
                     "pieceName": "@activepieces/piece-postgres",
                     "actionName": "run-query",
                     "inputUiInfo": {},
-                    "pieceVersion": "~0.1.0"
+                    "pieceVersion": "0.1.0"
                   },
                   "nextAction": {
                     "name": "step_7",
@@ -186,7 +186,7 @@
                       "pieceName": "@activepieces/piece-postgres",
                       "actionName": "run-query",
                       "inputUiInfo": {},
-                      "pieceVersion": "~0.1.0"
+                      "pieceVersion": "0.1.0"
                     },
                     "nextAction": {
                       "name": "step_9",
@@ -208,7 +208,7 @@
                         "pieceName": "@tuyendaovan6789/piece-pipedrive",
                         "actionName": "add_person",
                         "inputUiInfo": {},
-                        "pieceVersion": "~0.3.16"
+                        "pieceVersion": "0.3.20"
                       },
                       "displayName": "add person"
                     },
@@ -228,7 +228,7 @@
                     "pieceName": "@tuyendaovan6789/piece-pipedrive",
                     "actionName": "get_detail_person",
                     "inputUiInfo": {},
-                    "pieceVersion": "~0.3.16"
+                    "pieceVersion": "0.3.20"
                   },
                   "nextAction": {
                     "name": "step_10",
@@ -245,7 +245,7 @@
                       "pieceName": "@activepieces/piece-postgres",
                       "actionName": "run-query",
                       "inputUiInfo": {},
-                      "pieceVersion": "~0.1.0"
+                      "pieceVersion": "0.1.0"
                     },
                     "nextAction": {
                       "name": "step_11",
@@ -279,7 +279,7 @@
                           "pieceName": "@tuyendaovan6789/piece-pipedrive",
                           "actionName": "update_person",
                           "inputUiInfo": {},
-                          "pieceVersion": "~0.3.16"
+                          "pieceVersion": "0.3.20"
                         },
                         "nextAction": {
                           "name": "step_13",
@@ -314,7 +314,7 @@
                               "pieceName": "@tuyendaovan6789/piece-pipedrive",
                               "actionName": "add_organization",
                               "inputUiInfo": {},
-                              "pieceVersion": "~0.3.17"
+                              "pieceVersion": "0.3.20"
                             },
                             "nextAction": {
                               "name": "step_15",
@@ -329,7 +329,7 @@
                                 "pieceName": "@tuyendaovan6789/piece-pipedrive",
                                 "actionName": "update_person",
                                 "inputUiInfo": {},
-                                "pieceVersion": "~0.3.17"
+                                "pieceVersion": "0.3.20"
                               },
                               "displayName": "update organization of this person"
                             },

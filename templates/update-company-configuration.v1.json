@@ -1,0 +1,138 @@
+{
+  "id": "V5Pys7I5EGIiTANTRHhoQ",
+  "name": "update company configuration",
+  "description": "",
+  "tags": [],
+  "pieces": [
+    "@tuyendaovan6789/piece-pipedrive"
+  ],
+  "pinnedOrder": null,
+  "blogUrl": "",
+  "template": {
+    "displayName": "update company configuration",
+    "trigger": {
+      "name": "trigger",
+      "valid": true,
+      "displayName": "webhook trigger cdc company_settings",
+      "nextAction": {
+        "name": "step_1",
+        "type": "CODE",
+        "valid": true,
+        "settings": {
+          "input": {
+            "body": "{{trigger['body']}}"
+          },
+          "inputUiInfo": {},
+          "artifact": "UEsDBAoAAAAAAJoKNVfL6P4yTwAAAE8AAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIHJldHVybiBKU09OLnBhcnNlKGlucHV0cy5ib2R5KTsKfTsKUEsDBAoAAAAAAJoKNVcaUtEIHAAAABwAAAAMAAAAcGFja2FnZS5qc29uewogICJkZXBlbmRlbmNpZXMiOiB7CiAgfQp9ClBLAQIUAAoAAAAAAJoKNVfL6P4yTwAAAE8AAAAIAAAAAAAAAAAAAAAAAAAAAABpbmRleC50c1BLAQIUAAoAAAAAAJoKNVcaUtEIHAAAABwAAAAMAAAAAAAAAAAAAAAAAHUAAABwYWNrYWdlLmpzb25QSwUGAAAAAAIAAgBwAAAAuwAAAAAA"
+        },
+        "nextAction": {
+          "name": "step_2",
+          "type": "PIECE",
+          "valid": true,
+          "settings": {
+            "input": {
+              "auth": "{{connections['ichiba-pipedrive']}}",
+              "term": "{{step_1['workspace_id']}}",
+              "limit": "10",
+              "fields": "custom_fields",
+              "exact_match": true
+            },
+            "pieceName": "@tuyendaovan6789/piece-pipedrive",
+            "actionName": "search_lead",
+            "inputUiInfo": {},
+            "pieceVersion": "0.3.20"
+          },
+          "nextAction": {
+            "name": "step_3",
+            "type": "CODE",
+            "valid": true,
+            "settings": {
+              "input": {
+                "items": "{{step_2['items']}}"
+              },
+              "inputUiInfo": {},
+              "artifact": "UEsDBAoAAAAAAO8KNVcGs6XaUAAAAFAAAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIHJldHVybiBpbnB1dHMuaXRlbXMubGVuZ3RoIHx8IDA7Cn07ClBLAwQKAAAAAADvCjVXGlLRCBwAAAAcAAAADAAAAHBhY2thZ2UuanNvbnsKICAiZGVwZW5kZW5jaWVzIjogewogIH0KfQpQSwECFAAKAAAAAADvCjVXBrOl2lAAAABQAAAACAAAAAAAAAAAAAAAAAAAAAAAaW5kZXgudHNQSwECFAAKAAAAAADvCjVXGlLRCBwAAAAcAAAADAAAAAAAAAAAAAAAAAB2AAAAcGFja2FnZS5qc29uUEsFBgAAAAACAAIAcAAAALwAAAAAAA=="
+            },
+            "nextAction": {
+              "name": "step_4",
+              "type": "BRANCH",
+              "valid": true,
+              "settings": {
+                "conditions": [
+                  [
+                    {
+                      "operator": "NUMBER_IS_GREATER_THAN",
+                      "firstValue": "{{step_3}}",
+                      "secondValue": "0"
+                    }
+                  ]
+                ],
+                "inputUiInfo": {}
+              },
+              "displayName": "is exists lead",
+              "onSuccessAction": {
+                "name": "step_5",
+                "type": "PIECE",
+                "valid": true,
+                "settings": {
+                  "input": {
+                    "id": "{{step_2['items'][0]['item']['id']}}",
+                    "auth": "{{connections['ichiba-pipedrive']}}"
+                  },
+                  "pieceName": "@tuyendaovan6789/piece-pipedrive",
+                  "actionName": "get_detail_lead",
+                  "inputUiInfo": {},
+                  "pieceVersion": "0.3.20"
+                },
+                "nextAction": {
+                  "name": "step_6",
+                  "type": "CODE",
+                  "valid": true,
+                  "settings": {
+                    "input": {
+                      "new": "{{step_1}}",
+                      "old": "{{step_5}}"
+                    },
+                    "inputUiInfo": {},
+                    "artifact": "UEsDBAoAAAAAAEELNVet/Wd5zwIAAM8CAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIGNvbnN0IGNvbXBhbnlUeXBlTWFwID0gewogICAgICAgIDE6ICIyOTYiLAogICAgICAgIDI6ICIyOTciLAogICAgICAgIDM6ICIyOTgiLAogICAgICAgIDQ6ICIyOTkiLAogICAgICAgIDU6ICIzMDAiCiAgICB9OwogICAgY29uc3QgY29tcGFueV90eXBlID0gY29tcGFueVR5cGVNYXBbaW5wdXRzLm5ldy5jb21wYW55X3R5cGVdIHx8IG51bGw7CgogICAgY29uc3QgY29tcGFueVNpemVNYXAgPSB7CiAgICAgICAgMTogIjMwMSIsCiAgICAgICAgMjogIjMwMiIsCiAgICAgICAgMzogIjMwMyIsCiAgICAgICAgNDogIjMwNCIsCiAgICAgICAgNTogIjMwNCIKICAgIH07CiAgICBjb25zdCBjb21wYW55X3NpemUgPSBjb21wYW55U2l6ZU1hcFtpbnB1dHMubmV3LmNvbXBhbnlfc++/g+++rXplXSB8fCBudWxsOwogICAgCiAgICByZXR1cm4gewogICAgICAgICJ0aXRsZSI6IGlucHV0cy5uZXcubmFtZSwKICAgICAgICAiYWRkcmVzcyI6IGlucHV0cy5uZXcuYWRkcmVzcywKICAgICAgICAiY29tcGFueV9uYW1lIjogaW5wdXRzLm5ldy5jb21wYW55X25hbWUsCiAgICAgICAgImNvbXBhbnlfdHlwZSI6IGNvbXBhbnlfdHlwZSwKICAgICAgICAiY29tcGFueV9zaXplIjogY29tcGFueV9zaXplLAogICAgICAgICJwaG9uZV9udW1iZXIiOiBpbnB1dHMubmV3LnBob25lX251bWJlciwKICAgIH07Cn07ClBLAwQKAAAAAABBCzVXGlLRCBwAAAAcAAAADAAAAHBhY2thZ2UuanNvbnsKICAiZGVwZW5kZW5jaWVzIjogewogIH0KfQpQSwECFAAKAAAAAABBCzVXrf1nec8CAADPAgAACAAAAAAAAAAAAAAAAAAAAAAAaW5kZXgudHNQSwECFAAKAAAAAABBCzVXGlLRCBwAAAAcAAAADAAAAAAAAAAAAAAAAAD1AgAAcGFja2FnZS5qc29uUEsFBgAAAAACAAIAcAAAADsDAAAAAA=="
+                  },
+                  "nextAction": {
+                    "name": "step_7",
+                    "type": "PIECE",
+                    "valid": true,
+                    "settings": {
+                      "input": {
+                        "id": "{{step_5['id']}}",
+                        "auth": "{{connections['ichiba-pipedrive']}}",
+                        "company_name": "{{step_6['title']}}",
+                        "company_size": "{{step_6['company_size']}}",
+                        "company_type": "{{step_6['company_type']}}",
+                        "company_address": "{{step_6['address']}}",
+                        "company_phone_number": "{{step_6['phone_number']}}"
+                      },
+                      "pieceName": "@tuyendaovan6789/piece-pipedrive",
+                      "actionName": "update_lead",
+                      "inputUiInfo": {},
+                      "pieceVersion": "0.3.20"
+                    },
+                    "displayName": "update company settings of this lead"
+                  },
+                  "displayName": "build payload for update lead"
+                },
+                "displayName": "get detail of this lead"
+              }
+            },
+            "displayName": "count lead searched"
+          },
+          "displayName": "search leads by workspace_id"
+        },
+        "displayName": "parse webhook body"
+      },
+      "type": "WEBHOOK",
+      "settings": {
+        "inputUiInfo": {}
+      }
+    },
+    "valid": true
+  }
+}

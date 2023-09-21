@@ -1,0 +1,158 @@
+{
+  "id": "EfzhQRAvfAnM5X5LM2g8w",
+  "name": "update country/lead_contact_status of this lead",
+  "description": "",
+  "tags": [],
+  "pieces": [
+    "@tuyendaovan6789/piece-pipedrive",
+    "@activepieces/piece-postgres"
+  ],
+  "pinnedOrder": null,
+  "blogUrl": "",
+  "template": {
+    "displayName": "update country/lead_contact_status of this lead",
+    "trigger": {
+      "name": "trigger",
+      "valid": true,
+      "displayName": "webhook trigger cdc workspaces",
+      "nextAction": {
+        "name": "step_1",
+        "type": "CODE",
+        "valid": true,
+        "settings": {
+          "input": {
+            "body": "{{trigger['body']}}"
+          },
+          "inputUiInfo": {},
+          "artifact": "UEsDBAoAAAAAAFIMNVfL6P4yTwAAAE8AAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIHJldHVybiBKU09OLnBhcnNlKGlucHV0cy5ib2R5KTsKfTsKUEsDBAoAAAAAAFIMNVcaUtEIHAAAABwAAAAMAAAAcGFja2FnZS5qc29uewogICJkZXBlbmRlbmNpZXMiOiB7CiAgfQp9ClBLAQIUAAoAAAAAAFIMNVfL6P4yTwAAAE8AAAAIAAAAAAAAAAAAAAAAAAAAAABpbmRleC50c1BLAQIUAAoAAAAAAFIMNVcaUtEIHAAAABwAAAAMAAAAAAAAAAAAAAAAAHUAAABwYWNrYWdlLmpzb25QSwUGAAAAAAIAAgBwAAAAuwAAAAAA"
+        },
+        "nextAction": {
+          "name": "step_3",
+          "type": "PIECE",
+          "valid": true,
+          "settings": {
+            "input": {
+              "auth": "{{connections['ichiba-pipedrive']}}",
+              "term": "{{step_1['id']}}",
+              "limit": "10",
+              "fields": "custom_fields",
+              "exact_match": true
+            },
+            "pieceName": "@tuyendaovan6789/piece-pipedrive",
+            "actionName": "search_lead",
+            "inputUiInfo": {},
+            "pieceVersion": "0.3.20"
+          },
+          "nextAction": {
+            "name": "step_4",
+            "type": "CODE",
+            "valid": true,
+            "settings": {
+              "input": {
+                "items": "{{step_3['items']}}"
+              },
+              "inputUiInfo": {},
+              "artifact": "UEsDBAoAAAAAALUMNVcGs6XaUAAAAFAAAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIHJldHVybiBpbnB1dHMuaXRlbXMubGVuZ3RoIHx8IDA7Cn07ClBLAwQKAAAAAAC1DDVXGlLRCBwAAAAcAAAADAAAAHBhY2thZ2UuanNvbnsKICAiZGVwZW5kZW5jaWVzIjogewogIH0KfQpQSwECFAAKAAAAAAC1DDVXBrOl2lAAAABQAAAACAAAAAAAAAAAAAAAAAAAAAAAaW5kZXgudHNQSwECFAAKAAAAAAC1DDVXGlLRCBwAAAAcAAAADAAAAAAAAAAAAAAAAAB2AAAAcGFja2FnZS5qc29uUEsFBgAAAAACAAIAcAAAALwAAAAAAA=="
+            },
+            "nextAction": {
+              "name": "step_5",
+              "type": "BRANCH",
+              "valid": true,
+              "settings": {
+                "conditions": [
+                  [
+                    {
+                      "operator": "NUMBER_IS_GREATER_THAN",
+                      "firstValue": "{{step_4}}",
+                      "secondValue": "0"
+                    }
+                  ]
+                ],
+                "inputUiInfo": {}
+              },
+              "displayName": "is exists lead",
+              "onSuccessAction": {
+                "name": "step_2",
+                "type": "BRANCH",
+                "valid": true,
+                "settings": {
+                  "conditions": [
+                    [
+                      {
+                        "operator": "BOOLEAN_IS_TRUE",
+                        "firstValue": "{{step_1['is_deleted']}}"
+                      }
+                    ]
+                  ],
+                  "inputUiInfo": {}
+                },
+                "displayName": "is delete action",
+                "onFailureAction": {
+                  "name": "step_7",
+                  "type": "PIECE",
+                  "valid": true,
+                  "settings": {
+                    "input": {
+                      "auth": "{{connections['ic-postgres']}}",
+                      "query": "SELECT\n    name\nFROM user_management.countries\nwhere code = '{{step_1['country_code']}}' AND sharding_id = '{{step_1['sharding_id']}}'\nLIMIT 1;",
+                      "query_timeout": "30000",
+                      "application_name": "activepieces",
+                      "connection_timeout_ms": "30000"
+                    },
+                    "pieceName": "@activepieces/piece-postgres",
+                    "actionName": "run-query",
+                    "inputUiInfo": {},
+                    "pieceVersion": "0.1.0"
+                  },
+                  "nextAction": {
+                    "name": "step_8",
+                    "type": "PIECE",
+                    "valid": true,
+                    "settings": {
+                      "input": {
+                        "id": "{{step_3['items'][0]['item']['id']}}",
+                        "auth": "{{connections['ichiba-pipedrive']}}",
+                        "company_country": "{{step_7[0]['name']}}"
+                      },
+                      "pieceName": "@tuyendaovan6789/piece-pipedrive",
+                      "actionName": "update_lead",
+                      "inputUiInfo": {},
+                      "pieceVersion": "0.3.20"
+                    },
+                    "displayName": "update company country of this lead"
+                  },
+                  "displayName": "get country name"
+                },
+                "onSuccessAction": {
+                  "name": "step_6",
+                  "type": "PIECE",
+                  "valid": true,
+                  "settings": {
+                    "input": {
+                      "id": "{{step_3['items'][0]['item']['id']}}",
+                      "auth": "{{connections['ichiba-pipedrive']}}",
+                      "lead_contact_status": 312
+                    },
+                    "pieceName": "@tuyendaovan6789/piece-pipedrive",
+                    "actionName": "update_lead",
+                    "inputUiInfo": {},
+                    "pieceVersion": "0.3.20"
+                  },
+                  "displayName": "update lead_contact_status to dead"
+                }
+              }
+            },
+            "displayName": "count lead searched"
+          },
+          "displayName": "search leads by workspace_id"
+        },
+        "displayName": "parse webhook body"
+      },
+      "type": "WEBHOOK",
+      "settings": {
+        "inputUiInfo": {}
+      }
+    },
+    "valid": true
+  }
+}

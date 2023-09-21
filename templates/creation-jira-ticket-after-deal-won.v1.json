@@ -1,6 +1,6 @@
 {
-  "id": "piGlIr81jZF9xZcLBHh17",
-  "name": "Creation Ticket Jira After Deal Won",
+  "id": "I8FqoajwFryLY1jfg7RAZ",
+  "name": "creation ticket jira after deal won",
   "description": "",
   "tags": [],
   "pieces": [
@@ -9,7 +9,7 @@
   "pinnedOrder": null,
   "blogUrl": "",
   "template": {
-    "displayName": "Creation Ticket Jira After Deal Won",
+    "displayName": "creation ticket jira after deal won",
     "trigger": {
       "name": "trigger",
       "valid": true,
@@ -30,6 +30,12 @@
               {
                 "operator": "EXISTS",
                 "firstValue": "{{trigger['body']['current']['2de75e031fcbf690575f6c4ff3e0ec5bbe7579ff']}}"
+              },
+              {
+                "operator": "TEXT_DOES_NOT_CONTAIN",
+                "firstValue": "{{trigger['body']['previous']['status']}}",
+                "secondValue": "won",
+                "caseSensitive": false
               }
             ]
           ],
@@ -55,23 +61,7 @@
               "input": {
                 "url": "https://ichiba.atlassian.net/rest/api/3/issue",
                 "body": {
-                  "fields": {
-                    "labels": [
-                      "Pipedrive-Implement-Request"
-                    ],
-                    "project": {
-                      "key": "CS"
-                    },
-                    "summary": "{{step_2}}",
-                    "issuetype": {
-                      "id": 10074
-                    },
-                    "description": {
-                      "type": "doc",
-                      "content": [],
-                      "version": 1
-                    }
-                  }
+                  "body": "{\r\n  \"fields\": {\r\n    \"labels\": [\r\n      \"Pipedrive-Implement-Request\"\r\n    ],\r\n    \"project\": {\r\n      \"key\": \"CS\"\r\n    },\r\n    \"summary\": \"{{step_2}}\",\r\n    \"issuetype\": {\r\n      \"id\": 10074\r\n    },\r\n    \"description\": {\r\n      \"type\": \"doc\",\r\n      \"content\": [],\r\n      \"version\": 1\r\n    }\r\n  }\r\n}"
                 },
                 "method": "POST",
                 "headers": {
@@ -85,7 +75,7 @@
               "pieceName": "@activepieces/piece-http",
               "actionName": "send_request",
               "inputUiInfo": {},
-              "pieceVersion": "0.3.2"
+              "pieceVersion": "0.3.7"
             },
             "displayName": "post jira ticket"
           },
