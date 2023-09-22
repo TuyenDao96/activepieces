@@ -1,5 +1,5 @@
 {
-  "id": "V5Pys7I5EGIiTANTRHhoQ",
+  "id": "VeBjoN1e0zlaoV4ho7ADu",
   "name": "update company configuration",
   "description": "",
   "tags": [],
@@ -40,7 +40,7 @@
             "pieceName": "@tuyendaovan6789/piece-pipedrive",
             "actionName": "search_lead",
             "inputUiInfo": {},
-            "pieceVersion": "0.3.20"
+            "pieceVersion": "~0.3.20"
           },
           "nextAction": {
             "name": "step_3",
@@ -82,7 +82,7 @@
                   "pieceName": "@tuyendaovan6789/piece-pipedrive",
                   "actionName": "get_detail_lead",
                   "inputUiInfo": {},
-                  "pieceVersion": "0.3.20"
+                  "pieceVersion": "~0.3.20"
                 },
                 "nextAction": {
                   "name": "step_6",
@@ -94,7 +94,7 @@
                       "old": "{{step_5}}"
                     },
                     "inputUiInfo": {},
-                    "artifact": "UEsDBAoAAAAAAEELNVet/Wd5zwIAAM8CAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIGNvbnN0IGNvbXBhbnlUeXBlTWFwID0gewogICAgICAgIDE6ICIyOTYiLAogICAgICAgIDI6ICIyOTciLAogICAgICAgIDM6ICIyOTgiLAogICAgICAgIDQ6ICIyOTkiLAogICAgICAgIDU6ICIzMDAiCiAgICB9OwogICAgY29uc3QgY29tcGFueV90eXBlID0gY29tcGFueVR5cGVNYXBbaW5wdXRzLm5ldy5jb21wYW55X3R5cGVdIHx8IG51bGw7CgogICAgY29uc3QgY29tcGFueVNpemVNYXAgPSB7CiAgICAgICAgMTogIjMwMSIsCiAgICAgICAgMjogIjMwMiIsCiAgICAgICAgMzogIjMwMyIsCiAgICAgICAgNDogIjMwNCIsCiAgICAgICAgNTogIjMwNCIKICAgIH07CiAgICBjb25zdCBjb21wYW55X3NpemUgPSBjb21wYW55U2l6ZU1hcFtpbnB1dHMubmV3LmNvbXBhbnlfc++/g+++rXplXSB8fCBudWxsOwogICAgCiAgICByZXR1cm4gewogICAgICAgICJ0aXRsZSI6IGlucHV0cy5uZXcubmFtZSwKICAgICAgICAiYWRkcmVzcyI6IGlucHV0cy5uZXcuYWRkcmVzcywKICAgICAgICAiY29tcGFueV9uYW1lIjogaW5wdXRzLm5ldy5jb21wYW55X25hbWUsCiAgICAgICAgImNvbXBhbnlfdHlwZSI6IGNvbXBhbnlfdHlwZSwKICAgICAgICAiY29tcGFueV9zaXplIjogY29tcGFueV9zaXplLAogICAgICAgICJwaG9uZV9udW1iZXIiOiBpbnB1dHMubmV3LnBob25lX251bWJlciwKICAgIH07Cn07ClBLAwQKAAAAAABBCzVXGlLRCBwAAAAcAAAADAAAAHBhY2thZ2UuanNvbnsKICAiZGVwZW5kZW5jaWVzIjogewogIH0KfQpQSwECFAAKAAAAAABBCzVXrf1nec8CAADPAgAACAAAAAAAAAAAAAAAAAAAAAAAaW5kZXgudHNQSwECFAAKAAAAAABBCzVXGlLRCBwAAAAcAAAADAAAAAAAAAAAAAAAAAD1AgAAcGFja2FnZS5qc29uUEsFBgAAAAACAAIAcAAAADsDAAAAAA=="
+                    "artifact": "UEsDBAoAAAAAAMwRNlf4h4crzwIAAM8CAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIGNvbnN0IGNvbXBhbnlUeXBlTWFwID0gewogICAgICAgIDE6ICIyOTYiLAogICAgICAgIDI6ICIyOTciLAogICAgICAgIDM6ICIyOTgiLAogICAgICAgIDQ6ICIyOTkiLAogICAgICAgIDU6ICIzMDAiCiAgICB9OwogICAgY29uc3QgY29tcGFueV90eXBlID0gY29tcGFueVR5cGVNYXBbaW5wdXRzLm5ldy5jb21wYW55X3R5cGVdIHx8IG51bGw7CgogICAgY29uc3QgY29tcGFueVNpemVNYXAgPSB7CiAgICAgICAgMTogIjMwMSIsCiAgICAgICAgMjogIjMwMiIsCiAgICAgICAgMzogIjMwMyIsCiAgICAgICAgNDogIjMwNCIsCiAgICAgICAgNTogIjMwNSIKICAgIH07CiAgICBjb25zdCBjb21wYW55X3NpemUgPSBjb21wYW55U2l6ZU1hcFtpbnB1dHMubmV3LmNvbXBhbnlfc++/g+++rXplXSB8fCBudWxsOwogICAgCiAgICByZXR1cm4gewogICAgICAgICJ0aXRsZSI6IGlucHV0cy5uZXcubmFtZSwKICAgICAgICAiYWRkcmVzcyI6IGlucHV0cy5uZXcuYWRkcmVzcywKICAgICAgICAiY29tcGFueV9uYW1lIjogaW5wdXRzLm5ldy5jb21wYW55X25hbWUsCiAgICAgICAgImNvbXBhbnlfdHlwZSI6IGNvbXBhbnlfdHlwZSwKICAgICAgICAiY29tcGFueV9zaXplIjogY29tcGFueV9zaXplLAogICAgICAgICJwaG9uZV9udW1iZXIiOiBpbnB1dHMubmV3LnBob25lX251bWJlciwKICAgIH07Cn07ClBLAwQKAAAAAADMETZXGlLRCBwAAAAcAAAADAAAAHBhY2thZ2UuanNvbnsKICAiZGVwZW5kZW5jaWVzIjogewogIH0KfQpQSwECFAAKAAAAAADMETZX+IeHK88CAADPAgAACAAAAAAAAAAAAAAAAAAAAAAAaW5kZXgudHNQSwECFAAKAAAAAADMETZXGlLRCBwAAAAcAAAADAAAAAAAAAAAAAAAAAD1AgAAcGFja2FnZS5qc29uUEsFBgAAAAACAAIAcAAAADsDAAAAAA=="
                   },
                   "nextAction": {
                     "name": "step_7",
@@ -113,7 +113,7 @@
                       "pieceName": "@tuyendaovan6789/piece-pipedrive",
                       "actionName": "update_lead",
                       "inputUiInfo": {},
-                      "pieceVersion": "0.3.20"
+                      "pieceVersion": "~0.3.20"
                     },
                     "displayName": "update company settings of this lead"
                   },
