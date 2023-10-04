@@ -126,7 +126,17 @@ export const updateLead = createAction({
                         }
                     ]
                 }
-            })
+            }),
+            delete_reason: Property.ShortText({
+                displayName: 'Delete Reason',
+                description: undefined,
+                required: false,
+            }),
+            note: Property.ShortText({
+                displayName: 'Notes',
+                description: undefined,
+                required: false,
+            }),
         },
         async run(context) {
             const configsWithoutAuthentication = { 
@@ -142,7 +152,9 @@ export const updateLead = createAction({
                 "27f2a8e17f2f551bbbccedc93ed711657f247eee": context.propsValue.company_phone_number,
                 "2802adb4d31cd05ae4fc112979fb965f06fcdcd2": context.propsValue.no_application,
                 "e09b19c024eb9711fbc84af5ca94e93e30428af8": context.propsValue.product_interest,
-                "cc2f527bccb5d9bd5ac1ba2a0c08682328fb5b2c": context.propsValue.lead_contact_status
+                "cc2f527bccb5d9bd5ac1ba2a0c08682328fb5b2c": context.propsValue.lead_contact_status,
+                "31abd17794c63e4bc9626b5bdaf89580105ec412": context.propsValue.delete_reason,
+                "af227fd28d2eff0321e7b662c9b3d7e2249f99a8": context.propsValue.note
             };
             const payload = removeEmptyAndBlankProperties(configsWithoutAuthentication);
 

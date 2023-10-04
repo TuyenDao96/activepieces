@@ -13,6 +13,9 @@ import { getDetailPerson } from './lib/actions/get-detail-person.action'
 import { searchLead } from './lib/actions/search-lead.action'
 import { searchPerson } from './lib/actions/search-person.action'
 import { updateLead } from './lib/actions/update-lead.action'
+import { searchDeal } from './lib/actions/search-deal.action';
+import { getDetailDeal } from './lib/actions/get-detail-deal.action';
+import { updateDeal } from './lib/actions/update-deal.action';
 
 export const pipedriveAuth = PieceAuth.OAuth2({
     description: "",
@@ -28,7 +31,7 @@ export const pipedrive = createPiece({
 	    minimumSupportedRelease: '0.5.0',
     logoUrl: 'https://cdn.activepieces.com/pieces/pipedrive.png',
     auth: pipedriveAuth,
-	actions: [addPerson, updatePerson, searchPerson, getDetailPerson, addOrganization, addLead, updateLead, searchLead, getDetailLead],
+	actions: [addPerson, updatePerson, searchPerson, getDetailPerson, addOrganization, addLead, updateLead, searchLead, getDetailLead, searchDeal, getDetailDeal, updateDeal],
 	authors: ['ashrafsamhouri', 'tuyendv'],
 	triggers: [newPerson, newDeal, newActivity, updatedPerson, updatedDeal],
 });

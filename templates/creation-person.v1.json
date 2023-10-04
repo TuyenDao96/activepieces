@@ -1,5 +1,5 @@
 {
-  "id": "VStErgc5XjQhWKIsmnyXs",
+  "id": "OcfmGWWXZkTJJrps5skiW",
   "name": "creation person",
   "description": "",
   "tags": [],
@@ -57,7 +57,7 @@
               "pieceName": "@tuyendaovan6789/piece-pipedrive",
               "actionName": "search_person",
               "inputUiInfo": {},
-              "pieceVersion": "0.3.20"
+              "pieceVersion": "0.3.23"
             },
             "nextAction": {
               "name": "step_18",
@@ -68,7 +68,7 @@
                   "items": "{{step_16['items']}}"
                 },
                 "inputUiInfo": {},
-                "artifact": "UEsDBAoAAAAAAPSONFcGs6XaUAAAAFAAAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIHJldHVybiBpbnB1dHMuaXRlbXMubGVuZ3RoIHx8IDA7Cn07ClBLAwQKAAAAAAD0jjRXGlLRCBwAAAAcAAAADAAAAHBhY2thZ2UuanNvbnsKICAiZGVwZW5kZW5jaWVzIjogewogIH0KfQpQSwECFAAKAAAAAAD0jjRXBrOl2lAAAABQAAAACAAAAAAAAAAAAAAAAAAAAAAAaW5kZXgudHNQSwECFAAKAAAAAAD0jjRXGlLRCBwAAAAcAAAADAAAAAAAAAAAAAAAAAB2AAAAcGFja2FnZS5qc29uUEsFBgAAAAACAAIAcAAAALwAAAAAAA=="
+                "artifact": "UEsDBAoAAAAAAFUQOlcGs6XaUAAAAFAAAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIHJldHVybiBpbnB1dHMuaXRlbXMubGVuZ3RoIHx8IDA7Cn07ClBLAwQKAAAAAABVEDpXGlLRCBwAAAAcAAAADAAAAHBhY2thZ2UuanNvbnsKICAiZGVwZW5kZW5jaWVzIjogewogIH0KfQpQSwECFAAKAAAAAABVEDpXBrOl2lAAAABQAAAACAAAAAAAAAAAAAAAAAAAAAAAaW5kZXgudHNQSwECFAAKAAAAAABVEDpXGlLRCBwAAAAcAAAADAAAAAAAAAAAAAAAAAB2AAAAcGFja2FnZS5qc29uUEsFBgAAAAACAAIAcAAAALwAAAAAAA=="
               },
               "nextAction": {
                 "name": "step_17",
@@ -95,12 +95,14 @@
                     "input": {
                       "id": "{{step_16['items'][0]['item']['id']}}",
                       "auth": "{{connections['ichiba-pipedrive']}}",
-                      "label": 314
+                      "note": "{{step_1['note']}}",
+                      "label": 314,
+                      "delete_reason": "{{step_1['delete_message']}}"
                     },
                     "pieceName": "@tuyendaovan6789/piece-pipedrive",
                     "actionName": "update_person",
                     "inputUiInfo": {},
-                    "pieceVersion": "0.3.20"
+                    "pieceVersion": "0.3.23"
                   },
                   "displayName": "update label delete of this person"
                 }
@@ -124,7 +126,7 @@
               "pieceName": "@tuyendaovan6789/piece-pipedrive",
               "actionName": "search_person",
               "inputUiInfo": {},
-              "pieceVersion": "0.3.20"
+              "pieceVersion": "0.3.23"
             },
             "nextAction": {
               "name": "step_4",
@@ -135,7 +137,7 @@
                   "items": "{{step_3['items']}}"
                 },
                 "inputUiInfo": {},
-                "artifact": "UEsDBAoAAAAAAIqJNFcGs6XaUAAAAFAAAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIHJldHVybiBpbnB1dHMuaXRlbXMubGVuZ3RoIHx8IDA7Cn07ClBLAwQKAAAAAACKiTRXGlLRCBwAAAAcAAAADAAAAHBhY2thZ2UuanNvbnsKICAiZGVwZW5kZW5jaWVzIjogewogIH0KfQpQSwECFAAKAAAAAACKiTRXBrOl2lAAAABQAAAACAAAAAAAAAAAAAAAAAAAAAAAaW5kZXgudHNQSwECFAAKAAAAAACKiTRXGlLRCBwAAAAcAAAADAAAAAAAAAAAAAAAAAB2AAAAcGFja2FnZS5qc29uUEsFBgAAAAACAAIAcAAAALwAAAAAAA=="
+                "artifact": "UEsDBAoAAAAAAFYQOlcGs6XaUAAAAFAAAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIHJldHVybiBpbnB1dHMuaXRlbXMubGVuZ3RoIHx8IDA7Cn07ClBLAwQKAAAAAABWEDpXGlLRCBwAAAAcAAAADAAAAHBhY2thZ2UuanNvbnsKICAiZGVwZW5kZW5jaWVzIjogewogIH0KfQpQSwECFAAKAAAAAABWEDpXBrOl2lAAAABQAAAACAAAAAAAAAAAAAAAAAAAAAAAaW5kZXgudHNQSwECFAAKAAAAAABWEDpXGlLRCBwAAAAcAAAADAAAAAAAAAAAAAAAAAB2AAAAcGFja2FnZS5qc29uUEsFBgAAAAACAAIAcAAAALwAAAAAAA=="
               },
               "nextAction": {
                 "name": "step_5",
@@ -208,7 +210,7 @@
                         "pieceName": "@tuyendaovan6789/piece-pipedrive",
                         "actionName": "add_person",
                         "inputUiInfo": {},
-                        "pieceVersion": "0.3.20"
+                        "pieceVersion": "0.3.23"
                       },
                       "displayName": "add person"
                     },
@@ -228,7 +230,7 @@
                     "pieceName": "@tuyendaovan6789/piece-pipedrive",
                     "actionName": "get_detail_person",
                     "inputUiInfo": {},
-                    "pieceVersion": "0.3.20"
+                    "pieceVersion": "0.3.23"
                   },
                   "nextAction": {
                     "name": "step_10",
@@ -257,7 +259,7 @@
                           "old": "{{step_8}}"
                         },
                         "inputUiInfo": {},
-                        "artifact": "UEsDBAoAAAAAAPqKNFftfHVzmQQAAJkEAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIGxldCBwaG9uZSA9IGlucHV0cy5vbGQucGhvbmUgfHwgW107CiAgICBsZXQgZmlyc3RfbmFtZSA9IG51bGw7CiAgICBsZXQgbGFzdF9uYW1lID0gbnVsbDsKICAgIGxldCBhY2NvdW50X3R5cGUgPSBpbnB1dHMubmV3LmFjY291bnRfdHlwZSA9PSAxID8gIjI3MiIgOiBpbnB1dHMubmV3LmFjY291bnRfdHlwZSA9PSAyID8gIjI3MSIgOiBudWxsOwogICAgbGV0IGdlbmRlciA9IGlucHV0cy5uZXcuZ2VuZGVyID09IDEgPyAiMjczIiA6IGlucHV0cy5uZXcuZ2VuZGVyID09IDIgPyAiMjc0IiA6IGlucHV0cy5uZXcuZ2VuZGVyID09IDMgPyAiMjc1IiA6IG51bGw7CgogICAgaWYgKGlucHV0cy5uZXcuZnVsbF9uYW1lICE9IG51bGwpIHsKICAgICAgICBmaXJzdF9uYW1lID0gaW5wdXRzLm5ldy5mdWxsX25hbWUuc3BsaXQoJyAnKS5zbGljZSgwLCAtMSkuam9pbignICcpOwogICAgICAgIGxhc3RfbmFtZSA9IGlucHV0cy5uZXcuZnVsbF9uYW1lLnNwbGl0KCcgJykuc2xpY2UoLTEpLmpvaW4oJyAnKTsKICAgIH0KCiAgICBpZiAocGhvbmUubGVuZ3RoID4gMCkgewogICAgICAgIHBob25lID0gcGhvbmUuZmlsdGVyKHggPT4geC52YWx1ZSAhPT0gbnVsbCAmJiB4LnZhbHVlICE9PSAiIik7CiAgICB9CgogICAgaWYgKGlucHV0cy5uZXcucGhvbmVfbnVtYmVyICE9IG51bGwgJiYgIXBob25lLm1hcCh4ID0+IHgudmFsdWUpLmluY2x1ZGVzKGlucHV0cy5uZXcucGhvbmVfbnVtYmVyKSkgewogICAgICAgIHBob25lLnB1c2goe3ZhbHVlOiBpbnB1dHMubmV3LnBob25lX251bWJlcn0pOwogICAgfQoKICAgIHJldHVybiB7CiAgICAgICAgIm5hbWUiOiBpbnB1dHMubmV3LmZ1bGxfbmFtZSwKICAgICAgICAiZmlyc3RfbmFtZSI6IGZpcnN0X25hbWUsCiAgICAgICAgImxhc3RfbmFtZSI6IGxhc3RfbmFtZSwKICAgICAgICAicGhvbmUiOiBwaG9uZSwKICAgICAgICAiYWNjb3VudF90eXBlIjogYWNjb3VudF90eXBlLAogICAgICAgICJiaXJ0aF9kYXkiOiBpbnB1dHMubmV3LmJpcnRoX2RheSAhPSBudWxsID8gaW5wdXRzLm5ldy5iaXJ0aF9kYXkgOiBpbnB1dHMub2xkWyJmYWFjYmM3NGFmZjI1Y2E2ZTg1MjFkMzA5NWU1NTBjMmUzMjNjYjc3Il0sCiAgICAgICAgImdlbmRlciI6IGdlbmRlcgogICAgfTsKfTsKUEsDBAoAAAAAAPqKNFcaUtEIHAAAABwAAAAMAAAAcGFja2FnZS5qc29uewogICJkZXBlbmRlbmNpZXMiOiB7CiAgfQp9ClBLAQIUAAoAAAAAAPqKNFftfHVzmQQAAJkEAAAIAAAAAAAAAAAAAAAAAAAAAABpbmRleC50c1BLAQIUAAoAAAAAAPqKNFcaUtEIHAAAABwAAAAMAAAAAAAAAAAAAAAAAL8EAABwYWNrYWdlLmpzb25QSwUGAAAAAAIAAgBwAAAABQUAAAAA"
+                        "artifact": "UEsDBAoAAAAAAFsQOlftfHVzmQQAAJkEAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIGxldCBwaG9uZSA9IGlucHV0cy5vbGQucGhvbmUgfHwgW107CiAgICBsZXQgZmlyc3RfbmFtZSA9IG51bGw7CiAgICBsZXQgbGFzdF9uYW1lID0gbnVsbDsKICAgIGxldCBhY2NvdW50X3R5cGUgPSBpbnB1dHMubmV3LmFjY291bnRfdHlwZSA9PSAxID8gIjI3MiIgOiBpbnB1dHMubmV3LmFjY291bnRfdHlwZSA9PSAyID8gIjI3MSIgOiBudWxsOwogICAgbGV0IGdlbmRlciA9IGlucHV0cy5uZXcuZ2VuZGVyID09IDEgPyAiMjczIiA6IGlucHV0cy5uZXcuZ2VuZGVyID09IDIgPyAiMjc0IiA6IGlucHV0cy5uZXcuZ2VuZGVyID09IDMgPyAiMjc1IiA6IG51bGw7CgogICAgaWYgKGlucHV0cy5uZXcuZnVsbF9uYW1lICE9IG51bGwpIHsKICAgICAgICBmaXJzdF9uYW1lID0gaW5wdXRzLm5ldy5mdWxsX25hbWUuc3BsaXQoJyAnKS5zbGljZSgwLCAtMSkuam9pbignICcpOwogICAgICAgIGxhc3RfbmFtZSA9IGlucHV0cy5uZXcuZnVsbF9uYW1lLnNwbGl0KCcgJykuc2xpY2UoLTEpLmpvaW4oJyAnKTsKICAgIH0KCiAgICBpZiAocGhvbmUubGVuZ3RoID4gMCkgewogICAgICAgIHBob25lID0gcGhvbmUuZmlsdGVyKHggPT4geC52YWx1ZSAhPT0gbnVsbCAmJiB4LnZhbHVlICE9PSAiIik7CiAgICB9CgogICAgaWYgKGlucHV0cy5uZXcucGhvbmVfbnVtYmVyICE9IG51bGwgJiYgIXBob25lLm1hcCh4ID0+IHgudmFsdWUpLmluY2x1ZGVzKGlucHV0cy5uZXcucGhvbmVfbnVtYmVyKSkgewogICAgICAgIHBob25lLnB1c2goe3ZhbHVlOiBpbnB1dHMubmV3LnBob25lX251bWJlcn0pOwogICAgfQoKICAgIHJldHVybiB7CiAgICAgICAgIm5hbWUiOiBpbnB1dHMubmV3LmZ1bGxfbmFtZSwKICAgICAgICAiZmlyc3RfbmFtZSI6IGZpcnN0X25hbWUsCiAgICAgICAgImxhc3RfbmFtZSI6IGxhc3RfbmFtZSwKICAgICAgICAicGhvbmUiOiBwaG9uZSwKICAgICAgICAiYWNjb3VudF90eXBlIjogYWNjb3VudF90eXBlLAogICAgICAgICJiaXJ0aF9kYXkiOiBpbnB1dHMubmV3LmJpcnRoX2RheSAhPSBudWxsID8gaW5wdXRzLm5ldy5iaXJ0aF9kYXkgOiBpbnB1dHMub2xkWyJmYWFjYmM3NGFmZjI1Y2E2ZTg1MjFkMzA5NWU1NTBjMmUzMjNjYjc3Il0sCiAgICAgICAgImdlbmRlciI6IGdlbmRlcgogICAgfTsKfTsKUEsDBAoAAAAAAFsQOlcaUtEIHAAAABwAAAAMAAAAcGFja2FnZS5qc29uewogICJkZXBlbmRlbmNpZXMiOiB7CiAgfQp9ClBLAQIUAAoAAAAAAFsQOlftfHVzmQQAAJkEAAAIAAAAAAAAAAAAAAAAAAAAAABpbmRleC50c1BLAQIUAAoAAAAAAFsQOlcaUtEIHAAAABwAAAAMAAAAAAAAAAAAAAAAAL8EAABwYWNrYWdlLmpzb25QSwUGAAAAAAIAAgBwAAAABQUAAAAA"
                       },
                       "nextAction": {
                         "name": "step_12",
@@ -279,7 +281,7 @@
                           "pieceName": "@tuyendaovan6789/piece-pipedrive",
                           "actionName": "update_person",
                           "inputUiInfo": {},
-                          "pieceVersion": "0.3.20"
+                          "pieceVersion": "0.3.23"
                         },
                         "nextAction": {
                           "name": "step_13",
@@ -314,7 +316,7 @@
                               "pieceName": "@tuyendaovan6789/piece-pipedrive",
                               "actionName": "add_organization",
                               "inputUiInfo": {},
-                              "pieceVersion": "0.3.20"
+                              "pieceVersion": "0.3.23"
                             },
                             "nextAction": {
                               "name": "step_15",
@@ -329,7 +331,7 @@
                                 "pieceName": "@tuyendaovan6789/piece-pipedrive",
                                 "actionName": "update_person",
                                 "inputUiInfo": {},
-                                "pieceVersion": "0.3.20"
+                                "pieceVersion": "0.3.23"
                               },
                               "displayName": "update organization of this person"
                             },

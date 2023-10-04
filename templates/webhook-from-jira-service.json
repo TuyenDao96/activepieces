@@ -1,0 +1,115 @@
+{
+  "id": "7v1qPlfEq8bsUxlbu51lB",
+  "name": "webhook from jira service",
+  "description": "",
+  "tags": [],
+  "pieces": [
+    "@tuyendaovan6789/piece-pipedrive"
+  ],
+  "pinnedOrder": null,
+  "blogUrl": "",
+  "template": {
+    "displayName": "webhook from jira service",
+    "trigger": {
+      "name": "trigger",
+      "valid": true,
+      "displayName": "webhook trigger",
+      "nextAction": {
+        "name": "step_1",
+        "type": "BRANCH",
+        "valid": true,
+        "settings": {
+          "conditions": [
+            [
+              {
+                "operator": "TEXT_CONTAINS",
+                "firstValue": "{{trigger['body']['issue']['fields']['project']['key']}}",
+                "secondValue": "CS",
+                "caseSensitive": false
+              }
+            ]
+          ],
+          "inputUiInfo": {}
+        },
+        "displayName": "filter CS project",
+        "onSuccessAction": {
+          "name": "step_2",
+          "type": "PIECE",
+          "valid": true,
+          "settings": {
+            "input": {
+              "auth": "{{connections['ichiba-pipedrive']}}",
+              "term": "{{trigger['body']['issue']['key']}}",
+              "limit": "10",
+              "fields": "custom_fields",
+              "status": "won",
+              "exact_match": true
+            },
+            "pieceName": "@tuyendaovan6789/piece-pipedrive",
+            "actionName": "search_deal",
+            "inputUiInfo": {},
+            "pieceVersion": "0.3.23"
+          },
+          "nextAction": {
+            "name": "step_4",
+            "type": "PIECE",
+            "valid": true,
+            "settings": {
+              "input": {
+                "id": "{{step_2['items'][0]['item']['id']}}",
+                "auth": "{{connections['ichiba-pipedrive']}}"
+              },
+              "pieceName": "@tuyendaovan6789/piece-pipedrive",
+              "actionName": "get_detail_deal",
+              "inputUiInfo": {},
+              "pieceVersion": "0.3.23"
+            },
+            "nextAction": {
+              "name": "step_3",
+              "type": "BRANCH",
+              "valid": true,
+              "settings": {
+                "conditions": [
+                  [
+                    {
+                      "operator": "TEXT_DOES_NOT_CONTAIN",
+                      "firstValue": "{{trigger['body']['issue']['fields']['status']['name']}}",
+                      "secondValue": "{{step_4['c7647863587a3d4f40dbb8dd57a23c2a56d4e5ed']}}",
+                      "caseSensitive": false
+                    }
+                  ]
+                ],
+                "inputUiInfo": {}
+              },
+              "displayName": "if status jira ticket changed",
+              "onSuccessAction": {
+                "name": "step_5",
+                "type": "PIECE",
+                "valid": true,
+                "settings": {
+                  "input": {
+                    "id": "{{step_4['id']}}",
+                    "auth": "{{connections['ichiba-pipedrive']}}",
+                    "implement_status": "{{trigger['body']['issue']['fields']['status']['name']}}"
+                  },
+                  "pieceName": "@tuyendaovan6789/piece-pipedrive",
+                  "actionName": "update_deal",
+                  "inputUiInfo": {},
+                  "pieceVersion": "0.3.23"
+                },
+                "displayName": "update implement status of deal"
+              }
+            },
+            "displayName": "get details of a deal"
+          },
+          "displayName": "search deal by jira ticket"
+        }
+      },
+      "type": "WEBHOOK",
+      "settings": {
+        "inputUiInfo": {}
+      }
+    },
+    "valid": true
+  }
+}

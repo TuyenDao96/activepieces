@@ -1,0 +1,117 @@
+{
+  "id": "CYBHn1TKHAP5ffAp5vAEd",
+  "name": "contact from book meeting",
+  "description": "",
+  "tags": [],
+  "pieces": [
+    "@activepieces/piece-calendly",
+    "@activepieces/piece-delay",
+    "@tuyendaovan6789/piece-pipedrive"
+  ],
+  "pinnedOrder": null,
+  "blogUrl": "",
+  "template": {
+    "displayName": "contact from book meeting",
+    "trigger": {
+      "name": "trigger",
+      "valid": true,
+      "displayName": "webhook of calendly",
+      "nextAction": {
+        "name": "step_1",
+        "type": "PIECE",
+        "valid": true,
+        "settings": {
+          "input": {
+            "unit": "minutes",
+            "delayFor": "1"
+          },
+          "pieceName": "@activepieces/piece-delay",
+          "actionName": "delayFor",
+          "inputUiInfo": {},
+          "pieceVersion": "0.3.1"
+        },
+        "nextAction": {
+          "name": "step_2",
+          "type": "PIECE",
+          "valid": true,
+          "settings": {
+            "input": {
+              "auth": "{{connections['ichiba-pipedrive']}}",
+              "term": "{{trigger['payload']['email']}}",
+              "limit": "10",
+              "fields": "email",
+              "exact_match": true
+            },
+            "pieceName": "@tuyendaovan6789/piece-pipedrive",
+            "actionName": "search_person",
+            "inputUiInfo": {},
+            "pieceVersion": "0.3.25"
+          },
+          "nextAction": {
+            "name": "step_3",
+            "type": "CODE",
+            "valid": true,
+            "settings": {
+              "input": {
+                "items": "{{step_2['items']}}"
+              },
+              "inputUiInfo": {},
+              "artifact": "UEsDBAoAAAAAAFJ5OlcGs6XaUAAAAFAAAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIHJldHVybiBpbnB1dHMuaXRlbXMubGVuZ3RoIHx8IDA7Cn07ClBLAwQKAAAAAABSeTpXGlLRCBwAAAAcAAAADAAAAHBhY2thZ2UuanNvbnsKICAiZGVwZW5kZW5jaWVzIjogewogIH0KfQpQSwECFAAKAAAAAABSeTpXBrOl2lAAAABQAAAACAAAAAAAAAAAAAAAAAAAAAAAaW5kZXgudHNQSwECFAAKAAAAAABSeTpXGlLRCBwAAAAcAAAADAAAAAAAAAAAAAAAAAB2AAAAcGFja2FnZS5qc29uUEsFBgAAAAACAAIAcAAAALwAAAAAAA=="
+            },
+            "nextAction": {
+              "name": "step_4",
+              "type": "BRANCH",
+              "valid": true,
+              "settings": {
+                "conditions": [
+                  [
+                    {
+                      "operator": "NUMBER_IS_GREATER_THAN",
+                      "firstValue": "{{step_3}}",
+                      "secondValue": "0"
+                    }
+                  ]
+                ],
+                "inputUiInfo": {}
+              },
+              "displayName": "if exists persons",
+              "onSuccessAction": {
+                "name": "step_5",
+                "type": "PIECE",
+                "valid": true,
+                "settings": {
+                  "input": {
+                    "id": "{{step_2['items'][0]['item']['id']}}",
+                    "auth": "{{connections['ichiba-pipedrive']}}",
+                    "source": "Book Meeting",
+                    "product_interest": "{{trigger['payload']['questions_and_answers'][0]['answer']}}"
+                  },
+                  "pieceName": "@tuyendaovan6789/piece-pipedrive",
+                  "actionName": "update_person",
+                  "inputUiInfo": {},
+                  "pieceVersion": "0.3.25"
+                },
+                "displayName": "update person"
+              }
+            },
+            "displayName": "count person searched"
+          },
+          "displayName": "search persons by email"
+        },
+        "displayName": "delay 1 minutes"
+      },
+      "type": "PIECE_TRIGGER",
+      "settings": {
+        "pieceName": "@activepieces/piece-calendly",
+        "pieceVersion": "0.3.1",
+        "triggerName": "invitee_created",
+        "input": {
+          "auth": "{{connections['ic-calendly']}}",
+          "scope": "user"
+        },
+        "inputUiInfo": {}
+      }
+    },
+    "valid": true
+  }
+}

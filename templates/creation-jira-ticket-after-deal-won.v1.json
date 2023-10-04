@@ -1,10 +1,11 @@
 {
-  "id": "I8FqoajwFryLY1jfg7RAZ",
+  "id": "hRaEI9TXsmxQ7YiyJ3i4a",
   "name": "creation ticket jira after deal won",
   "description": "",
   "tags": [],
   "pieces": [
-    "@activepieces/piece-http"
+    "@activepieces/piece-http",
+    "@tuyendaovan6789/piece-pipedrive"
   ],
   "pinnedOrder": null,
   "blogUrl": "",
@@ -15,72 +16,116 @@
       "valid": true,
       "displayName": "webhook trigger deal won",
       "nextAction": {
-        "name": "step_1",
-        "type": "BRANCH",
+        "name": "step_4",
+        "type": "CODE",
         "valid": true,
         "settings": {
-          "conditions": [
-            [
-              {
-                "operator": "TEXT_CONTAINS",
-                "firstValue": "{{trigger['body']['current']['status']}}",
-                "secondValue": "won",
-                "caseSensitive": false
-              },
-              {
-                "operator": "EXISTS",
-                "firstValue": "{{trigger['body']['current']['2de75e031fcbf690575f6c4ff3e0ec5bbe7579ff']}}"
-              },
-              {
-                "operator": "TEXT_DOES_NOT_CONTAIN",
-                "firstValue": "{{trigger['body']['previous']['status']}}",
-                "secondValue": "won",
-                "caseSensitive": false
-              }
-            ]
-          ],
-          "inputUiInfo": {}
+          "input": {
+            "current": "{{trigger['body']['current']}}",
+            "previous": "{{trigger['body']['previous']}}"
+          },
+          "inputUiInfo": {},
+          "artifact": "UEsDBAoAAAAAAGFTOVdgWAQWCwEAAAsBAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIHJldHVybiBpbnB1dHMuY3VycmVudC5zdGF0dXMgPT09ICd3b24nICYmIGlucHV0cy5jdXJyZW50WycyZGU3NWUwMzFmY2JmNjkwNTc1ZjZjNGZmM2UwZWM1YmJlNzU3OWZmJ10gJiYgKGlucHV0cy5wcmV2aW91cy5zdGF0dXMgIT09IGlucHV0cy5jdXJyZW50LnN0YXR1cyB8fCAhaW5wdXRzLnByZXZpb3VzWycyZGU3NWUwMzFmY2JmNjkwNTc1ZjZjNGZmM2UwZWM1YmJlNzU3OWZmJ10pOwp9OwpQSwMECgAAAAAAYVM5VxpS0QgcAAAAHAAAAAwAAABwYWNrYWdlLmpzb257CiAgImRlcGVuZGVuY2llcyI6IHsKICB9Cn0KUEsBAhQACgAAAAAAYVM5V2BYBBYLAQAACwEAAAgAAAAAAAAAAAAAAAAAAAAAAGluZGV4LnRzUEsBAhQACgAAAAAAYVM5VxpS0QgcAAAAHAAAAAwAAAAAAAAAAAAAAAAAMQEAAHBhY2thZ2UuanNvblBLBQYAAAAAAgACAHAAAAB3AQAAAAA="
         },
-        "displayName": "is won deal",
-        "onSuccessAction": {
-          "name": "step_2",
-          "type": "CODE",
+        "nextAction": {
+          "name": "step_1",
+          "type": "BRANCH",
           "valid": true,
           "settings": {
-            "input": {
-              "title": "{{trigger['body']['current']['title']}}"
-            },
-            "inputUiInfo": {},
-            "artifact": "UEsDBAoAAAAAAHUPLVcGy3otWwAAAFsAAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIHJldHVybiBgJHtpbnB1dHMudGl0bGV9IEltcGxlbWVudCBSZXF1ZXN0YDsKfTsKUEsDBAoAAAAAAHUPLVcaUtEIHAAAABwAAAAMAAAAcGFja2FnZS5qc29uewogICJkZXBlbmRlbmNpZXMiOiB7CiAgfQp9ClBLAQIUAAoAAAAAAHUPLVcGy3otWwAAAFsAAAAIAAAAAAAAAAAAAAAAAAAAAABpbmRleC50c1BLAQIUAAoAAAAAAHUPLVcaUtEIHAAAABwAAAAMAAAAAAAAAAAAAAAAAIEAAABwYWNrYWdlLmpzb25QSwUGAAAAAAIAAgBwAAAAxwAAAAAA"
+            "conditions": [
+              [
+                {
+                  "operator": "BOOLEAN_IS_TRUE",
+                  "firstValue": "{{step_4}}"
+                }
+              ]
+            ],
+            "inputUiInfo": {}
           },
-          "nextAction": {
-            "name": "step_3",
-            "type": "PIECE",
+          "displayName": "if is won deal",
+          "onSuccessAction": {
+            "name": "step_2",
+            "type": "CODE",
             "valid": true,
             "settings": {
               "input": {
-                "url": "https://ichiba.atlassian.net/rest/api/3/issue",
-                "body": {
-                  "body": "{\r\n  \"fields\": {\r\n    \"labels\": [\r\n      \"Pipedrive-Implement-Request\"\r\n    ],\r\n    \"project\": {\r\n      \"key\": \"CS\"\r\n    },\r\n    \"summary\": \"{{step_2}}\",\r\n    \"issuetype\": {\r\n      \"id\": 10074\r\n    },\r\n    \"description\": {\r\n      \"type\": \"doc\",\r\n      \"content\": [],\r\n      \"version\": 1\r\n    }\r\n  }\r\n}"
-                },
-                "method": "POST",
-                "headers": {
-                  "Content-Type": "application/json",
-                  "Authorization": "Basic c29ucHRAaWNoaWJhLnZuOkFUQVRUM3hGZkdGME92YkQzWmVOSV9KWHdPc09xU0hrZXk1QkdWX2x3V0lnS1dlOFNMUkhOYmNlQVRkaFNaX19YNEwwTW1rdFZUNndNbTFmd0MwSDctQnlwTTJSWHNTQUFIanhwUzdNX2FLQlU0dnBrSUxXaWpkTzRUMXZMLUpvYWlQY3IySUY4aV9mcTBGbDFMVVo2VC0wNG9YdHFrV3VubzdFTGlfRjVjXzVOU1Zwdlhtb0MxTT0yOTY3MjMzQw=="
-                },
-                "timeout": "30",
-                "failsafe": false,
-                "queryParams": {}
+                "title": "{{trigger['body']['current']['title']}}"
               },
-              "pieceName": "@activepieces/piece-http",
-              "actionName": "send_request",
               "inputUiInfo": {},
-              "pieceVersion": "0.3.7"
+              "artifact": "UEsDBAoAAAAAAOBROVcGy3otWwAAAFsAAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIHJldHVybiBgJHtpbnB1dHMudGl0bGV9IEltcGxlbWVudCBSZXF1ZXN0YDsKfTsKUEsDBAoAAAAAAOBROVcaUtEIHAAAABwAAAAMAAAAcGFja2FnZS5qc29uewogICJkZXBlbmRlbmNpZXMiOiB7CiAgfQp9ClBLAQIUAAoAAAAAAOBROVcGy3otWwAAAFsAAAAIAAAAAAAAAAAAAAAAAAAAAABpbmRleC50c1BLAQIUAAoAAAAAAOBROVcaUtEIHAAAABwAAAAMAAAAAAAAAAAAAAAAAIEAAABwYWNrYWdlLmpzb25QSwUGAAAAAAIAAgBwAAAAxwAAAAAA"
             },
-            "displayName": "post jira ticket"
-          },
-          "displayName": "set title ticket"
-        }
+            "nextAction": {
+              "name": "step_3",
+              "type": "PIECE",
+              "valid": true,
+              "settings": {
+                "input": {
+                  "url": "https://ichiba.atlassian.net/rest/api/3/issue",
+                  "body": {
+                    "fields": {
+                      "labels": [
+                        "Pipedrive-Implement-Request"
+                      ],
+                      "project": {
+                        "key": "CS"
+                      },
+                      "summary": "{{step_2}}",
+                      "issuetype": {
+                        "id": 10074
+                      },
+                      "description": {
+                        "type": "doc",
+                        "content": [],
+                        "version": 1
+                      },
+                      "customfield_10189": "{{trigger['body']['current']['2de75e031fcbf690575f6c4ff3e0ec5bbe7579ff']}}",
+                      "customfield_10190": "{{trigger['body']['current']['ba2406909c367c64f898f85e0bb522848ee012d8']}}",
+                      "customfield_10191": "{{trigger['body']['current']['ad95e4887bb6303932fa5ee04a7e556a4b606a86']}}",
+                      "customfield_10192": "{{trigger['body']['current']['27f2a8e17f2f551bbbccedc93ed711657f247eee']}}",
+                      "customfield_10194": "{{trigger['body']['current']['d81982fd09aecc7be701d7553364dc35b4b7c16b']}}",
+                      "customfield_10195": "{{trigger['body']['current']['person_name']}}",
+                      "customfield_10196": "{{trigger['body']['current']['title']}}",
+                      "customfield_10197": "{{trigger['body']['current']['a3772ae131698fadec89eb88b345f26aff7b5fc7']}}"
+                    }
+                  },
+                  "method": "POST",
+                  "headers": {
+                    "Content-Type": "application/json",
+                    "Authorization": "Basic c29ucHRAaWNoaWJhLnZuOkFUQVRUM3hGZkdGME92YkQzWmVOSV9KWHdPc09xU0hrZXk1QkdWX2x3V0lnS1dlOFNMUkhOYmNlQVRkaFNaX19YNEwwTW1rdFZUNndNbTFmd0MwSDctQnlwTTJSWHNTQUFIanhwUzdNX2FLQlU0dnBrSUxXaWpkTzRUMXZMLUpvYWlQY3IySUY4aV9mcTBGbDFMVVo2VC0wNG9YdHFrV3VubzdFTGlfRjVjXzVOU1Zwdlhtb0MxTT0yOTY3MjMzQw=="
+                  },
+                  "timeout": "30",
+                  "failsafe": false,
+                  "queryParams": {}
+                },
+                "pieceName": "@activepieces/piece-http",
+                "actionName": "send_request",
+                "inputUiInfo": {},
+                "pieceVersion": "~0.3.7"
+              },
+              "nextAction": {
+                "name": "step_5",
+                "type": "PIECE",
+                "valid": true,
+                "settings": {
+                  "input": {
+                    "id": "{{trigger['body']['current']['id']}}",
+                    "auth": "{{connections['ichiba-pipedrive']}}",
+                    "jira_ticket_id": "{{step_3['body']['key']}}",
+                    "implement_status": "To Do"
+                  },
+                  "pieceName": "@tuyendaovan6789/piece-pipedrive",
+                  "actionName": "update_deal",
+                  "inputUiInfo": {},
+                  "pieceVersion": "~0.3.23"
+                },
+                "displayName": "update jira link of this deal"
+              },
+              "displayName": "post jira ticket"
+            },
+            "displayName": "set title ticket"
+          }
+        },
+        "displayName": "is won deal"
       },
       "type": "WEBHOOK",
       "settings": {

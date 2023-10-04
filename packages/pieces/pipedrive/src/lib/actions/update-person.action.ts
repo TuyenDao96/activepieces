@@ -109,7 +109,48 @@ export const updatePerson = createAction({
                         }
                     ]
                 }
-            })
+            }),
+            delete_reason: Property.ShortText({
+                displayName: 'Delete Reason',
+                description: undefined,
+                required: false,
+            }),
+            note: Property.ShortText({
+                displayName: 'Notes',
+                description: undefined,
+                required: false,
+            }),
+            product_interest: Property.ShortText({
+                displayName: 'Product Interest',
+                description: undefined,
+                required: false,
+            }),
+            source: Property.StaticDropdown<string>({
+                displayName: "Source",
+                description: "Source",
+                required: false,
+                options: {
+                    disabled: false,
+                    options: [
+                        {
+                            label: "Book Meeting",
+                            value: "Book Meeting"
+                        },
+                        {
+                            label: "Contact Form",
+                            value: "Contact Form"
+                        },
+                        {
+                            label: "Org",
+                            value: "Org"
+                        },
+                        {
+                            label: "Linkedin",
+                            value: "Linkedin"
+                        }
+                    ]
+                }
+            }),
         },
         async run(context) {
             const configsWithoutAuthentication = { 
@@ -125,7 +166,12 @@ export const updatePerson = createAction({
                 "3fa02e82867c521810ec08427b7381164c6c2ea6": context.propsValue.facebook_account,
                 "5ebaeac59aa3042da9364cc789ca775efe5241e3": context.propsValue.zalo_account,
                 "c6e88ba97483902c66ed48f68441a39a8b3305b3": context.propsValue.country,
-                "e5c52ce296170ed25f8ea6af10638d63e31f6651": context.propsValue.google_account
+                "e5c52ce296170ed25f8ea6af10638d63e31f6651": context.propsValue.google_account,
+                "ebdaa3c9f968e545755c7d25441f0d9c78d60f37": context.propsValue.delete_reason,
+                "c994b4729c7fe4ac5714f3d6a2def7c9ff280d4a": context.propsValue.note,
+                "cbd0b00d8b3fd725876d73febc782ac230dd17cd": context.propsValue.product_interest,
+                "df17db22d940960b43ba3f30b4d39e0f2e2bdff0": context.propsValue.source
+
             };
             const payload = removeEmptyAndBlankProperties(configsWithoutAuthentication);
 
