@@ -1,9 +1,10 @@
 {
-  "id": "FsaAKV830gyHSyCMf8WaC",
+  "id": "vQBhoJ7TbBcA6ZZBn7Kr2",
   "name": "person with social login",
   "description": "",
   "tags": [],
   "pieces": [
+    "@activepieces/piece-delay",
     "@activepieces/piece-postgres",
     "@tuyendaovan6789/piece-pipedrive"
   ],
@@ -16,143 +17,159 @@
       "valid": true,
       "displayName": "Webhook Trigger",
       "nextAction": {
-        "name": "step_1",
-        "type": "CODE",
+        "name": "step_9",
+        "type": "PIECE",
         "valid": true,
         "settings": {
           "input": {
-            "body": "{{trigger['body']}}"
+            "unit": "minutes",
+            "delayFor": "1"
           },
+          "pieceName": "@activepieces/piece-delay",
+          "actionName": "delayFor",
           "inputUiInfo": {},
-          "artifact": "UEsDBAoAAAAAAAmQNVfL6P4yTwAAAE8AAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIHJldHVybiBKU09OLnBhcnNlKGlucHV0cy5ib2R5KTsKfTsKUEsDBAoAAAAAAAmQNVcaUtEIHAAAABwAAAAMAAAAcGFja2FnZS5qc29uewogICJkZXBlbmRlbmNpZXMiOiB7CiAgfQp9ClBLAQIUAAoAAAAAAAmQNVfL6P4yTwAAAE8AAAAIAAAAAAAAAAAAAAAAAAAAAABpbmRleC50c1BLAQIUAAoAAAAAAAmQNVcaUtEIHAAAABwAAAAMAAAAAAAAAAAAAAAAAHUAAABwYWNrYWdlLmpzb25QSwUGAAAAAAIAAgBwAAAAuwAAAAAA"
+          "pieceVersion": "0.3.1"
         },
         "nextAction": {
-          "name": "step_2",
-          "type": "BRANCH",
+          "name": "step_1",
+          "type": "CODE",
           "valid": true,
           "settings": {
-            "conditions": [
-              [
-                {
-                  "operator": "TEXT_DOES_NOT_CONTAIN",
-                  "firstValue": "{{step_1['__op']}}",
-                  "secondValue": "d",
-                  "caseSensitive": false
-                }
-              ]
-            ],
-            "inputUiInfo": {}
+            "input": {
+              "body": "{{trigger['body']}}"
+            },
+            "inputUiInfo": {},
+            "artifact": "UEsDBAoAAAAAADwoOlfL6P4yTwAAAE8AAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIHJldHVybiBKU09OLnBhcnNlKGlucHV0cy5ib2R5KTsKfTsKUEsDBAoAAAAAADwoOlcaUtEIHAAAABwAAAAMAAAAcGFja2FnZS5qc29uewogICJkZXBlbmRlbmNpZXMiOiB7CiAgfQp9ClBLAQIUAAoAAAAAADwoOlfL6P4yTwAAAE8AAAAIAAAAAAAAAAAAAAAAAAAAAABpbmRleC50c1BLAQIUAAoAAAAAADwoOlcaUtEIHAAAABwAAAAMAAAAAAAAAAAAAAAAAHUAAABwYWNrYWdlLmpzb25QSwUGAAAAAAIAAgBwAAAAuwAAAAAA"
           },
-          "displayName": "is not delete action",
-          "onSuccessAction": {
-            "name": "step_4",
-            "type": "PIECE",
+          "nextAction": {
+            "name": "step_2",
+            "type": "BRANCH",
             "valid": true,
             "settings": {
-              "input": {
-                "auth": "{{connections['ic-postgres']}}",
-                "query": "SELECT\n    email\nFROM user_management.user_profiles\nWHERE id = '{{step_1['user_id']}}'\nLIMIT 1;",
-                "query_timeout": "30000",
-                "application_name": "activepices",
-                "connection_timeout_ms": "30000"
-              },
-              "pieceName": "@activepieces/piece-postgres",
-              "actionName": "run-query",
-              "inputUiInfo": {},
-              "pieceVersion": "0.1.0"
+              "conditions": [
+                [
+                  {
+                    "operator": "TEXT_DOES_NOT_CONTAIN",
+                    "firstValue": "{{step_1['__op']}}",
+                    "secondValue": "d",
+                    "caseSensitive": false
+                  }
+                ]
+              ],
+              "inputUiInfo": {}
             },
-            "nextAction": {
-              "name": "step_5",
+            "displayName": "is not delete action",
+            "onSuccessAction": {
+              "name": "step_4",
               "type": "PIECE",
               "valid": true,
               "settings": {
                 "input": {
-                  "auth": "{{connections['ichiba-pipedrive']}}",
-                  "term": "{{step_4[0]['email']}}",
-                  "limit": "10",
-                  "fields": "email",
-                  "exact_match": true
+                  "auth": "{{connections['ic-postgres']}}",
+                  "query": "SELECT\n    email\nFROM user_management.user_profiles\nWHERE id = '{{step_1['user_id']}}'\nLIMIT 1;",
+                  "query_timeout": "30000",
+                  "application_name": "activepices",
+                  "connection_timeout_ms": "30000"
                 },
-                "pieceName": "@tuyendaovan6789/piece-pipedrive",
-                "actionName": "search_person",
+                "pieceName": "@activepieces/piece-postgres",
+                "actionName": "run-query",
                 "inputUiInfo": {},
-                "pieceVersion": "0.3.20"
+                "pieceVersion": "0.1.0"
               },
               "nextAction": {
-                "name": "step_6",
-                "type": "CODE",
+                "name": "step_5",
+                "type": "PIECE",
                 "valid": true,
                 "settings": {
                   "input": {
-                    "items": "{{step_5['items']}}"
+                    "auth": "{{connections['ichiba-pipedrive']}}",
+                    "term": "{{step_4[0]['email']}}",
+                    "limit": "10",
+                    "fields": "email",
+                    "exact_match": true
                   },
+                  "pieceName": "@tuyendaovan6789/piece-pipedrive",
+                  "actionName": "search_person",
                   "inputUiInfo": {},
-                  "artifact": "UEsDBAoAAAAAAAKPNVcGs6XaUAAAAFAAAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIHJldHVybiBpbnB1dHMuaXRlbXMubGVuZ3RoIHx8IDA7Cn07ClBLAwQKAAAAAAACjzVXGlLRCBwAAAAcAAAADAAAAHBhY2thZ2UuanNvbnsKICAiZGVwZW5kZW5jaWVzIjogewogIH0KfQpQSwECFAAKAAAAAAACjzVXBrOl2lAAAABQAAAACAAAAAAAAAAAAAAAAAAAAAAAaW5kZXgudHNQSwECFAAKAAAAAAACjzVXGlLRCBwAAAAcAAAADAAAAAAAAAAAAAAAAAB2AAAAcGFja2FnZS5qc29uUEsFBgAAAAACAAIAcAAAALwAAAAAAA=="
+                  "pieceVersion": "0.3.23"
                 },
                 "nextAction": {
-                  "name": "step_7",
-                  "type": "BRANCH",
+                  "name": "step_6",
+                  "type": "CODE",
                   "valid": true,
                   "settings": {
-                    "conditions": [
-                      [
-                        {
-                          "operator": "NUMBER_IS_LESS_THAN",
-                          "firstValue": "{{step_6}}",
-                          "secondValue": "1"
-                        }
-                      ]
-                    ],
-                    "inputUiInfo": {}
+                    "input": {
+                      "items": "{{step_5['items']}}"
+                    },
+                    "inputUiInfo": {},
+                    "artifact": "UEsDBAoAAAAAAAKPNVcGs6XaUAAAAFAAAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIHJldHVybiBpbnB1dHMuaXRlbXMubGVuZ3RoIHx8IDA7Cn07ClBLAwQKAAAAAAACjzVXGlLRCBwAAAAcAAAADAAAAHBhY2thZ2UuanNvbnsKICAiZGVwZW5kZW5jaWVzIjogewogIH0KfQpQSwECFAAKAAAAAAACjzVXBrOl2lAAAABQAAAACAAAAAAAAAAAAAAAAAAAAAAAaW5kZXgudHNQSwECFAAKAAAAAAACjzVXGlLRCBwAAAAcAAAADAAAAAAAAAAAAAAAAAB2AAAAcGFja2FnZS5qc29uUEsFBgAAAAACAAIAcAAAALwAAAAAAA=="
                   },
-                  "displayName": "person not found",
-                  "onFailureAction": {
-                    "name": "step_3",
-                    "type": "PIECE",
+                  "nextAction": {
+                    "name": "step_7",
+                    "type": "BRANCH",
                     "valid": true,
                     "settings": {
-                      "input": {
-                        "auth": "{{connections['ic-postgres']}}",
-                        "query": "SELECT\n    facebook, google, zalo\nFROM crosstab(\n    'SELECT\n        ''{{step_1['user_id']}}'' as user_id ,a.social_media, ul.provider_display_name\n    FROM (SELECT unnest(ARRAY[''Facebook'', ''Google'', ''Zalo'']) AS social_media) a\n    LEFT JOIN identity.user_logins ul ON a.social_media = ul.login_provider AND ul.user_id = ''{{step_1['user_id']}}''\n    ORDER BY 1,2'\n) AS final_result(id text, facebook text, google text, zalo text);",
-                        "query_timeout": "30000",
-                        "application_name": "activepieces",
-                        "connection_timeout_ms": "30000"
-                      },
-                      "pieceName": "@activepieces/piece-postgres",
-                      "actionName": "run-query",
-                      "inputUiInfo": {},
-                      "pieceVersion": "0.1.0"
+                      "conditions": [
+                        [
+                          {
+                            "operator": "NUMBER_IS_LESS_THAN",
+                            "firstValue": "{{step_6}}",
+                            "secondValue": "1"
+                          }
+                        ]
+                      ],
+                      "inputUiInfo": {}
                     },
-                    "nextAction": {
-                      "name": "step_8",
+                    "displayName": "person not found",
+                    "onFailureAction": {
+                      "name": "step_3",
                       "type": "PIECE",
                       "valid": true,
                       "settings": {
                         "input": {
-                          "id": "{{step_5['items'][0]['item']['id']}}",
-                          "auth": "{{connections['ichiba-pipedrive']}}",
-                          "zalo_account": "{{step_3[0]['zalo']}}",
-                          "google_account": "{{step_3[0]['google']}}",
-                          "facebook_account": "{{step_3[0]['facebook']}}"
+                          "auth": "{{connections['ic-postgres']}}",
+                          "query": "SELECT\n    facebook, google, zalo\nFROM crosstab(\n    'SELECT\n        ''{{step_1['user_id']}}'' as user_id ,a.social_media, ul.provider_display_name\n    FROM (SELECT unnest(ARRAY[''Facebook'', ''Google'', ''Zalo'']) AS social_media) a\n    LEFT JOIN identity.user_logins ul ON a.social_media = ul.login_provider AND ul.user_id = ''{{step_1['user_id']}}''\n    ORDER BY 1,2'\n) AS final_result(id text, facebook text, google text, zalo text);",
+                          "query_timeout": "30000",
+                          "application_name": "activepieces",
+                          "connection_timeout_ms": "30000"
                         },
-                        "pieceName": "@tuyendaovan6789/piece-pipedrive",
-                        "actionName": "update_person",
+                        "pieceName": "@activepieces/piece-postgres",
+                        "actionName": "run-query",
                         "inputUiInfo": {},
-                        "pieceVersion": "0.3.20"
+                        "pieceVersion": "0.1.0"
                       },
-                      "displayName": "update social login of this person"
-                    },
-                    "displayName": "get social login of this person"
-                  }
+                      "nextAction": {
+                        "name": "step_8",
+                        "type": "PIECE",
+                        "valid": true,
+                        "settings": {
+                          "input": {
+                            "id": "{{step_5['items'][0]['item']['id']}}",
+                            "auth": "{{connections['ichiba-pipedrive']}}",
+                            "zalo_account": "{{step_3[0]['zalo']}}",
+                            "google_account": "{{step_3[0]['google']}}",
+                            "facebook_account": "{{step_3[0]['facebook']}}"
+                          },
+                          "pieceName": "@tuyendaovan6789/piece-pipedrive",
+                          "actionName": "update_person",
+                          "inputUiInfo": {},
+                          "pieceVersion": "0.3.23"
+                        },
+                        "displayName": "update social login of this person"
+                      },
+                      "displayName": "get social login of this person"
+                    }
+                  },
+                  "displayName": "count person searched"
                 },
-                "displayName": "count person searched"
+                "displayName": "search persons by email"
               },
-              "displayName": "search persons by email"
-            },
-            "displayName": "get email of this person"
-          }
+              "displayName": "get email of this person"
+            }
+          },
+          "displayName": "parse webhook body"
         },
-        "displayName": "parse webhook body"
+        "displayName": "Delay For"
       },
       "type": "WEBHOOK",
       "settings": {

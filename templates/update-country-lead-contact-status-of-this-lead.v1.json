@@ -1,5 +1,5 @@
 {
-  "id": "EfzhQRAvfAnM5X5LM2g8w",
+  "id": "YThDVK8fJUdxwsvYiIIFx",
   "name": "update country/lead_contact_status of this lead",
   "description": "",
   "tags": [],
@@ -24,7 +24,7 @@
             "body": "{{trigger['body']}}"
           },
           "inputUiInfo": {},
-          "artifact": "UEsDBAoAAAAAAFIMNVfL6P4yTwAAAE8AAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIHJldHVybiBKU09OLnBhcnNlKGlucHV0cy5ib2R5KTsKfTsKUEsDBAoAAAAAAFIMNVcaUtEIHAAAABwAAAAMAAAAcGFja2FnZS5qc29uewogICJkZXBlbmRlbmNpZXMiOiB7CiAgfQp9ClBLAQIUAAoAAAAAAFIMNVfL6P4yTwAAAE8AAAAIAAAAAAAAAAAAAAAAAAAAAABpbmRleC50c1BLAQIUAAoAAAAAAFIMNVcaUtEIHAAAABwAAAAMAAAAAAAAAAAAAAAAAHUAAABwYWNrYWdlLmpzb25QSwUGAAAAAAIAAgBwAAAAuwAAAAAA"
+          "artifact": "UEsDBAoAAAAAAA0XPVfL6P4yTwAAAE8AAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIHJldHVybiBKU09OLnBhcnNlKGlucHV0cy5ib2R5KTsKfTsKUEsDBAoAAAAAAA0XPVcaUtEIHAAAABwAAAAMAAAAcGFja2FnZS5qc29uewogICJkZXBlbmRlbmNpZXMiOiB7CiAgfQp9ClBLAQIUAAoAAAAAAA0XPVfL6P4yTwAAAE8AAAAIAAAAAAAAAAAAAAAAAAAAAABpbmRleC50c1BLAQIUAAoAAAAAAA0XPVcaUtEIHAAAABwAAAAMAAAAAAAAAAAAAAAAAHUAAABwYWNrYWdlLmpzb25QSwUGAAAAAAIAAgBwAAAAuwAAAAAA"
         },
         "nextAction": {
           "name": "step_3",
@@ -41,7 +41,7 @@
             "pieceName": "@tuyendaovan6789/piece-pipedrive",
             "actionName": "search_lead",
             "inputUiInfo": {},
-            "pieceVersion": "0.3.20"
+            "pieceVersion": "0.3.25"
           },
           "nextAction": {
             "name": "step_4",
@@ -117,7 +117,7 @@
                       "pieceName": "@tuyendaovan6789/piece-pipedrive",
                       "actionName": "update_lead",
                       "inputUiInfo": {},
-                      "pieceVersion": "0.3.20"
+                      "pieceVersion": "0.3.25"
                     },
                     "displayName": "update company country of this lead"
                   },
@@ -125,20 +125,35 @@
                 },
                 "onSuccessAction": {
                   "name": "step_6",
-                  "type": "PIECE",
+                  "type": "CODE",
                   "valid": true,
                   "settings": {
                     "input": {
-                      "id": "{{step_3['items'][0]['item']['id']}}",
-                      "auth": "{{connections['ichiba-pipedrive']}}",
-                      "lead_contact_status": 312
+                      "reason_delete": "{{step_1['reason_delete']}}"
                     },
-                    "pieceName": "@tuyendaovan6789/piece-pipedrive",
-                    "actionName": "update_lead",
                     "inputUiInfo": {},
-                    "pieceVersion": "0.3.20"
+                    "artifact": "UEsDBAoAAAAAAFwYPVdm28o2WAAAAFgAAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIHJldHVybiBKU09OLnBhcnNlKGlucHV0cy5yZWFzb25fZGVsZXRlKTsKfTsKUEsDBAoAAAAAAFwYPVcaUtEIHAAAABwAAAAMAAAAcGFja2FnZS5qc29uewogICJkZXBlbmRlbmNpZXMiOiB7CiAgfQp9ClBLAQIUAAoAAAAAAFwYPVdm28o2WAAAAFgAAAAIAAAAAAAAAAAAAAAAAAAAAABpbmRleC50c1BLAQIUAAoAAAAAAFwYPVcaUtEIHAAAABwAAAAMAAAAAAAAAAAAAAAAAH4AAABwYWNrYWdlLmpzb25QSwUGAAAAAAIAAgBwAAAAxAAAAAAA"
                   },
-                  "displayName": "update lead_contact_status to dead"
+                  "nextAction": {
+                    "name": "step_9",
+                    "type": "PIECE",
+                    "valid": true,
+                    "settings": {
+                      "input": {
+                        "id": "{{step_3['items'][0]['item']['id']}}",
+                        "auth": "{{connections['ichiba-pipedrive']}}",
+                        "note": "{{step_6['improveDescription']}}",
+                        "delete_reason": "{{step_6['mainReason']}}",
+                        "lead_contact_status": 312
+                      },
+                      "pieceName": "@tuyendaovan6789/piece-pipedrive",
+                      "actionName": "update_lead",
+                      "inputUiInfo": {},
+                      "pieceVersion": "0.3.25"
+                    },
+                    "displayName": "update lead"
+                  },
+                  "displayName": "parse reason delete"
                 }
               }
             },

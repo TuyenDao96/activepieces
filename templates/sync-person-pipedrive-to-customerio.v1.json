@@ -1,5 +1,5 @@
 {
-  "id": "S8halw2B8sDN2GEp6okY5",
+  "id": "h4hokqfCmniBrEdvzxmVM",
   "name": "sync person pipedrive to customer.io",
   "description": "",
   "tags": [],
@@ -15,106 +15,111 @@
       "valid": true,
       "displayName": "webhook trigger updated person",
       "nextAction": {
-        "name": "step_5",
-        "type": "BRANCH",
+        "name": "step_6",
+        "type": "CODE",
         "valid": true,
         "settings": {
-          "conditions": [
-            [
-              {
-                "operator": "TEXT_DOES_NOT_CONTAIN",
-                "firstValue": "{{trigger['body']['previous']['60a32c6b283fcf4b0bdd44d98a0b471521f4e69e']}}",
-                "secondValue": "{{trigger['body']['current']['60a32c6b283fcf4b0bdd44d98a0b471521f4e69e']}}",
-                "caseSensitive": false
-              },
-              {
-                "operator": "TEXT_CONTAINS",
-                "firstValue": "{{trigger['body']['current']['60a32c6b283fcf4b0bdd44d98a0b471521f4e69e']}}",
-                "secondValue": "249",
-                "caseSensitive": false
-              }
-            ]
-          ],
-          "inputUiInfo": {}
+          "input": {
+            "body": "{{trigger['body']}}"
+          },
+          "inputUiInfo": {},
+          "artifact": "UEsDBAoAAAAAAHYVPVfvKZ88BgEAAAYBAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIHJldHVybiBpbnB1dHMuYm9keS5jdXJyZW50Wyc2MGEzMmM2YjI4M2ZjZjRiMGJkZDQ0ZDk4YTBiNDcxNTIxZjRlNjllJ10gIT09IGlucHV0cy5ib2R5LnByZXZpb3VzWyc2MGEzMmM2YjI4M2ZjZjRiMGJkZDQ0ZDk4YTBiNDcxNTIxZjRlNjllJ10gJiYgaW5wdXRzLmJvZHkuY3VycmVudFsnNjBhMzJjNmIyODNmY2Y0YjBiZGQ0NGQ5OGEwYjQ3MTUyMWY0ZTY5ZSddID09IDI0OTsKfTsKUEsDBAoAAAAAAHYVPVcaUtEIHAAAABwAAAAMAAAAcGFja2FnZS5qc29uewogICJkZXBlbmRlbmNpZXMiOiB7CiAgfQp9ClBLAQIUAAoAAAAAAHYVPVfvKZ88BgEAAAYBAAAIAAAAAAAAAAAAAAAAAAAAAABpbmRleC50c1BLAQIUAAoAAAAAAHYVPVcaUtEIHAAAABwAAAAMAAAAAAAAAAAAAAAAACwBAABwYWNrYWdlLmpzb25QSwUGAAAAAAIAAgBwAAAAcgEAAAAA"
         },
-        "displayName": "is update status to nurturing of this person",
-        "onSuccessAction": {
-          "name": "step_1",
-          "type": "CODE",
+        "nextAction": {
+          "name": "step_5",
+          "type": "BRANCH",
           "valid": true,
           "settings": {
-            "input": {
-              "person": "{{trigger['body']['current']}}"
-            },
-            "inputUiInfo": {},
-            "artifact": "UEsDBAoAAAAAAKMMNldV2ov9LAEAACwBAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIGNvbnN0IHBob25lcyA9IGlucHV0cy5wZXJzb24ucGhvbmUubWFwKHggPT4geC52YWx1ZSkuam9pbignfHwnKTsKICAgIGxldCBwZXJzb24gPSB7CiAgICAgICAgZW1haWw6IGlucHV0cy5wZXJzb24uZW1haWxbMF0udmFsdWUsCiAgICAgICAgcGhvbmU6IHBob25lcywKICAgICAgICBjb3VudHJ5OiBpbnB1dHMucGVyc29uLmM2ZTg4YmE5NzQ4MzkwMmM2NmVkNDhmNjg0NDFhMzlhOGIzMzA1YjMKICAgIH07CgogICAgcmV0dXJuIFtwZXJzb25dOwp9OwpQSwMECgAAAAAAoww2VxpS0QgcAAAAHAAAAAwAAABwYWNrYWdlLmpzb257CiAgImRlcGVuZGVuY2llcyI6IHsKICB9Cn0KUEsBAhQACgAAAAAAoww2V1Xai/0sAQAALAEAAAgAAAAAAAAAAAAAAAAAAAAAAGluZGV4LnRzUEsBAhQACgAAAAAAoww2VxpS0QgcAAAAHAAAAAwAAAAAAAAAAAAAAAAAUgEAAHBhY2thZ2UuanNvblBLBQYAAAAAAgACAHAAAACYAQAAAAA="
+            "conditions": [
+              [
+                {
+                  "operator": "BOOLEAN_IS_TRUE",
+                  "firstValue": "{{step_6}}"
+                }
+              ]
+            ],
+            "inputUiInfo": {}
           },
-          "nextAction": {
-            "name": "step_3",
+          "displayName": "is update status to nurturing of this person",
+          "onSuccessAction": {
+            "name": "step_1",
             "type": "CODE",
             "valid": true,
             "settings": {
               "input": {
-                "data": "{{step_1}}",
-                "personId": "{{trigger['body']['current']['id']}}"
+                "person": "{{trigger['body']['current']}}"
               },
               "inputUiInfo": {},
-              "artifact": "UEsDBAoAAAAAAKUMNlcFktnkqgMAAKoDAAAIAAAAaW5kZXgudHNpbXBvcnQgRm9ybURhdGEgZnJvbSAnZm9ybS1kYXRhJzsKaW1wb3J0IHsgUmVhZGFibGUgfSBmcm9tICdzdHJlYW0nOwppbXBvcnQgYXhpb3MgZnJvbSAnYXhpb3MnOwoKZXhwb3J0IGNvbnN0IGNvZGUgPSBhc3luYyAoaW5wdXRzKSA9PiB7CiAgICBsZXQgY3N2Q29udGVudCA9ICcnOwogICAgbGV0IGNzdkhlYWRlciA9IE9iamVjdC5rZXlzKGlucHV0cy5kYXRhWzBdKS5qb2luKCcsJyk7CiAgICBsZXQgY3N2VmFsdWVzID0gaW5wdXRzLmRhdGEubWFwKG8gPT4gT2JqZWN0LnZhbHVlcyhvKS5qb2luKCcsJykpLmpvaW4oJ1xuJyk7CgogICAgY3N2Q29udGVudCArPSBjc3ZIZWFkZXIgKyAnXG4nICsgY3N2VmFsdWVzOwogICAgCiAgICBsZXQgZmlsZU5hbWUgPSBgcGVyc29uLSR7aW5wdXRzLnBlcnNvbklkfS5jc3ZgOwogICAgY29uc3QgZGF0YVN0cmVhbSA9IFJlYWRhYmxlLmZyb20oY3N2Q29udGVudCk7CgogICAgbGV0IGJvZHkgPSBuZXcgRm9ybURhdGEoKTsKICAgIGJvZHkuYXBwZW5kKCdjc3ZGaWxlJywgZGF0YVN0cmVhbSwgeyBmaWxlbmFtZTogZmlsZU5hbWUgfSk7CgogICAgbGV0IHJlc3BvbnNlID0gYXdhaXQgYXhpb3MucG9zdCgiaHR0cHM6Ly90ZXN0LWFwaS5pY2hpYmEubmV0L3N0b3JhZ2UvZmlsZXMiLCBib2R5LAogICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgIGhlYWRlcnM6IHsKICAgICAgICAgICAgICAgICAgICAieC1hcHAtaWQiOiAiY3JtIiwKICAgICAgICAgICAgICAgICAgICAieC1wYXRoIjogInBlcnNvbiIsCiAgICAgICAgICAgICAgICAgICAgIngtcm9sZSI6ICJwdWJsaWMiLAogICAgICAgICAgICAgICAgICAgICdDb250ZW50LVR5cGUnOiAnbXVsdGlwYXJ0L2Zvcm0tZGF0YScKICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICB9KTsKICAgIAogICAgcmV0dXJuIHJlc3BvbnNlLmRhdGE7Cn07ClBLAwQKAAAAAAClDDZX7A0ismcAAABnAAAADAAAAHBhY2thZ2UuanNvbnsKICAiZGVwZW5kZW5jaWVzIjogewogICAgIkB0eXBlcy9ub2RlIjogIjIwLjYuMSIsCiAgICAiZm9ybS1kYXRhIjogIjQuMC4wIiwKICAgICJheGlvcyI6ICIxLjUuMCIKICB9Cn1QSwECFAAKAAAAAAClDDZXBZLZ5KoDAACqAwAACAAAAAAAAAAAAAAAAAAAAAAAaW5kZXgudHNQSwECFAAKAAAAAAClDDZX7A0ismcAAABnAAAADAAAAAAAAAAAAAAAAADQAwAAcGFja2FnZS5qc29uUEsFBgAAAAACAAIAcAAAAGEEAAAAAA=="
+              "artifact": "UEsDBAoAAAAAAKMMNldV2ov9LAEAACwBAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIGNvbnN0IHBob25lcyA9IGlucHV0cy5wZXJzb24ucGhvbmUubWFwKHggPT4geC52YWx1ZSkuam9pbignfHwnKTsKICAgIGxldCBwZXJzb24gPSB7CiAgICAgICAgZW1haWw6IGlucHV0cy5wZXJzb24uZW1haWxbMF0udmFsdWUsCiAgICAgICAgcGhvbmU6IHBob25lcywKICAgICAgICBjb3VudHJ5OiBpbnB1dHMucGVyc29uLmM2ZTg4YmE5NzQ4MzkwMmM2NmVkNDhmNjg0NDFhMzlhOGIzMzA1YjMKICAgIH07CgogICAgcmV0dXJuIFtwZXJzb25dOwp9OwpQSwMECgAAAAAAoww2VxpS0QgcAAAAHAAAAAwAAABwYWNrYWdlLmpzb257CiAgImRlcGVuZGVuY2llcyI6IHsKICB9Cn0KUEsBAhQACgAAAAAAoww2V1Xai/0sAQAALAEAAAgAAAAAAAAAAAAAAAAAAAAAAGluZGV4LnRzUEsBAhQACgAAAAAAoww2VxpS0QgcAAAAHAAAAAwAAAAAAAAAAAAAAAAAUgEAAHBhY2thZ2UuanNvblBLBQYAAAAAAgACAHAAAACYAQAAAAA="
             },
             "nextAction": {
-              "name": "step_2",
-              "type": "BRANCH",
+              "name": "step_3",
+              "type": "CODE",
               "valid": true,
               "settings": {
-                "conditions": [
-                  [
-                    {
-                      "operator": "EXISTS",
-                      "firstValue": "{{step_3['name']}}"
-                    }
-                  ]
-                ],
-                "inputUiInfo": {}
+                "input": {
+                  "data": "{{step_1}}",
+                  "personId": "{{trigger['body']['current']['id']}}"
+                },
+                "inputUiInfo": {},
+                "artifact": "UEsDBAoAAAAAAKUMNlcFktnkqgMAAKoDAAAIAAAAaW5kZXgudHNpbXBvcnQgRm9ybURhdGEgZnJvbSAnZm9ybS1kYXRhJzsKaW1wb3J0IHsgUmVhZGFibGUgfSBmcm9tICdzdHJlYW0nOwppbXBvcnQgYXhpb3MgZnJvbSAnYXhpb3MnOwoKZXhwb3J0IGNvbnN0IGNvZGUgPSBhc3luYyAoaW5wdXRzKSA9PiB7CiAgICBsZXQgY3N2Q29udGVudCA9ICcnOwogICAgbGV0IGNzdkhlYWRlciA9IE9iamVjdC5rZXlzKGlucHV0cy5kYXRhWzBdKS5qb2luKCcsJyk7CiAgICBsZXQgY3N2VmFsdWVzID0gaW5wdXRzLmRhdGEubWFwKG8gPT4gT2JqZWN0LnZhbHVlcyhvKS5qb2luKCcsJykpLmpvaW4oJ1xuJyk7CgogICAgY3N2Q29udGVudCArPSBjc3ZIZWFkZXIgKyAnXG4nICsgY3N2VmFsdWVzOwogICAgCiAgICBsZXQgZmlsZU5hbWUgPSBgcGVyc29uLSR7aW5wdXRzLnBlcnNvbklkfS5jc3ZgOwogICAgY29uc3QgZGF0YVN0cmVhbSA9IFJlYWRhYmxlLmZyb20oY3N2Q29udGVudCk7CgogICAgbGV0IGJvZHkgPSBuZXcgRm9ybURhdGEoKTsKICAgIGJvZHkuYXBwZW5kKCdjc3ZGaWxlJywgZGF0YVN0cmVhbSwgeyBmaWxlbmFtZTogZmlsZU5hbWUgfSk7CgogICAgbGV0IHJlc3BvbnNlID0gYXdhaXQgYXhpb3MucG9zdCgiaHR0cHM6Ly90ZXN0LWFwaS5pY2hpYmEubmV0L3N0b3JhZ2UvZmlsZXMiLCBib2R5LAogICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgIGhlYWRlcnM6IHsKICAgICAgICAgICAgICAgICAgICAieC1hcHAtaWQiOiAiY3JtIiwKICAgICAgICAgICAgICAgICAgICAieC1wYXRoIjogInBlcnNvbiIsCiAgICAgICAgICAgICAgICAgICAgIngtcm9sZSI6ICJwdWJsaWMiLAogICAgICAgICAgICAgICAgICAgICdDb250ZW50LVR5cGUnOiAnbXVsdGlwYXJ0L2Zvcm0tZGF0YScKICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICB9KTsKICAgIAogICAgcmV0dXJuIHJlc3BvbnNlLmRhdGE7Cn07ClBLAwQKAAAAAAClDDZX7A0ismcAAABnAAAADAAAAHBhY2thZ2UuanNvbnsKICAiZGVwZW5kZW5jaWVzIjogewogICAgIkB0eXBlcy9ub2RlIjogIjIwLjYuMSIsCiAgICAiZm9ybS1kYXRhIjogIjQuMC4wIiwKICAgICJheGlvcyI6ICIxLjUuMCIKICB9Cn1QSwECFAAKAAAAAAClDDZXBZLZ5KoDAACqAwAACAAAAAAAAAAAAAAAAAAAAAAAaW5kZXgudHNQSwECFAAKAAAAAAClDDZX7A0ismcAAABnAAAADAAAAAAAAAAAAAAAAADQAwAAcGFja2FnZS5qc29uUEsFBgAAAAACAAIAcAAAAGEEAAAAAA=="
               },
-              "displayName": "uploaded successful",
-              "onSuccessAction": {
-                "name": "step_4",
-                "type": "PIECE",
+              "nextAction": {
+                "name": "step_2",
+                "type": "BRANCH",
                 "valid": true,
                 "settings": {
-                  "input": {
-                    "url": "https://api.customer.io/v1/imports",
-                    "body": {
-                      "import": {
-                        "name": "{{step_3['name']}}",
-                        "type": "people",
-                        "identifier": "email",
-                        "description": "sync people from pipedrive to customer-io",
-                        "data_file_url": "{{step_3['uri']}}",
-                        "people_to_process": "all"
+                  "conditions": [
+                    [
+                      {
+                        "operator": "EXISTS",
+                        "firstValue": "{{step_3['name']}}"
                       }
-                    },
-                    "method": "POST",
-                    "headers": {
-                      "Accept": "application/json",
-                      "Content-Type": "application/json",
-                      "Authorization": "Bearer 93c1a2a7282e8354651d28cc9d2c7b1f"
-                    },
-                    "failsafe": false,
-                    "queryParams": {}
-                  },
-                  "pieceName": "@activepieces/piece-http",
-                  "actionName": "send_request",
-                  "inputUiInfo": {},
-                  "pieceVersion": "~0.3.5"
+                    ]
+                  ],
+                  "inputUiInfo": {}
                 },
-                "displayName": "Send HTTP request"
-              }
+                "displayName": "uploaded successful",
+                "onSuccessAction": {
+                  "name": "step_4",
+                  "type": "PIECE",
+                  "valid": true,
+                  "settings": {
+                    "input": {
+                      "url": "https://api.customer.io/v1/imports",
+                      "body": {
+                        "import": {
+                          "name": "{{step_3['name']}}",
+                          "type": "people",
+                          "identifier": "email",
+                          "description": "sync people from pipedrive to customer-io",
+                          "data_file_url": "{{step_3['uri']}}",
+                          "people_to_process": "all"
+                        }
+                      },
+                      "method": "POST",
+                      "headers": {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer 93c1a2a7282e8354651d28cc9d2c7b1f"
+                      },
+                      "failsafe": false,
+                      "queryParams": {}
+                    },
+                    "pieceName": "@activepieces/piece-http",
+                    "actionName": "send_request",
+                    "inputUiInfo": {},
+                    "pieceVersion": "0.3.8"
+                  },
+                  "displayName": "Send HTTP request"
+                }
+              },
+              "displayName": "upload file to storage"
             },
-            "displayName": "upload file to storage"
-          },
-          "displayName": "parse person information"
-        }
+            "displayName": "parse person information"
+          }
+        },
+        "displayName": "Code"
       },
       "type": "WEBHOOK",
       "settings": {

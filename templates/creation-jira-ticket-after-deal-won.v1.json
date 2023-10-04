@@ -1,5 +1,5 @@
 {
-  "id": "hRaEI9TXsmxQ7YiyJ3i4a",
+  "id": "59yzXmV3ri4IeRLe4siAb",
   "name": "creation ticket jira after deal won",
   "description": "",
   "tags": [],
@@ -49,10 +49,10 @@
             "valid": true,
             "settings": {
               "input": {
-                "title": "{{trigger['body']['current']['title']}}"
+                "payload": "{{trigger['body']['current']}}"
               },
               "inputUiInfo": {},
-              "artifact": "UEsDBAoAAAAAAOBROVcGy3otWwAAAFsAAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIHJldHVybiBgJHtpbnB1dHMudGl0bGV9IEltcGxlbWVudCBSZXF1ZXN0YDsKfTsKUEsDBAoAAAAAAOBROVcaUtEIHAAAABwAAAAMAAAAcGFja2FnZS5qc29uewogICJkZXBlbmRlbmNpZXMiOiB7CiAgfQp9ClBLAQIUAAoAAAAAAOBROVcGy3otWwAAAFsAAAAIAAAAAAAAAAAAAAAAAAAAAABpbmRleC50c1BLAQIUAAoAAAAAAOBROVcaUtEIHAAAABwAAAAMAAAAAAAAAAAAAAAAAIEAAABwYWNrYWdlLmpzb25QSwUGAAAAAAIAAgBwAAAAxwAAAAAA"
+              "artifact": "UEsDBAoAAAAAANMhOldrr+iakwYAAJMGAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIGNvbnN0IGNvbXBhbnlUeXBlTWFwID0gewogICAgICAgIDI5NjogIlByaXZhdGUgY29tcGFueSIsCiAgICAgICAgMjk3OiAiUHVibGljIGNvbXBhbnkiLAogICAgICAgIDI5ODogIk11bHRpIC0gbmF0aW9uYWwgY29tcGFueSIsCiAgICAgICAgMjk5OiAiR292ZXJtZW50IGNvbXBhbnkiLAogICAgICAgIDMwMDogIk90aGVycyIKICAgIH07CiAgICBjb25zdCBjb21wYW55X3R5cGUgPSBjb21wYW55VHlwZU1hcFtpbnB1dHMucGF5bG9hZFsnZDgxOTgyZmQwOWFlY2M3YmU3MDFkNzU1MzM2NGRjMzViNGI3YzE2YiddXSB8fCBudWxsOwoKICAgIGNvbnN0IGNvbXBhbnlTaXplTWFwID0gewogICAgICAgIDMwMTogIjwgNTAiLAogICAgICAgIDMwMjogIjUwIC0gMTAwIiwKICAgICAgICAzMDM6ICIxMDEgLSAyNTAiLAogICAgICAgIDMwNDogIjI1MSAtIDUwMCIsCiAgICAgICAgMzA1OiAiPiA1MDAiCiAgICB9OwogICAgY29uc3QgY29tcGFueV9zaXplID0gY29tcGFueVNpemVNYXBbaW5wdXRzLnBheWxvYWRbJ2EzNzcyYWUxMzE2OThmYWRlYzg5ZWI4OGIzNDVmMjZhZmY3YjVmYzcnXV0gfHwgbnVsbDsKCiAgICBjb25zdCBwYXlsb2FkID0gewogICAgICAgICJmaWVsZHMiOiB7CiAgICAgICAgICAgICJsYWJlbHMiOiBbCiAgICAgICAgICAgICAgICAiUGlwZWRyaXZlLUltcGxlbWVudC1SZXF1ZXN0IgogICAgICAgICAgICBdLAogICAgICAgICAgICAicHJvamVjdCI6IHsKICAgICAgICAgICAgICAgICJrZXkiOiAiQ1MiCiAgICAgICAgICAgIH0sCiAgICAgICAgICAgICJzdW1tYXJ5IjogaW5wdXRzLnBheWxvYWQudGl0bGUsCiAgICAgICAgICAgICJpc3N1ZXR5cGUiOiB7CiAgICAgICAgICAgICAgICAiaWQiOiAxMDA3NAogICAgICAgICAgICB9LAogICAgICAgICAgICAiZGVzY3JpcHRpb24iOiB7CiAgICAgICAgICAgICAgICAidHlwZSI6ICJkb2MiLAogICAgICAgICAgICAgICAgImNvbnRlbnQiOiBbXSwKICAgICAgICAgICAgICAgICJ2ZXJzaW9uIjogMQogICAgICAgICAgICB9LAogICAgICAgICAgICAiY3VzdG9tZmllbGRfMTAxODkiOiBpbnB1dHMucGF5bG9hZFsnMmRlNzVlMDMxZmNiZjY5MDU3NWY2YzRmZjNlMGVjNWJiZTc1NzlmZiddLAogICAgICAgICAgICAiY3VzdG9tZmllbGRfMTAxOTAiOiBpbnB1dHMucGF5bG9hZFsnYmEyNDA2OTA5YzM2N2M2NGY4OThmODVlMGJiNTIyODQ4ZWUwMTJkOCddLAogICAgICAgICAgICAiY3VzdG9tZmllbGRfMTAxOTEiOiBpbnB1dHMucGF5bG9hZFsnYWQ5NWU0ODg3YmI2MzAzOTMyZmE1ZWUwNGE3ZTU1NmE0YjYwNmE4NiddLAogICAgICAgICAgICAiY3VzdG9tZmllbGRfMTAxOTIiOiBpbnB1dHMucGF5bG9hZFsnMjdmMmE4ZTE3ZjJmNTUxYmJiY2NlZGM5M2VkNzExNjU3ZjI0N2VlZSddLAogICAgICAgICAgICAiY3VzdG9tZmllbGRfMTAxOTQiOiBjb21wYW55X3R5cGUsCiAgICAgICAgICAgICJjdXN0b21maWVsZF8xMDE5NSI6IGlucHV0cy5wYXlsb2FkWydwZXJzb25fbmFtZSddLAogICAgICAgICAgICAiY3VzdG9tZmllbGRfMTAxOTYiOiBpbnB1dHMucGF5bG9hZFsndGl0bGUnXSwKICAgICAgICAgICAgImN1c3RvbWZpZWxkXzEwMTk3IjogY29tcGFueV9zaXplCiAgICAgICAgfQogICAgfTsKICAgIHJldHVybiBwYXlsb2FkOwp9OwpQSwMECgAAAAAA0yE6VxpS0QgcAAAAHAAAAAwAAABwYWNrYWdlLmpzb257CiAgImRlcGVuZGVuY2llcyI6IHsKICB9Cn0KUEsBAhQACgAAAAAA0yE6V2uv6JqTBgAAkwYAAAgAAAAAAAAAAAAAAAAAAAAAAGluZGV4LnRzUEsBAhQACgAAAAAA0yE6VxpS0QgcAAAAHAAAAAwAAAAAAAAAAAAAAAAAuQYAAHBhY2thZ2UuanNvblBLBQYAAAAAAgACAHAAAAD/BgAAAAA="
             },
             "nextAction": {
               "name": "step_3",
@@ -61,33 +61,7 @@
               "settings": {
                 "input": {
                   "url": "https://ichiba.atlassian.net/rest/api/3/issue",
-                  "body": {
-                    "fields": {
-                      "labels": [
-                        "Pipedrive-Implement-Request"
-                      ],
-                      "project": {
-                        "key": "CS"
-                      },
-                      "summary": "{{step_2}}",
-                      "issuetype": {
-                        "id": 10074
-                      },
-                      "description": {
-                        "type": "doc",
-                        "content": [],
-                        "version": 1
-                      },
-                      "customfield_10189": "{{trigger['body']['current']['2de75e031fcbf690575f6c4ff3e0ec5bbe7579ff']}}",
-                      "customfield_10190": "{{trigger['body']['current']['ba2406909c367c64f898f85e0bb522848ee012d8']}}",
-                      "customfield_10191": "{{trigger['body']['current']['ad95e4887bb6303932fa5ee04a7e556a4b606a86']}}",
-                      "customfield_10192": "{{trigger['body']['current']['27f2a8e17f2f551bbbccedc93ed711657f247eee']}}",
-                      "customfield_10194": "{{trigger['body']['current']['d81982fd09aecc7be701d7553364dc35b4b7c16b']}}",
-                      "customfield_10195": "{{trigger['body']['current']['person_name']}}",
-                      "customfield_10196": "{{trigger['body']['current']['title']}}",
-                      "customfield_10197": "{{trigger['body']['current']['a3772ae131698fadec89eb88b345f26aff7b5fc7']}}"
-                    }
-                  },
+                  "body": "{{step_2}}",
                   "method": "POST",
                   "headers": {
                     "Content-Type": "application/json",
@@ -122,7 +96,7 @@
               },
               "displayName": "post jira ticket"
             },
-            "displayName": "set title ticket"
+            "displayName": "build payload post jira ticket"
           }
         },
         "displayName": "is won deal"

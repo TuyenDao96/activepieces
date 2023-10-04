@@ -1,0 +1,81 @@
+{
+  "id": "TWaOylAFEnFhPvGh6h5f6",
+  "name": "sync user information",
+  "description": "",
+  "tags": [],
+  "pieces": [
+    "@tuyendaovan6789/piece-intercom"
+  ],
+  "pinnedOrder": null,
+  "blogUrl": "",
+  "template": {
+    "displayName": "sync user information",
+    "trigger": {
+      "name": "trigger",
+      "valid": true,
+      "displayName": "webhook trigger cdc user profiles",
+      "nextAction": {
+        "name": "step_2",
+        "type": "CODE",
+        "valid": true,
+        "settings": {
+          "input": {
+            "body": "{{trigger['body']}}"
+          },
+          "inputUiInfo": {},
+          "artifact": "UEsDBAoAAAAAAAI6RFfL6P4yTwAAAE8AAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIHJldHVybiBKU09OLnBhcnNlKGlucHV0cy5ib2R5KTsKfTsKUEsDBAoAAAAAAAI6RFcaUtEIHAAAABwAAAAMAAAAcGFja2FnZS5qc29uewogICJkZXBlbmRlbmNpZXMiOiB7CiAgfQp9ClBLAQIUAAoAAAAAAAI6RFfL6P4yTwAAAE8AAAAIAAAAAAAAAAAAAAAAAAAAAABpbmRleC50c1BLAQIUAAoAAAAAAAI6RFcaUtEIHAAAABwAAAAMAAAAAAAAAAAAAAAAAHUAAABwYWNrYWdlLmpzb25QSwUGAAAAAAIAAgBwAAAAuwAAAAAA"
+        },
+        "nextAction": {
+          "name": "step_3",
+          "type": "BRANCH",
+          "valid": true,
+          "settings": {
+            "conditions": [
+              [
+                {
+                  "operator": "TEXT_DOES_NOT_CONTAIN",
+                  "firstValue": "{{step_2['__op']}}",
+                  "secondValue": "d",
+                  "caseSensitive": false
+                },
+                {
+                  "operator": "BOOLEAN_IS_FALSE",
+                  "firstValue": "{{step_2['is_deleted']}}"
+                }
+              ]
+            ],
+            "inputUiInfo": {}
+          },
+          "displayName": "is activated user",
+          "onSuccessAction": {
+            "name": "step_1",
+            "type": "PIECE",
+            "valid": true,
+            "settings": {
+              "input": {
+                "auth": "{{connections['ichiba-intercom']}}",
+                "name": "{{step_2['full_name']}}",
+                "role": "user",
+                "email": "{{step_2['email']}}",
+                "phone": "{{step_2['phone_number']}}",
+                "avatar": "{{step_2['avatar_url']}}",
+                "custom_attributes": {}
+              },
+              "pieceName": "@tuyendaovan6789/piece-intercom",
+              "actionName": "update_or_create_contact",
+              "inputUiInfo": {},
+              "pieceVersion": "0.3.0"
+            },
+            "displayName": "Update or Create Contact"
+          }
+        },
+        "displayName": "parse webhook body"
+      },
+      "type": "WEBHOOK",
+      "settings": {
+        "inputUiInfo": {}
+      }
+    },
+    "valid": true
+  }
+}

@@ -1,9 +1,10 @@
 {
-  "id": "eTo2ATL2Za97ZzbFbRScJ",
+  "id": "vKH4Pu04KmwCXBTrY6g7C",
   "name": "workspace owner active new application",
   "description": "",
   "tags": [],
   "pieces": [
+    "@activepieces/piece-delay",
     "@activepieces/piece-postgres",
     "@tuyendaovan6789/piece-pipedrive"
   ],
@@ -16,121 +17,137 @@
       "valid": true,
       "displayName": "webhook trigger cdc subscriptions",
       "nextAction": {
-        "name": "step_1",
-        "type": "CODE",
+        "name": "step_7",
+        "type": "PIECE",
         "valid": true,
         "settings": {
           "input": {
-            "body": "{{trigger['body']}}"
+            "unit": "seconds",
+            "delayFor": "15"
           },
+          "pieceName": "@activepieces/piece-delay",
+          "actionName": "delayFor",
           "inputUiInfo": {},
-          "artifact": "UEsDBAoAAAAAAKolNVfL6P4yTwAAAE8AAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIHJldHVybiBKU09OLnBhcnNlKGlucHV0cy5ib2R5KTsKfTsKUEsDBAoAAAAAAKolNVcaUtEIHAAAABwAAAAMAAAAcGFja2FnZS5qc29uewogICJkZXBlbmRlbmNpZXMiOiB7CiAgfQp9ClBLAQIUAAoAAAAAAKolNVfL6P4yTwAAAE8AAAAIAAAAAAAAAAAAAAAAAAAAAABpbmRleC50c1BLAQIUAAoAAAAAAKolNVcaUtEIHAAAABwAAAAMAAAAAAAAAAAAAAAAAHUAAABwYWNrYWdlLmpzb25QSwUGAAAAAAIAAgBwAAAAuwAAAAAA"
+          "pieceVersion": "0.3.1"
         },
         "nextAction": {
-          "name": "step_2",
-          "type": "BRANCH",
+          "name": "step_1",
+          "type": "CODE",
           "valid": true,
           "settings": {
-            "conditions": [
-              [
-                {
-                  "operator": "BOOLEAN_IS_FALSE",
-                  "firstValue": "{{step_1['is_deleted']}}"
-                }
-              ]
-            ],
-            "inputUiInfo": {}
+            "input": {
+              "body": "{{trigger['body']}}"
+            },
+            "inputUiInfo": {},
+            "artifact": "UEsDBAoAAAAAAKolNVfL6P4yTwAAAE8AAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIHJldHVybiBKU09OLnBhcnNlKGlucHV0cy5ib2R5KTsKfTsKUEsDBAoAAAAAAKolNVcaUtEIHAAAABwAAAAMAAAAcGFja2FnZS5qc29uewogICJkZXBlbmRlbmNpZXMiOiB7CiAgfQp9ClBLAQIUAAoAAAAAAKolNVfL6P4yTwAAAE8AAAAIAAAAAAAAAAAAAAAAAAAAAABpbmRleC50c1BLAQIUAAoAAAAAAKolNVcaUtEIHAAAABwAAAAMAAAAAAAAAAAAAAAAAHUAAABwYWNrYWdlLmpzb25QSwUGAAAAAAIAAgBwAAAAuwAAAAAA"
           },
-          "displayName": "is not delete action",
-          "onSuccessAction": {
-            "name": "step_3",
-            "type": "PIECE",
+          "nextAction": {
+            "name": "step_2",
+            "type": "BRANCH",
             "valid": true,
             "settings": {
-              "input": {
-                "auth": "{{connections['ic-postgres']}}",
-                "query": "SELECT\n    string_agg(a.app, ',') as apps,\n    count(a.app) as no_apps\nFROM user_management.subscriptions s\nINNER JOIN user_management.plans p on s.plan_id = p.id AND s.sharding_id = p.sharding_id\nINNER JOIN (\n        SELECT\n            id, sharding_id,\n            CASE    WHEN code = 'ship4p' THEN '283'\n                    WHEN code = 'oms' THEN '284'\n                    WHEN code = 'customer' THEN '285'\n                    WHEN code = 'cbf' THEN '286'\n                    WHEN code = 'pos' THEN '306'\n                    WHEN code = 'social' THEN '307'\n                    WHEN code = 'pim' THEN '308'\n                    WHEN code = 'cdxp' THEN '309'\n                    WHEN code = 'wms' THEN '310'\n                    WHEN code = 'digital' THEN '311'\n            END AS app\n        FROM user_management.applications\n    ) a on p.application_id = a.id AND p.sharding_id = a.sharding_id\nWHERE s.workspace_id = '{{step_1['workspace_id']}}' AND s.sharding_id = '{{step_1['sharding_id']}}'\nGROUP BY s.workspace_id;",
-                "query_timeout": "30000",
-                "application_name": "activepieces",
-                "connection_timeout_ms": "30000"
-              },
-              "pieceName": "@activepieces/piece-postgres",
-              "actionName": "run-query",
-              "inputUiInfo": {},
-              "pieceVersion": "0.1.0"
+              "conditions": [
+                [
+                  {
+                    "operator": "BOOLEAN_IS_FALSE",
+                    "firstValue": "{{step_1['is_deleted']}}"
+                  }
+                ]
+              ],
+              "inputUiInfo": {}
             },
-            "nextAction": {
-              "name": "step_4",
+            "displayName": "is not delete action",
+            "onSuccessAction": {
+              "name": "step_3",
               "type": "PIECE",
               "valid": true,
               "settings": {
                 "input": {
-                  "auth": "{{connections['ichiba-pipedrive']}}",
-                  "term": "{{step_1['workspace_id']}}",
-                  "limit": "10",
-                  "fields": "custom_fields",
-                  "exact_match": true
+                  "auth": "{{connections['ic-postgres']}}",
+                  "query": "SELECT\n    string_agg(a.app, ',') as apps,\n    count(a.app) as no_apps\nFROM user_management.subscriptions s\nINNER JOIN user_management.plans p on s.plan_id = p.id AND s.sharding_id = p.sharding_id\nINNER JOIN (\n        SELECT\n            id, sharding_id,\n            CASE    WHEN code = 'ship4p' THEN '283'\n                    WHEN code = 'oms' THEN '284'\n                    WHEN code = 'customer' THEN '285'\n                    WHEN code = 'cbf' THEN '286'\n                    WHEN code = 'pos' THEN '306'\n                    WHEN code = 'social' THEN '307'\n                    WHEN code = 'pim' THEN '308'\n                    WHEN code = 'cdxp' THEN '309'\n                    WHEN code = 'wms' THEN '310'\n                    WHEN code = 'digital' THEN '311'\n            END AS app\n        FROM user_management.applications\n    ) a on p.application_id = a.id AND p.sharding_id = a.sharding_id\nWHERE s.workspace_id = '{{step_1['workspace_id']}}' AND s.sharding_id = '{{step_1['sharding_id']}}'\nGROUP BY s.workspace_id;",
+                  "query_timeout": "30000",
+                  "application_name": "activepieces",
+                  "connection_timeout_ms": "30000"
                 },
-                "pieceName": "@tuyendaovan6789/piece-pipedrive",
-                "actionName": "search_lead",
+                "pieceName": "@activepieces/piece-postgres",
+                "actionName": "run-query",
                 "inputUiInfo": {},
-                "pieceVersion": "0.3.20"
+                "pieceVersion": "0.1.0"
               },
               "nextAction": {
-                "name": "step_5",
-                "type": "CODE",
+                "name": "step_4",
+                "type": "PIECE",
                 "valid": true,
                 "settings": {
                   "input": {
-                    "items": "{{step_4['items']}}"
+                    "auth": "{{connections['ichiba-pipedrive']}}",
+                    "term": "{{step_1['workspace_id']}}",
+                    "limit": "10",
+                    "fields": "custom_fields",
+                    "exact_match": true
                   },
+                  "pieceName": "@tuyendaovan6789/piece-pipedrive",
+                  "actionName": "search_lead",
                   "inputUiInfo": {},
-                  "artifact": "UEsDBAoAAAAAAMMlNVcGs6XaUAAAAFAAAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIHJldHVybiBpbnB1dHMuaXRlbXMubGVuZ3RoIHx8IDA7Cn07ClBLAwQKAAAAAADDJTVXGlLRCBwAAAAcAAAADAAAAHBhY2thZ2UuanNvbnsKICAiZGVwZW5kZW5jaWVzIjogewogIH0KfQpQSwECFAAKAAAAAADDJTVXBrOl2lAAAABQAAAACAAAAAAAAAAAAAAAAAAAAAAAaW5kZXgudHNQSwECFAAKAAAAAADDJTVXGlLRCBwAAAAcAAAADAAAAAAAAAAAAAAAAAB2AAAAcGFja2FnZS5qc29uUEsFBgAAAAACAAIAcAAAALwAAAAAAA=="
+                  "pieceVersion": "0.3.25"
                 },
                 "nextAction": {
-                  "name": "step_6",
-                  "type": "BRANCH",
+                  "name": "step_5",
+                  "type": "CODE",
                   "valid": true,
                   "settings": {
-                    "conditions": [
-                      [
-                        {
-                          "operator": "NUMBER_IS_LESS_THAN",
-                          "firstValue": "{{step_5}}",
-                          "secondValue": "1"
-                        }
-                      ]
-                    ],
-                    "inputUiInfo": {}
+                    "input": {
+                      "items": "{{step_4['items']}}"
+                    },
+                    "inputUiInfo": {},
+                    "artifact": "UEsDBAoAAAAAAMMlNVcGs6XaUAAAAFAAAAAIAAAAaW5kZXgudHNleHBvcnQgY29uc3QgY29kZSA9IGFzeW5jIChpbnB1dHMpID0+IHsKICAgIHJldHVybiBpbnB1dHMuaXRlbXMubGVuZ3RoIHx8IDA7Cn07ClBLAwQKAAAAAADDJTVXGlLRCBwAAAAcAAAADAAAAHBhY2thZ2UuanNvbnsKICAiZGVwZW5kZW5jaWVzIjogewogIH0KfQpQSwECFAAKAAAAAADDJTVXBrOl2lAAAABQAAAACAAAAAAAAAAAAAAAAAAAAAAAaW5kZXgudHNQSwECFAAKAAAAAADDJTVXGlLRCBwAAAAcAAAADAAAAAAAAAAAAAAAAAB2AAAAcGFja2FnZS5qc29uUEsFBgAAAAACAAIAcAAAALwAAAAAAA=="
                   },
-                  "displayName": "lead not found",
-                  "onFailureAction": {
-                    "name": "step_9",
-                    "type": "PIECE",
+                  "nextAction": {
+                    "name": "step_6",
+                    "type": "BRANCH",
                     "valid": true,
                     "settings": {
-                      "input": {
-                        "id": "{{step_4['items'][0]['item']['id']}}",
-                        "auth": "{{connections['ichiba-pipedrive']}}",
-                        "no_application": "{{step_3[0]['no_apps']}}",
-                        "product_interest": "{{step_3[0]['apps']}}"
-                      },
-                      "pieceName": "@tuyendaovan6789/piece-pipedrive",
-                      "actionName": "update_lead",
-                      "inputUiInfo": {},
-                      "pieceVersion": "0.3.20"
+                      "conditions": [
+                        [
+                          {
+                            "operator": "NUMBER_IS_LESS_THAN",
+                            "firstValue": "{{step_5}}",
+                            "secondValue": "1"
+                          }
+                        ]
+                      ],
+                      "inputUiInfo": {}
                     },
-                    "displayName": "update application used of this lead"
-                  }
+                    "displayName": "lead not found",
+                    "onFailureAction": {
+                      "name": "step_9",
+                      "type": "PIECE",
+                      "valid": true,
+                      "settings": {
+                        "input": {
+                          "id": "{{step_4['items'][0]['item']['id']}}",
+                          "auth": "{{connections['ichiba-pipedrive']}}",
+                          "no_application": "{{step_3[0]['no_apps']}}",
+                          "product_interest": "{{step_3[0]['apps']}}"
+                        },
+                        "pieceName": "@tuyendaovan6789/piece-pipedrive",
+                        "actionName": "update_lead",
+                        "inputUiInfo": {},
+                        "pieceVersion": "0.3.25"
+                      },
+                      "displayName": "update application used of this lead"
+                    }
+                  },
+                  "displayName": "count lead searched"
                 },
-                "displayName": "count lead searched"
+                "displayName": "search leads by workspace_id"
               },
-              "displayName": "search leads by workspace_id"
-            },
-            "displayName": "get active app"
-          }
+              "displayName": "get active app"
+            }
+          },
+          "displayName": "parse webhook body"
         },
-        "displayName": "parse webhook body"
+        "displayName": "Delay For"
       },
       "type": "WEBHOOK",
       "settings": {
